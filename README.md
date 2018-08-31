@@ -152,5 +152,5 @@ To fortify your position, move as many armies as you would like from one (and on
 Remember to move troops towards borders where they can help in an attack and leave at least one army behind.
 
 
-End of the Game
+# End of the Game
 The winner is the first player to eliminate every opponent by capturing all 42 territories on the board.
