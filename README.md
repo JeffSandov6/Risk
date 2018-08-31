@@ -1,4 +1,4 @@
-The Armies
+# The Armies
 There are six complete sets of armies, each containing three types:
 
 Infantry (worth l)
@@ -7,7 +7,7 @@ Artillery (worth 10 Infantry, or 2 Cavalry)
 Start the game by placing Infantry pieces. Later, you can trade in 5 Infantry for 1 Cavalry, or 2 Cavalry (or 1 Cavalry and 5 Infantry) for 1 Artillery.
 
 
-Cards
+# Cards
 
 42 Cards are marked with a territory and a picture of Infantry, Cavalry, or Artillery.
 
@@ -18,11 +18,11 @@ Two "wild" cards marked with all three pictures, but no territory.
 These cards are only used in the secret mission variation, else you have to remove them.
 
 
-Object of the Game
+# Objective of the Game
 To conquer the world by occupying all territories on the board. You need to eliminate all your opponents.
 
 
-Setup
+# Setup
 Select a color and, depending on the number of players, count out the "armies" you'll need to start the game.
 
 If 2 are playing, see special instructions.
@@ -45,7 +45,7 @@ This pack forms the draw pile.
 Whoever placed the first army opens the game.
 
 
-Game Play
+# Game Play
 On your turn, try to capture territories by defeating your opponents' armies. But be careful: Winning battles will depend on careful planning, quick decisions, and bold moves. You will have to place your forces wisely, attack at just the right time and fortify your defenses against all enemies.
 
 Note: At any time during the game, you may trade in Infantry pieces for the equivalent in Cavalry or Artillery if you need to, or wish to.
@@ -85,7 +85,7 @@ These numbers can be different depending on the version of Risk you are playing.
 
 
 
-Risk Cards
+# Risk Cards
 Earning Cards
 At the end of any turn in which you have captured at least one territory, you will earn one (and only one) RISK card.
 
@@ -119,7 +119,7 @@ You must always have at least two armies in the territory you're attacking from.
 
 You may continue attacking one territory until you have eliminated all armies on it, or you may shift your attack from one territory to another, attacking each as often as you want and attacking as many territories as you like during one turn.
 
-To Attack
+# To Attack
 
 First, announce both the territory you're attacking and the one you are attacking from. Then roll the dice against the opponent who occupies the opposing territory.
 
