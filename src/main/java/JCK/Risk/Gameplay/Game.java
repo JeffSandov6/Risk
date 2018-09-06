@@ -34,7 +34,7 @@ public class Game {
 		Random randNumber = new Random();
 		
 		//this loop will initialize the players
-		for(int i = 0; i < numPlayers; i++)
+		for(int i = 1; i <= numPlayers; i++)
 		{
 			
 			
