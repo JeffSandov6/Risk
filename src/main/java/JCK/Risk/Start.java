@@ -7,6 +7,8 @@ import java.util.ArrayList;
 
 import JCK.Risk.Gameplay.Card;
 import JCK.Risk.Gameplay.Game;
+import JCK.Risk.Locations.Continent;
+import JCK.Risk.Locations.Territory;
 import JCK.Risk.Players.Player;
 
 public class Start {
@@ -25,14 +27,16 @@ public class Start {
 		Game startGame = new Game();
 		Card cards = new Card();
 		
+		// initialize the players as well as continents
 		startGame.initializeGame(numPlayers);
+		startGame.initializeContinents();
 		ArrayList<Player> playersArray = startGame.getPlayersArray();
-		
-		
+		ArrayList<Continent> continentArray = startGame.getContinentArray();
+		System.out.println();
+		for (int i = 0; i < continentArray.size(); i++) {
+			continentArray.get(i).displayContinent();
+		}
 		cards.initializeCards();
-		
-		//initialize continents
-		//initialize territories
 		
 	}
 

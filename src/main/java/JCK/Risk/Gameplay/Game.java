@@ -1,6 +1,8 @@
 package JCK.Risk.Gameplay;
 
 import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
@@ -8,6 +10,8 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Random;
 
+import JCK.Risk.Locations.Continent;
+import JCK.Risk.Locations.Territory;
 import JCK.Risk.Players.Player;
 
 public class Game {
@@ -17,7 +21,7 @@ public class Game {
 	//this is the array list that will be used for the turns
 	//TODO: this should be in the class of turns
 	ArrayList<Player> playersArray = new ArrayList<Player>();
-	
+	ArrayList<Continent> continentArray = new ArrayList<Continent>();
 
 	
 	public void initializeGame(int numPlayers) throws IOException 
@@ -93,7 +97,9 @@ public class Game {
 		return this.playersArray;
 	}
 	
-	
+	public ArrayList<Continent> getContinentArray() {
+		return this.continentArray;
+	}
 	
 	public static Comparator<Player> COMPARE_BY_VALUE = new Comparator<Player>() {
 		public int compare(Player one, Player other) {
@@ -111,7 +117,32 @@ public class Game {
 	
 	public void initializeContinents()
 	{
-		//Continent southAmerica = new southAmerica();
+		try {
+			FileReader file = new FileReader("src/main/java/JCK/Risk/listOfTerritories.txt");
+			BufferedReader br = new BufferedReader(file);
+			String line;
+			while ((line = br.readLine()) != null) {
+				int indexOfContinent = line.indexOf(':');
+				String continentName = line.substring(0, indexOfContinent);
+				Continent newContinent = new Continent(continentName);
+				line = line.substring(indexOfContinent+1);
+				int indexOfComma = line.indexOf(',');
+				while (indexOfComma != -1) {
+					String territoryName = line.substring(0, indexOfComma);
+					newContinent.addTerritory(territoryName);
+					line = line.substring(indexOfComma + 1);
+					indexOfComma = line.indexOf(',');
+				}
+				String territoryName = line;
+				newContinent.addTerritory(territoryName);
+				continentArray.add(newContinent);
+			}
+		} catch (FileNotFoundException e) {
+			System.out.println(e.getMessage());
+		} catch (IOException e) {
+			System.out.println(e.getMessage());
+		}
+		
 		
 	}
 	
