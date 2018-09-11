@@ -1,3 +1,4 @@
+Chuong Vu, Kwaku Dabanka, Jeffry Sandoval
 # The Armies
 There are six complete sets of armies, each containing three types:
 
