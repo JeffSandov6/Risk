@@ -142,10 +142,6 @@ public class Game {
 		} catch (IOException e) {
 			System.out.println(e.getMessage());
 		}
-		
-		
 	}
-	
-	
 
 }
