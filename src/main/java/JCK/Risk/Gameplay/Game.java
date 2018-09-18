@@ -8,6 +8,7 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.List;
 import java.util.Random;
 
 import JCK.Risk.Locations.Continent;
@@ -40,9 +41,6 @@ public class Game {
 		//this loop will initialize the players
 		for(int i = 1; i <= numPlayers; i++)
 		{
-			
-			
-			
 			
 			System.out.println("What's the name of player #" + i + "?");
 			BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -111,30 +109,32 @@ public class Game {
 		
 	};
 		
-	
-	
-	
-	
+	/**
+	* Initializes the continents by reading a .txt file and scanning through it
+	*/
 	public void initializeContinents()
 	{
 		try {
 			FileReader file = new FileReader("src/main/java/JCK/Risk/listOfTerritories.txt");
 			BufferedReader br = new BufferedReader(file);
 			String line;
+			// begins reading the file
 			while ((line = br.readLine()) != null) {
 				int indexOfContinent = line.indexOf(':');
 				String continentName = line.substring(0, indexOfContinent);
 				Continent newContinent = new Continent(continentName);
 				line = line.substring(indexOfContinent+1);
 				int indexOfComma = line.indexOf(',');
+				
 				while (indexOfComma != -1) {
 					String territoryName = line.substring(0, indexOfComma);
-					newContinent.addTerritory(territoryName);
+					newContinent.addTerritory(territoryName, initializeAdjacencies(territoryName));
 					line = line.substring(indexOfComma + 1);
 					indexOfComma = line.indexOf(',');
 				}
+				// gets the last element from the line
 				String territoryName = line;
-				newContinent.addTerritory(territoryName);
+				newContinent.addTerritory(territoryName, initializeAdjacencies(territoryName));
 				continentArray.add(newContinent);
 			}
 		} catch (FileNotFoundException e) {
@@ -142,10 +142,51 @@ public class Game {
 		} catch (IOException e) {
 			System.out.println(e.getMessage());
 		}
-		
-		
 	}
-	
-	
 
+	private Object initializeTerritories(String territoryName) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+
+	/**
+	* Initialize the territories adjacency list
+	*/
+	public List<String> initializeAdjacencies(String territoryName) {
+		List<String> adjacentTerritories = new ArrayList<String>();
+		try {
+			// reads the file and scans through looking for ':' for current territory
+			FileReader file = new FileReader("src/main/java/JCK/Risk/adjacencies.txt");
+			BufferedReader br = new BufferedReader(file);
+			String line;
+			
+			while ((line = br.readLine()) != null) {
+				int indexOfTerritory = line.indexOf(':');
+				String newTerritoryName = line.substring(0, indexOfTerritory);
+				line = line.substring(indexOfTerritory+1);
+				int indexOfComma = line.indexOf(',');
+				// checks for each of the commas to get the adjacencies
+				if (newTerritoryName.equals(territoryName)) {
+					while (indexOfComma != -1) {
+						String adjacentTerritory = line.substring(0, indexOfComma);
+						adjacentTerritories.add(adjacentTerritory);
+						line = line.substring(indexOfComma+1);
+						indexOfComma = line.indexOf(',');
+					}
+					
+					String adjacentTerritory = line;
+					adjacentTerritories.add(adjacentTerritory);
+					return adjacentTerritories;
+				}
+
+			}
+		} catch (FileNotFoundException e) {
+			System.out.println(e.getMessage());
+		} catch (IOException e) {
+			System.out.println(e.getMessage());
+		}
+		return adjacentTerritories;
+	}
 }
