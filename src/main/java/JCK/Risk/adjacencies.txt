@@ -1,42 +1,42 @@
-North America:Alaska:Alberta,Northwest Territory,Kamchatka
-North America:Alberta:Northwest Territory,Alaska,Ontario,Western United States
-North America:Central America:Western United States,Eastern United States,Venezuela
-North America:Eastern United States:Western United States,Central America,Quebec,Ontario
-North America:Greenland:Northwest Territory,Ontario,Quebec,Iceland
-North America:Northwest Territory:Alaska,Alberta,Ontario,Greenland
-North America:Ontario:Quebec,Western United States,Eastern United States,Greenland,Alberta,Northwest Territory
-North America:Quebec:Eastern United States,Ontario,Greenland
-North America:Western United States:Alberta,Ontario,Eastern United States,Central America
-South America:Argentina:Brazil,Peru
-South America:Brazil:Argentina,Peru,Venezuela,North Africa
-South America:Peru:Argentina,Brazil,Venezuela
-South America:Venezuela:Central America,Brazil,Peru
-Europe:Great Britain:Iceland,Scandinavia,Northern Europe,Western Europe
-Europe:Iceland:Great Britain,Scandinavia,Greenland
-Europe:Northern Europe:Scandinavia,Great Britain,Western Europe,Southern Europe,Ukraine
-Europe:Scandinavia:Ukraine,Northern Europe,Iceland
-Europe:Southern Europe:Western Europe,Northern Europe,Ukraine,Middle East,Egypt,North Africa
-Europe:Ukraine:Middle East,Southern Europe,Northern Europe,Scandinavia,Ural,Afghanistan
-Europe:Western Europe:Great Britain,Northern Europe,Southern Europe,North Africa
-Africa:Congo:East Africa,North Africa,South Africa
-Africa:East Africa:Egypt,Madagascar,North Africa,South Africa,Congo,Middle East
-Africa:Egypt:East Africa,North Africa,Southern Europe,Middle East
-Africa:Madagascar:East Africa,South Africa
-Africa:North Africa:Egypt,East Africa,Congo,Southern Europe,Western Europe,Brazil
-Africa:South Africa:Congo,East Africa,Madagascar
-Asia:Afghanistan:Middle East,Ukraine,Ural,China,India
-Asia:China:India,Afghanistan,Ural,Siberia,Mongolia,Siam
-Asia:India:Middle East,Afghanistan,China,Siam
-Asia:Irkutsk:Siberia,Yakutsk,Kamchatka,Mongolia
-Asia:Japan:Kamchatka,Mongolia
-Asia:Kamchatka:Japan,Mongolia,Irkutsk,Yakutsk,Alaska
-Asia:Middle East:East Africa,Egypt,Southern Europe,Ukraine,Afghanistan,India
-Asia:Mongolia:China,Siberia,Irkutsk,Kamchatka,Japan
-Asia:Siam:India,China,Indonesia
-Asia:Siberia:China,Ural,Yakutsk,Irkutsk,Mongolia
-Asia:Ural:Afghanistan,Ukraine,Siberia,China
-Asia:Yakutsk:Irkutsk,Siberia,Kamchatka
-Australia:Eastern Australia:New Guinea,Western Australia
-Australia:Indonesia:New Guinea,Western Australia,Siam
-Australia:New Guinea:Western Australia,Eastern Australia,Indonesia
-Australia:Western Australia:Eastern Australia,New Guinea,Indonesia
+Alaska:Alberta,Northwest Territory,Kamchatka
+Alberta:Northwest Territory,Alaska,Ontario,Western United States
+Central America:Western United States,Eastern United States,Venezuela
+Eastern United States:Western United States,Central America,Quebec,Ontario
+Greenland:Northwest Territory,Ontario,Quebec,Iceland
+Northwest Territory:Alaska,Alberta,Ontario,Greenland
+Ontario:Quebec,Western United States,Eastern United States,Greenland,Alberta,Northwest Territory
+Quebec:Eastern United States,Ontario,Greenland
+Western United States:Alberta,Ontario,Eastern United States,Central America
+Argentina:Brazil,Peru
+Brazil:Argentina,Peru,Venezuela,North Africa
+Peru:Argentina,Brazil,Venezuela
+Venezuela:Central America,Brazil,Peru
+Great Britain:Iceland,Scandinavia,Northern Europe,Western Europe
+Iceland:Great Britain,Scandinavia,Greenland
+Northern Europe:Scandinavia,Great Britain,Western Europe,Southern Europe,Ukraine
+Scandinavia:Ukraine,Northern Europe,Iceland
+Southern Europe:Western Europe,Northern Europe,Ukraine,Middle East,Egypt,North Africa
+Ukraine:Middle East,Southern Europe,Northern Europe,Scandinavia,Ural,Afghanistan
+Western Europe:Great Britain,Northern Europe,Southern Europe,North Africa
+Congo:East Africa,North Africa,South Africa
+East Africa:Egypt,Madagascar,North Africa,South Africa,Congo,Middle East
+Egypt:East Africa,North Africa,Southern Europe,Middle East
+Madagascar:East Africa,South Africa
+North Africa:Egypt,East Africa,Congo,Southern Europe,Western Europe,Brazil
+South Africa:Congo,East Africa,Madagascar
+Afghanistan:Middle East,Ukraine,Ural,China,India
+China:India,Afghanistan,Ural,Siberia,Mongolia,Siam
+India:Middle East,Afghanistan,China,Siam
+Irkutsk:Siberia,Yakutsk,Kamchatka,Mongolia
+Japan:Kamchatka,Mongolia
+Kamchatka:Japan,Mongolia,Irkutsk,Yakutsk,Alaska
+Middle East:East Africa,Egypt,Southern Europe,Ukraine,Afghanistan,India
+Mongolia:China,Siberia,Irkutsk,Kamchatka,Japan
+Siam:India,China,Indonesia
+Siberia:China,Ural,Yakutsk,Irkutsk,Mongolia
+Ural:Afghanistan,Ukraine,Siberia,China
+Yakutsk:Irkutsk,Siberia,Kamchatka
+Eastern Australia:New Guinea,Western Australia
+Indonesia:New Guinea,Western Australia,Siam
+New Guinea:Western Australia,Eastern Australia,Indonesia
+Western Australia:Eastern Australia,New Guinea,Indonesia
