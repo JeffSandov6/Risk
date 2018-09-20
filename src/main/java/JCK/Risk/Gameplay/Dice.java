@@ -3,6 +3,9 @@ import java.util.Random;
 
 public class Dice {
 	private int diceValue = 0;
+	public int getDiceValue() {
+		return diceValue;
+	}
 	public int roll() {
 		Random random = new Random();
 		diceValue = random.nextInt(6) + 1;

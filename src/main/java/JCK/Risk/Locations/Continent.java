@@ -29,5 +29,7 @@ public class Continent {
 		System.out.println();
 	}
 		
-	
+	public String getContinentName() {
+		return continentName;
+	}
 }
