@@ -4,9 +4,9 @@ import java.util.List;
 
 public class Territory {
 
-	private String territoryName;
+	public String territoryName;
 	private String ownedBy = "nobody";
-	private int numSoldiersHere = 0;
+	public int numSoldiersHere = 0;
 	private List<String> adjacencies;
 
 	/**
@@ -23,6 +23,10 @@ public class Territory {
 	 */
 	public String getOwner() {
 		return this.ownedBy;
+	}
+	
+	public void setOwner(String name) {
+		this.ownedBy = name;
 	}
 	/**
 	 * Helper method for returning the List of adjacencies
