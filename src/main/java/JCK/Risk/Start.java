@@ -7,6 +7,7 @@ import java.util.ArrayList;
 
 import JCK.Risk.Gameplay.Card;
 import JCK.Risk.Gameplay.Game;
+import JCK.Risk.Gameplay.Turns;
 import JCK.Risk.Locations.Continent;
 import JCK.Risk.Locations.Territory;
 import JCK.Risk.Players.Player;
@@ -37,6 +38,20 @@ public class Start {
 			continentArray.get(i).displayContinent();
 		}
 		cards.initializeCards();
+		
+		
+		Territory Siberia = continentArray.get(4).getTerritory("Siberia");
+		Territory India = continentArray.get(4).getTerritory("India");
+		
+		Siberia.numSoldiersHere = 12;
+		India.numSoldiersHere = 15;
+		
+		Siberia.setOwner("john");
+		India.setOwner("Jeff");
+		
+		Turns turns = new Turns();
+		
+		turns.beginBattle(Siberia, India);
 		
 	}
 

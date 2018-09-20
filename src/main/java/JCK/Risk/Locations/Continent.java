@@ -28,6 +28,13 @@ public class Continent {
 		}
 		System.out.println();
 	}
+	
+	public Territory getTerritory(String territoryName)
+	{
+		return listOfTerritories.get(territoryName);
+		
+		
+	}
 		
 	public String getContinentName() {
 		return continentName;
