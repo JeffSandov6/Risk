@@ -20,7 +20,7 @@ public class Territory {
 	}
 	/**
 	 * Helper method for getting who the owner is
-	 */
+	*/
 	public String getOwner() {
 		return this.ownedBy;
 	}
@@ -29,9 +29,21 @@ public class Territory {
 		this.ownedBy = name;
 	}
 	/**
+	 * Helper method for getting what the territory name is
+	*/
+	public String getTerritoryName() {
+		return this.territoryName;
+	}
+	/**
 	 * Helper method for returning the List of adjacencies
 	*/
 	public List<String> getAdjacencies() {
 		return adjacencies;
+	}
+	/**
+	 * Helper method for returning the number of soldiers at this territory
+	*/
+	public int getSoldierCount() {
+		return numSoldiersHere;
 	}
 }
