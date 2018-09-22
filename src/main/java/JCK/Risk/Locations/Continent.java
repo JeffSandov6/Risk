@@ -35,7 +35,11 @@ public class Continent {
 		
 		
 	}
-		
+	
+	public HashMap<String, Territory> getListOfTerritories() {
+		return listOfTerritories;
+	}
+	
 	public String getContinentName() {
 		return continentName;
 	}

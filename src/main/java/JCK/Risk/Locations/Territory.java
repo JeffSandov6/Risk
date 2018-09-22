@@ -46,4 +46,7 @@ public class Territory {
 	public int getSoldierCount() {
 		return numSoldiersHere;
 	}
+	public void addSoldiers(int numSoldiers) {
+		numSoldiersHere += numSoldiers;
+	}
 }

@@ -8,6 +8,7 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
 
@@ -143,10 +144,35 @@ public class Game {
 			System.out.println(e.getMessage());
 		}
 	}
-
-	private Object initializeTerritories(String territoryName) {
+	/*
+	* Initializes all the territories by giving each player in the player array a territory and assigning 1 soldier to each territory.
+	*/
+	public void initializeTerritories() {
 		// TODO Auto-generated method stub
-		return null;
+		/**
+		* I want to initialize all territories by giving each player in player array a turn to add pieces onto
+		* a territory that is unowned
+		*/
+		// first I want to iterate through the player array each iteration of while loop represents a turn
+		try {
+			int playerTurnCount = 0;
+			while (!areTerritoriesFilled()) {
+				displayWorld();
+				String userInput;
+				BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+				System.out.println(playersArray.get(playerTurnCount).getName() + ", enter a territory you'd like to control: ");
+				// keeps checking if the userinput is valid; if it is valid then ends the loop; otherwise keeps asking for a valid territory
+				while (!isEmptyTerritory(userInput = br.readLine())) {
+					 System.out.println(playersArray.get(playerTurnCount).getName() + ", enter a valid territory: ");
+				}
+				// assigns the territories if it passes the condition that it is a valid territory
+				assignTerritory(playersArray.get(playerTurnCount), userInput, 1);
+				playerTurnCount++;
+				playerTurnCount %= playersArray.size();
+			}
+		} catch (IOException e) {
+			System.out.println(e);
+		}
 	}
 
 
@@ -188,5 +214,62 @@ public class Game {
 			System.out.println(e.getMessage());
 		}
 		return adjacentTerritories;
+	}
+
+	/**
+	* Display all territories as well as their continents
+	*/
+	public void displayWorld() {
+		for (int i = 0; i < continentArray.size(); i++) {
+			continentArray.get(i).displayContinent();
+		}
+	}
+
+	/**
+	* Given a territoryName checks if the territory is valid for unit placement at the start of the game
+	*/
+	public boolean isEmptyTerritory(String territoryName) {
+		for (int i = 0; i < continentArray.size(); i++) {
+			if (continentArray.get(i).getTerritory(territoryName) != null) {
+				if (continentArray.get(i).getTerritory(territoryName).getOwner() == "nobody") {
+					return true;
+				} else {
+					return false;
+				}
+			}
+		}
+		return false;
+	}
+	/*
+	* Assigns territories the number of soldiers based on the player name :: should only be used for initialization
+	*/
+	public void assignTerritory(Player player, String territoryName, int numSoldiers) {
+		for (int i = 0; i < continentArray.size(); i++) {
+			if (continentArray.get(i).getTerritory(territoryName) != null) {
+				if (continentArray.get(i).getTerritory(territoryName).getOwner() == "nobody") {
+					Territory territory = continentArray.get(i).getTerritory(territoryName);
+					territory.setOwner(player.getName());
+					territory.addSoldiers(numSoldiers);
+					continentArray.get(i).getListOfTerritories().put(territoryName, territory);
+				} else {
+					System.out.println("Territory name: " + territoryName + " is invalid.");
+				}
+			}
+		}
+	}
+	/*
+	* Checks if all of the territories are taken by players.
+	*/
+	public boolean areTerritoriesFilled() {
+		for (int i = 0; i < continentArray.size(); i++) {
+			Continent continent = continentArray.get(i);
+			HashMap<String, Territory> listOfTerritories = continent.getListOfTerritories();
+			for (String territoryName : listOfTerritories.keySet()) {
+				if (listOfTerritories.get(territoryName).getOwner() == "nobody") {
+					return false;
+				}
+			}
+		}
+		return true;
 	}
 }
