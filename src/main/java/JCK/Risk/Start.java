@@ -38,7 +38,8 @@ public class Start {
 			continentArray.get(i).displayContinent();
 		}
 		cards.initializeCards();
-		
+		// initializes the territories at the start by assigning them to each player based on choice
+		startGame.initializeTerritories();
 		
 		Territory Siberia = continentArray.get(4).getTerritory("Siberia");
 		Territory India = continentArray.get(4).getTerritory("India");
