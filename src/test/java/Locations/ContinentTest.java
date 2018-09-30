@@ -8,7 +8,9 @@ public class ContinentTest {
 	@Test
 	public void createTest() {		
 		String testContinentName = "TestTerritory";
-		Continent continent = new Continent(testContinentName);
+		int testContinentValue = 5;
+		Continent continent = new Continent(testContinentName, testContinentValue);
 		Assert.assertEquals(testContinentName, continent.getContinentName());
+		Assert.assertEquals(testContinentValue, continent.getContinentValue());
 	}
 }

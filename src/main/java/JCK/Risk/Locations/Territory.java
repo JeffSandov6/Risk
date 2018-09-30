@@ -46,7 +46,13 @@ public class Territory {
 	public int getSoldierCount() {
 		return numSoldiersHere;
 	}
-	public void addSoldiers(int numSoldiers) {
+	/**
+	 * Adds to the number of soldiers
+	 * @param numSoldiers
+	 * @return
+	 */
+	public Territory addSoldiers(int numSoldiers) {
 		numSoldiersHere += numSoldiers;
+		return this;
 	}
 }

@@ -121,10 +121,13 @@ public class Game {
 			String line;
 			// begins reading the file
 			while ((line = br.readLine()) != null) {
-				int indexOfContinent = line.indexOf(':');
+				int indexOfContinent = line.indexOf('-');
 				String continentName = line.substring(0, indexOfContinent);
-				Continent newContinent = new Continent(continentName);
 				line = line.substring(indexOfContinent+1);
+				int indexOfContinentValue = line.indexOf(':');
+				int continentValue = Integer.parseInt(line.substring(0, indexOfContinentValue));
+				Continent newContinent = new Continent(continentName, continentValue);
+				line = line.substring(indexOfContinentValue+1);
 				int indexOfComma = line.indexOf(',');
 				
 				while (indexOfComma != -1) {
@@ -167,6 +170,7 @@ public class Game {
 				}
 				// assigns the territories if it passes the condition that it is a valid territory
 				assignTerritory(playersArray.get(playerTurnCount), userInput, 1);
+				playersArray.get(playerTurnCount).addTerritoryOwned(userInput);
 				playerTurnCount++;
 				playerTurnCount %= playersArray.size();
 			}

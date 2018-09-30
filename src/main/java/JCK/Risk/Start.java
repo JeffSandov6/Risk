@@ -40,7 +40,7 @@ public class Start {
 		cards.initializeCards();
 		// initializes the territories at the start by assigning them to each player based on choice
 		startGame.initializeTerritories();
-		
+		/*
 		Territory Siberia = continentArray.get(4).getTerritory("Siberia");
 		Territory India = continentArray.get(4).getTerritory("India");
 		
@@ -49,10 +49,10 @@ public class Start {
 		
 		Siberia.setOwner("john");
 		India.setOwner("Jeff");
+		*/
+		Turns turns = new Turns(startGame);
 		
-		Turns turns = new Turns();
-		
-		turns.beginBattle(Siberia, India);
+		//turns.beginBattle(Siberia, India);
 		
 	}
 
