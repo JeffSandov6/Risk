@@ -30,12 +30,6 @@ public class Game {
 	{
 		
 		this.numberOfPlayers = numPlayers;
-		
-		
-
-		//XXX this is what we're gonna use for the die values
-		//Random die1 = new Random(numPlayers);
-		//System.out.println(die1.nextInt(6));
 
 		Random randNumber = new Random();
 		
@@ -74,14 +68,13 @@ public class Game {
 		
 		
 		
-		System.out.println("The following is turn order:");
+		System.out.println("The following is the turn order:");
 		
-		//TODO do we need to set the roll value like below?
 		for(int i = 0; i < playersArray.size(); i++)
 		{
-			playersArray.get(i).rollValue = i + 1; //sets the roll value if we need to set it
+			//TODO: WE CAN REMOVE THE ROLL VALUE ATTRIBUTE FROM THE PLAYER ARRAY
+			//playersArray.get(i).rollValue = i + 1; //sets the roll value if we need to set it
 			
-			//but as of now a circular array type of setting for turns is enough
 			System.out.println((i + 1) + ". " + playersArray.get(i).name);
 			
 		}
@@ -102,9 +95,7 @@ public class Game {
 	
 	public static Comparator<Player> COMPARE_BY_VALUE = new Comparator<Player>() {
 		public int compare(Player one, Player other) {
-			
-			
-			
+
 			return one.turnValue.compareTo(other.turnValue);
 		}
 		
@@ -147,36 +138,43 @@ public class Game {
 			System.out.println(e.getMessage());
 		}
 	}
+	
+	
+	
 	/*
 	* Initializes all the territories by giving each player in the player array a territory and assigning 1 soldier to each territory.
 	*/
-	public void initializeTerritories() {
-		// TODO Auto-generated method stub
+	public void chooseInitialTerritories() throws IOException {
 		/**
-		* I want to initialize all territories by giving each player in player array a turn to add pieces onto
-		* a territory that is unowned
-		*/
+		 * I want to initialize all territories by giving each player in player array a turn to add pieces onto
+		 * a territory that is unowned
+		 */
 		// first I want to iterate through the player array each iteration of while loop represents a turn
-		try {
-			int playerTurnCount = 0;
-			while (!areTerritoriesFilled()) {
-				displayWorld();
-				String userInput;
-				BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-				System.out.println(playersArray.get(playerTurnCount).getName() + ", enter a territory you'd like to control: ");
-				// keeps checking if the userinput is valid; if it is valid then ends the loop; otherwise keeps asking for a valid territory
-				while (!isEmptyTerritory(userInput = br.readLine())) {
-					 System.out.println(playersArray.get(playerTurnCount).getName() + ", enter a valid territory: ");
-				}
-				// assigns the territories if it passes the condition that it is a valid territory
-				assignTerritory(playersArray.get(playerTurnCount), userInput, 1);
-				playersArray.get(playerTurnCount).addTerritoryOwned(userInput);
-				playerTurnCount++;
-				playerTurnCount %= playersArray.size();
+		int playerTurnCount = 0;
+		
+		while (!areTerritoriesFilled()) {
+			displayWorld();
+			String userInput;
+			BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+			System.out.println(playersArray.get(playerTurnCount).getName() + ", enter a territory you'd like to control: ");
+
+			// keeps checking if the userinput is valid; if it is valid then ends the loop; otherwise keeps asking for a valid territory
+			while (!isEmptyTerritory(userInput = br.readLine())) {
+				System.out.println(playersArray.get(playerTurnCount).getName() + ", enter a valid territory: ");
 			}
-		} catch (IOException e) {
-			System.out.println(e);
+			// assigns the territories if it passes the condition that it is a valid territory
+			assignTerritory(playersArray.get(playerTurnCount), userInput, 1);
+			playersArray.get(playerTurnCount).addTerritoryOwned(userInput);
+			playerTurnCount++;
+			playerTurnCount %= playersArray.size();
 		}
+
+		
+		//AFTER HERE, WE STILL USE THE SAME PLAYERTURNCOUNT VARIABLE
+		
+		//TODO: AFTER WE RUN OUT OF TERRITORIES, WE START TO 
+		//REINFORCE MORE UNITS TO ALREADY OWNED TERRITORIES
+
 	}
 
 

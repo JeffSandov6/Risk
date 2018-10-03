@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Collections;
 
 import JCK.Risk.Gameplay.Card;
 import JCK.Risk.Gameplay.Game;
@@ -15,6 +16,48 @@ import JCK.Risk.Players.Player;
 public class Start {
 
 	public static void main(String[] args) throws IOException {
+		
+		
+//		Player player = new Player();
+//		player.name = "Jeff";
+//		
+//		ArrayList<String> cards1 = new ArrayList<String>();
+//		
+//		cards1.add("a");
+//		cards1.add("b");
+//		cards1.add("c");
+//		cards1.add("a");
+//
+//
+//		
+//		player.listOfCards = cards1;
+//		
+//		Collections.sort(cards1);
+		
+		Card tempCard = new Card();
+
+		
+//		int newUnits = tempCard.checkCards(player);
+//		
+//		System.out.println(cards1);
+//		
+//		System.out.println(player.listOfCards);
+
+		
+		int temp = 1;
+		
+		while(temp < 10)
+		{
+			System.out.print("On set " + temp + " you gain ");
+			System.out.println(tempCard.getNextSetValue() + "units ");
+			tempCard.setsTurnedIn++;
+			
+			temp++;
+		}
+		
+		
+		
+		
 		
 		
 		
@@ -31,15 +74,18 @@ public class Start {
 		// initialize the players as well as continents
 		startGame.initializeGame(numPlayers);
 		startGame.initializeContinents();
+		
 		ArrayList<Player> playersArray = startGame.getPlayersArray();
 		ArrayList<Continent> continentArray = startGame.getContinentArray();
+		
 		System.out.println();
-		for (int i = 0; i < continentArray.size(); i++) {
-			continentArray.get(i).displayContinent();
-		}
+		
 		cards.initializeCards();
+		
 		// initializes the territories at the start by assigning them to each player based on choice
-		startGame.initializeTerritories();
+		startGame.chooseInitialTerritories();
+		
+		
 		/*
 		Territory Siberia = continentArray.get(4).getTerritory("Siberia");
 		Territory India = continentArray.get(4).getTerritory("India");
