@@ -42,11 +42,12 @@ public class Turns {
 			
 
 			System.out.println("\nBATTLE PHASE");
-
+			
 			
 			playerTurnCount++;
 			playerTurnCount %= game.getPlayersArray().size();
 			
+			additionalUnits = 0;
 			System.out.println("END OF TURN\n\n");
 		}
 	}
@@ -165,13 +166,74 @@ public class Turns {
 	
 	
 	
-	public void attackingPhaseFor(Player player)
+	
+	
+	
+	
+	public void attackingPhaseFor(Player player, List<Continent> continentArray) throws IOException
 	{
-		System.out.println("");
+		getPlayerTerrsAndAdjacencies(player, continentArray);
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		
+		System.out.println("Do you want to make an attack, yes or no?");
+		String option = br.readLine().toLowerCase();
+		
+		while(Objects.equals("yes", option))
+		{
+			System.out.println("Okay, type in the name of the territory you want to attack from");
+			String attackingTerr = br.readLine();
+
+			
+			while (!playerOwnsTerritory(attackingTerr, player, continentArray)) {
+				System.out.println("Please enter a territory you own: ");
+				attackingTerr = br.readLine();
+				
+				
+				
+			}
+			
+
+			
+			
+			
+			System.out.println("Do you want to make another attack, yes or no?");
+			option = br.readLine().toLowerCase();
+		}
+
+		System.out.println("Okay, the attack phase is over");
+		
+	}
+	
+		
+	
+	
+	public void getPlayerTerrsAndAdjacencies(Player player, List<Continent> continentArray)
+	{
+		System.out.println("THESE ARE THE TERRITORIES YOU OWN");
+		for(int i = 0; i < player.getTerritoriesOwned().size(); i++)
+		{
+			String terrName = player.getTerritoriesOwned().get(i);
+			System.out.print(i + ". " + terrName);
+			for(int j = 0; j < continentArray.size(); j++)
+			{
+				Territory currTerritory = continentArray.get(j).getTerritory(terrName);
+				
+				if(currTerritory != null)
+				{
+					System.out.println(", the number of soldiers here are " + currTerritory.getSoldierCount());
+					System.out.println("These are the territories you can attack from here:");
+					System.out.println(currTerritory.getAdjacencies());
+					System.out.println();
+					
+					break;
+				}
+			}
+		}
 		
 		
 		
 	}
+	
 	
 	
 	public void beginBattle(Territory defendingTerr, Territory attackingTerr)
