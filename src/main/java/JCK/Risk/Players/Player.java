@@ -2,18 +2,33 @@ package JCK.Risk.Players;
 
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Collections;
 
 
 public class Player {
 	
 	public String name;
-	public int rollValue;
 	public Integer turnValue;
-	private int soldiersToPlace = 0;
+	
+	//TODO: I DONT THINK WE NEED THIS
+	//public int rollValue;
+	//private int soldiersToPlace = 0;
+	
 	private List<String> listOfTerritoriesOwned;
 	private List<String> continentsOwned;
-	ArrayList<Integer> listOfCards = new ArrayList<Integer>();
+	public ArrayList<String> listOfCards = new ArrayList<String>();
 	
+	
+	public void addCardToList(String cardType)
+	{
+		listOfCards.add(cardType);
+		Collections.sort(listOfCards);
+	}
+	
+	public ArrayList<String> getListOfCards() {
+		return listOfCards;
+	}
+
 	public List<String> getTerritoriesOwned() {
 		return listOfTerritoriesOwned;
 	}
@@ -26,13 +41,14 @@ public class Player {
 		listOfTerritoriesOwned.remove(territory);
 	}
 
-	public int getSoldiersToPlace() {
-		return soldiersToPlace;
-	}
-
-	public void setSoldiersToPlace(int soldiersToPlace) {
-		this.soldiersToPlace = soldiersToPlace;
-	}
+	//TODO: I DONT THINK WE NEED THIS
+//	public int getSoldiersToPlace() {
+//		return soldiersToPlace;
+//	}
+//
+//	public void setSoldiersToPlace(int soldiersToPlace) {
+//		this.soldiersToPlace = soldiersToPlace;
+//	}
 
 	public String getName() {
 		return name;

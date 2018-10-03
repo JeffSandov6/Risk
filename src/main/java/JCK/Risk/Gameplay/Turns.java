@@ -8,52 +8,110 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Objects;
 
 import JCK.Risk.Locations.Continent;
 import JCK.Risk.Locations.Territory;
 import JCK.Risk.Players.Player;
 
 public class Turns {
-	public Turns(Game game) {
+	
+	Card cards = new Card();
+	
+	public Turns(Game game) throws IOException {
 		int playerTurnCount = 0;
-		while (game.getPlayersArray().size() != 1) {
+		System.out.println("initialized the turns");
+		
+		while (game.getPlayersArray().size() != 1) { //
 			Player player = game.getPlayersArray().get(playerTurnCount);
-			System.out.println(playerTurnCount);
-			System.out.println(player.getName());
-			getNewSoldiers(player, game.getContinentArray());
-			placeNewSoldiers(game, player);
+			//System.out.println(playerTurnCount);
+			//System.out.println(player.getName());
+			
+			System.out.println("It is " + player.getName() + "'s turn.");
+			
+			System.out.println("CARD PHASE");
+			System.out.println("The next set turned in will grant " + cards.getNextSetValue() + "additional units");
+			int additionalUnits = cards.checkCards(player);
+			
+			
+			System.out.println("\nPLACE  NEW ARMIES PHASE");
+			additionalUnits+= getExtraArmiesForContinentsOwned(player, game.getContinentArray());
+			additionalUnits+= getExtraArmiesForTerrsOwned(player);
+			
+			placeNewSoldiers(game, player, additionalUnits);
+			
+
+			System.out.println("\nBATTLE PHASE");
+
+			
 			playerTurnCount++;
 			playerTurnCount %= game.getPlayersArray().size();
+			
+			System.out.println("END OF TURN\n\n");
 		}
 	}
 	
-	/**
-	 * Method used to get the amount of soldiers that the player gets every turns based on
-	 * the amount of territories and continents the player owns
-	 * @param player
-	 * @param continentArray
-	 */
-	public void getNewSoldiers(Player player, List<Continent> continentArray) {
-		player.setSoldiersToPlace(player.getSoldiersToPlace() + (int) player.getTerritoriesOwned().size()/3);
-		for (int i = 0; i < continentArray.size(); i++) {
-			if (continentArray.get(i).playerOwnsContinent(player)) {
-				player.setSoldiersToPlace(player.getSoldiersToPlace() + continentArray.get(i).getContinentValue());
+
+	//TODO: I DON'T THINK WE NEED THIS
+//	
+//	/**
+//	 * Method used to get the amount of soldiers that the player gets every turns based on
+//	 * the amount of territories and continents the player owns
+//	 * @param player
+//	 * @param continentArray
+//	 */
+//	public void getNewSoldiers(Player player, List<Continent> continentArray) {
+//		player.setSoldiersToPlace(player.getSoldiersToPlace() + (int) player.getTerritoriesOwned().size()/3);
+//		for (int i = 0; i < continentArray.size(); i++) {
+//			if (continentArray.get(i).playerOwnsContinent(player)) {
+//				player.setSoldiersToPlace(player.getSoldiersToPlace() + continentArray.get(i).getContinentValue());
+//			}
+//		}
+//	}
+	
+	
+	public int getExtraArmiesForContinentsOwned(Player player, List<Continent> continentArray)
+	{
+		int additionalUnits = 0;
+		for(int i = 0; i < continentArray.size(); i++)
+		{
+			if (continentArray.get(i).playerOwnsContinent(player)) //if he owns it
+			{
+				additionalUnits = additionalUnits + continentArray.get(i).getContinentValue();
 			}
 		}
+		return additionalUnits;
 	}
+	
+	
+	public int getExtraArmiesForTerrsOwned(Player player)
+	{
+		
+		if(player.getTerritoriesOwned().size() <= 11)
+		{
+			return 3;
+		}
+		
+		int additionalUnits = player.getTerritoriesOwned().size() / 3;
+		
+		return additionalUnits;
+	}
+	
+	
 	/**
 	 * Places the soldiers that the player has onto territories that the player owns
 	 * @param game
 	 * @param player
 	 */
-	public void placeNewSoldiers(Game game, Player player) {
+	public void placeNewSoldiers(Game game, Player player, int numUnitsAvailable) {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		List<Continent> continentArray = game.getContinentArray();
-		while (player.getSoldiersToPlace() > 0) {
+		
+		while (numUnitsAvailable > 0) {
 			try {
 				// asks the user which territory to place soldier onto
 				game.displayWorld();
-				System.out.println(player.getName() + ", you have " + player.getSoldiersToPlace() + " soldiers to place. Choose a territory you own to place: ");
+				System.out.println(player.getName() + ", you have " + numUnitsAvailable + " soldiers to place. Choose a territory you own to place: ");
 				String userInput = br.readLine();
 				while (!playerOwnsTerritory(userInput, player, continentArray)) {
 					System.out.println("Please enter a territory you own: ");
@@ -63,7 +121,7 @@ public class Turns {
 				// asks the user how many soldier to place on the territory defined in the variable userInput
 				System.out.println("How many soldier do you want to place on " + userInput + "?");
 				int soldiersToPlace = Integer.parseInt(br.readLine());
-				while (soldiersToPlace > player.getSoldiersToPlace() || soldiersToPlace < 0) {
+				while (soldiersToPlace > numUnitsAvailable || soldiersToPlace < 0) {
 					System.out.println("Enter an amount less than or equal to the amount you have to place.");
 					soldiersToPlace = Integer.parseInt(br.readLine());
 				}
@@ -75,17 +133,17 @@ public class Turns {
 						listOfTerritories.put(userInput, listOfTerritories.get(userInput).addSoldiers(soldiersToPlace));
 					}
 				}
-				
 				// subtracts the number of soldiers the player can place by the number of soldiers just placed
-				player.setSoldiersToPlace(player.getSoldiersToPlace() - soldiersToPlace);
+				numUnitsAvailable = numUnitsAvailable - soldiersToPlace;
 			} catch (IOException e) {
 				System.out.println("You have entered an invalid input. Please try again.");
 			}
 		}
 	}
 	
+	
 	/**
-	 * Checks if the player owns all of the territories in the continen
+	 * Checks if the player owns all the territory
 	 * @param userInput
 	 * @param player
 	 * @param game
@@ -101,6 +159,20 @@ public class Turns {
 		}
 		return false;
 	}
+	
+	
+	
+	
+	
+	
+	public void attackingPhaseFor(Player player)
+	{
+		System.out.println("");
+		
+		
+		
+	}
+	
 	
 	public void beginBattle(Territory defendingTerr, Territory attackingTerr)
 	{
@@ -120,9 +192,7 @@ public class Turns {
 			
 			System.out.println(defenderName + " your rolls are "); 
 			Integer[] defenderRolls = this.getRollsSorted(defendingSoldiers);
-			
-			//TODO: battle sequence
-			
+						
 			int i = 0;
 			
 			System.out.println("The results are:");
