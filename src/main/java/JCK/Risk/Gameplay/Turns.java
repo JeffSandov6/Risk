@@ -9,6 +9,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
+import java.util.Stack;
 
 import JCK.Risk.Locations.Continent;
 import JCK.Risk.Locations.Territory;
@@ -23,8 +24,11 @@ public class Turns {
 		System.out.println("initialized the turns");
 		
 		while (game.getPlayersArray().size() != 1) { //
-			Player player = game.getPlayersArray().get(playerTurnCount);
+			//Game pastGame = new Game(game);
+			Undo undo = new Undo(game.playersArray, game.continentArray);
 
+			Player player = game.getPlayersArray().get(playerTurnCount);
+			
 			System.out.println("It is " + player.getName() + "'s turn.");
 			
 			System.out.println("CARD PHASE");
@@ -57,16 +61,47 @@ public class Turns {
 			System.out.println("\nFORTIFY PHASE");
 			fortifyTerritory(player, game.getContinentArray());
 			
-			
+			// if the player chooses to undo their turn -- returns to the beginning of the loop without
+			// finishing loop
+			if (undoTurn(game, undo)) {
+				continue;
+			}
 			playerTurnCount++;
 			playerTurnCount %= game.getPlayersArray().size();
-			
+
+
 			additionalUnits = 0;
 			System.out.println("END OF TURN\n\n");
 		}
 	}
 	
-	
+	public boolean undoTurn(Game game, Undo undo) {
+		System.out.println("\nWould you like to undo the last turn? Yes or no?");
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		try {
+			String userInput = br.readLine();
+			userInput = userInput.toLowerCase();
+			if (userInput.equals("yes")) {
+				if (undo != null) {
+					System.out.println("Undoing to the beginning of your turn.");
+					
+					//sets the continent array and players array to the previous state
+					game.continentArray = (ArrayList<Continent>) undo.getPastContinent();
+					game.playersArray = (ArrayList<Player>) undo.getPastPlayers();
+					
+					return true;
+				} else {
+					System.out.println("Cannot undo any turns because no turns have occurred.");
+					return false;
+				}
+			}
+		} catch (IOException e) {
+			System.out.println("Invalid input");
+		}
+		
+		return false;
+
+	}
 	
 	public void fortifyTerritory(Player player, ArrayList<Continent> continentArray) throws IOException
 	{

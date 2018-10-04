@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Stack;
 
 import JCK.Risk.Gameplay.Card;
 import JCK.Risk.Gameplay.Game;
@@ -60,7 +61,6 @@ public class Start {
 		
 		
 		
-		
 		System.out.println("Hello, and welcome to Risk!");
 		System.out.println("How many players will be playing today?");
 		
@@ -84,7 +84,6 @@ public class Start {
 		
 		// initializes the territories at the start by assigning them to each player based on choice
 		startGame.chooseInitialTerritories();
-		
 		
 		/*
 		Territory Siberia = continentArray.get(4).getTerritory("Siberia");
