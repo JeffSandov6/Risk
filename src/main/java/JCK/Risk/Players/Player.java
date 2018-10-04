@@ -11,11 +11,11 @@ public class Player {
 	public Integer turnValue;
 	
 	//TODO: I DONT THINK WE NEED THIS
-	//public int rollValue;
+	public int rollValue;
 	//private int soldiersToPlace = 0;
 	
 	private List<String> listOfTerritoriesOwned;
-	private List<String> continentsOwned;
+	private List<String> continentsOwned;    //TODO: NOT NEEDED
 	public ArrayList<String> listOfCards = new ArrayList<String>();
 	
 	
@@ -66,6 +66,7 @@ public class Player {
 		this.turnValue = turnValue;
 	}
 
+	//TODO: this array is never used, we can remove below 2 functions
 	public List<String> getContinentsOwned() {
 		return continentsOwned;
 	}
