@@ -3,8 +3,10 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import JCK.Risk.Locations.Continent;
+import JCK.Risk.Players.Player;
 
 public class ContinentTest {
+
 	@Test
 	public void createTest() {		
 		String testContinentName = "TestTerritory";

@@ -82,6 +82,7 @@ public class Player {
 		this.name = playerName;
 		this.turnValue = turnRollValue;
 		listOfTerritoriesOwned = new ArrayList<String>();
+		continentsOwned = new ArrayList<String>();
 		
 	}
 }
