@@ -18,13 +18,14 @@ public class Continent {
 		this.continentValue = continentValue;
 	}
 	
+	/**
+	 * Used for deep copying the continents for the undo feature
+	 * @param continentToCopy
+	 */
 	public Continent(Continent continentToCopy) {
 		this.continentName = continentToCopy.continentName;
 		this.continentValue = continentToCopy.continentValue;
 		this.listOfTerritories = new HashMap<String, Territory>();
-		/*for (String key : continentToCopy.listOfTerritories.keySet()) {
-			this.listOfTerritories.put(key, (continentToCopy.listOfTerritories.get(key)));
-		}*/
 	}
 	
 	/*

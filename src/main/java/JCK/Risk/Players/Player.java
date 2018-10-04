@@ -30,12 +30,11 @@ public class Player {
 		for (int i = 0; i < playerToCopy.listOfTerritoriesOwned.size(); i++) {
 			this.listOfTerritoriesOwned.add(playerToCopy.listOfTerritoriesOwned.get(i));
 		}
-		//this.listOfTerritoriesOwned = playerToCopy.listOfTerritoriesOwned;
-		//this.continentsOwned = playerToCopy.continentsOwned;
+
 		for (int i = 0; i < playerToCopy.continentsOwned.size(); i++) {
 			this.continentsOwned.add(playerToCopy.continentsOwned.get(i));
 		}
-		//this.listOfCards = playerToCopy.listOfCards;
+
 		for (int i = 0; i < playerToCopy.listOfCards.size(); i++) {
 			this.listOfCards.add(playerToCopy.listOfCards.get(i));
 		}
@@ -62,15 +61,6 @@ public class Player {
 	public void removeTerritoryOwned(String territory) {
 		listOfTerritoriesOwned.remove(territory);
 	}
-
-	//TODO: I DONT THINK WE NEED THIS
-//	public int getSoldiersToPlace() {
-//		return soldiersToPlace;
-//	}
-//
-//	public void setSoldiersToPlace(int soldiersToPlace) {
-//		this.soldiersToPlace = soldiersToPlace;
-//	}
 
 	public String getName() {
 		return name;
