@@ -116,17 +116,6 @@ public class Turns {
 	}
 	
 	
-	
-	public void moveUnits(Territory donatingTerr, Territory receivingTerr)
-	{
-		
-		
-		
-		
-	}
-	
-	
-	
 	//if a player to the left side of array is eliminated, it affects out player
 	//turn count formula
 	public int numLeftSidePlayersEliminated(Game game, Player currentPlayersTurn)

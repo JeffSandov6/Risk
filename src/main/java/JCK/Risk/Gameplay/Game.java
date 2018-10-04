@@ -22,8 +22,8 @@ public class Game {
 	
 	//this is the array list that will be used for the turns
 	//TODO: this should be in the class of turns
-	ArrayList<Player> playersArray = new ArrayList<Player>();
-	ArrayList<Continent> continentArray = new ArrayList<Continent>();
+	public ArrayList<Player> playersArray = new ArrayList<Player>();
+	public ArrayList<Continent> continentArray = new ArrayList<Continent>();
 
 	
 	public void initializeGame(int numPlayers) throws IOException 

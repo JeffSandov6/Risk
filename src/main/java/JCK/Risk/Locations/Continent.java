@@ -68,27 +68,5 @@ public class Continent {
 		return true;
 	}
 	
-	
-	
-	public int getUnitsIfOwned()
-	{
-		switch(this.continentName)
-		{
-		case "Asia":
-			return 7;
-		case "North America":
-			return 5;
-		case "Europe":
-			return 5;
-		case "Africa":
-			return 3;
-		default:
-			return 2; //south america or australia
-		
-		}
-	}
-	
-	
-	
-	
+
 }
