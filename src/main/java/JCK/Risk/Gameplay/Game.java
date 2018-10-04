@@ -10,6 +10,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Stack;
 import java.util.Random;
 
 import JCK.Risk.Locations.Continent;
@@ -24,7 +25,21 @@ public class Game {
 	//TODO: this should be in the class of turns
 	public ArrayList<Player> playersArray = new ArrayList<Player>();
 	public ArrayList<Continent> continentArray = new ArrayList<Continent>();
-
+	
+	public Game() {
+		numberOfPlayers = 0;
+	}
+	
+	public Game(Game gameToCopy) {
+		//this.playersArray = gameToCopy.playersArray;
+		for (int i = 0; i < gameToCopy.playersArray.size(); i++) {
+			this.playersArray.add(new Player(gameToCopy.playersArray.get(i)));
+		}
+		//this.continentArray = gameToCopy.continentArray;
+		for (int i = 0; i < gameToCopy.continentArray.size(); i++) {
+			this.continentArray.add(new Continent(gameToCopy.continentArray.get(i)));
+		}
+	}
 	
 	public void initializeGame(int numPlayers) throws IOException 
 	{
@@ -84,8 +99,16 @@ public class Game {
 		return this.playersArray;
 	}
 	
+	public void setPlayersArray(ArrayList<Player> playersArray) {
+		this.playersArray = playersArray;
+	}
+	
 	public ArrayList<Continent> getContinentArray() {
 		return this.continentArray;
+	}
+	
+	public void setContinentArray(ArrayList<Continent> continentArray) {
+		this.continentArray = continentArray;
 	}
 	
 	public static Comparator<Player> COMPARE_BY_VALUE = new Comparator<Player>() {

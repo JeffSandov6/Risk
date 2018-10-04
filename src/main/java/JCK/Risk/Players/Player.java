@@ -17,7 +17,28 @@ public class Player {
 	private List<String> listOfTerritoriesOwned;
 	private List<String> continentsOwned;    //TODO: NOT NEEDED
 	public ArrayList<String> listOfCards = new ArrayList<String>();
+	public Player() {
+		
+	}
 	
+	public Player(Player playerToCopy) {
+		this.name = playerToCopy.name;
+		this.turnValue = playerToCopy.turnValue;
+		this.rollValue = playerToCopy.rollValue;
+		this.listOfTerritoriesOwned = new ArrayList<String>();
+		this.continentsOwned = new ArrayList<String>();
+		for (int i = 0; i < playerToCopy.listOfTerritoriesOwned.size(); i++) {
+			this.listOfTerritoriesOwned.add(playerToCopy.listOfTerritoriesOwned.get(i));
+		}
+
+		for (int i = 0; i < playerToCopy.continentsOwned.size(); i++) {
+			this.continentsOwned.add(playerToCopy.continentsOwned.get(i));
+		}
+
+		for (int i = 0; i < playerToCopy.listOfCards.size(); i++) {
+			this.listOfCards.add(playerToCopy.listOfCards.get(i));
+		}
+	}
 	
 	public void addCardToList(String cardType)
 	{
@@ -40,15 +61,6 @@ public class Player {
 	public void removeTerritoryOwned(String territory) {
 		listOfTerritoriesOwned.remove(territory);
 	}
-
-	//TODO: I DONT THINK WE NEED THIS
-//	public int getSoldiersToPlace() {
-//		return soldiersToPlace;
-//	}
-//
-//	public void setSoldiersToPlace(int soldiersToPlace) {
-//		this.soldiersToPlace = soldiersToPlace;
-//	}
 
 	public String getName() {
 		return name;

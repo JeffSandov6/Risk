@@ -1,5 +1,6 @@
 package JCK.Risk.Locations;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Territory {
@@ -18,6 +19,18 @@ public class Territory {
 		this.territoryName = territoryName;
 		this.adjacencies = adjacencies;
 	}
+	
+	public Territory(Territory territoryToCopy) {
+		this.territoryName = territoryToCopy.territoryName;
+		this.ownedBy = territoryToCopy.ownedBy;
+		this.numSoldiersHere = territoryToCopy.numSoldiersHere;
+		adjacencies = new ArrayList<String>();
+		for (int i = 0; i < territoryToCopy.adjacencies.size(); i++) {
+			this.adjacencies.add(territoryToCopy.adjacencies.get(i));
+		}
+		
+	}
+	
 	/**
 	 * Helper method for getting who the owner is
 	*/
