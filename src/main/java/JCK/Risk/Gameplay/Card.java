@@ -262,8 +262,7 @@ public class Card {
 	
 	public ArrayList<String> turnInDiffCards(ArrayList<String> cardList)
 	{
-		int diffCardPosition[] = new int[3]; // = new ArrayList<Integer>();
-		//diffCardPositions.add(0);
+		int diffCardPosition[] = new int[3];
 		diffCardPosition[0] = 0;
 		
 		String firstCard = cardList.get(0);
@@ -291,8 +290,6 @@ public class Card {
 			else
 			{
 				diffCardPosition[2] = i;
-
-				//diffCardPositions.add(i);
 				break;
 			}
 			
