@@ -24,9 +24,7 @@ public class Turns {
 		
 		while (game.getPlayersArray().size() != 1) { //
 			Player player = game.getPlayersArray().get(playerTurnCount);
-			//System.out.println(playerTurnCount);
-			//System.out.println(player.getName());
-			
+
 			System.out.println("It is " + player.getName() + "'s turn.");
 			
 			System.out.println("CARD PHASE");
@@ -42,6 +40,22 @@ public class Turns {
 			
 
 			System.out.println("\nBATTLE PHASE");
+			boolean playerWonABattle = attackingPhaseFor(player, game.getContinentArray(), game);
+
+			playerTurnCount = playerTurnCount + numLeftSidePlayersEliminated(game, player);
+			
+			if(playerWonABattle == true)
+			{
+				String cardWon = cards.getCard();
+				System.out.println("For winning at least 1 battle, you win card of type " + cardWon);
+				player.addCardToList(cardWon);
+				
+			}
+			
+			
+			
+			System.out.println("\nFORTIFY PHASE");
+			fortifyTerritory(player, game.getContinentArray());
 			
 			
 			playerTurnCount++;
@@ -52,26 +66,97 @@ public class Turns {
 		}
 	}
 	
+	
+	
+	public void fortifyTerritory(Player player, ArrayList<Continent> continentArray) throws IOException
+	{
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		System.out.println("You may choose to move units from 1 owned territory to another, type yes if you want to");
+		String userInput = br.readLine().toLowerCase();
+		
+		if(Objects.equals(userInput, "yes") == false)
+		{
+			System.out.println("Okay, we have reached the end of the fortify phase");
+			return;
+		}
+		
+		displayPlayerTerrs(player, continentArray, "fortify");
+		
+		
+		System.out.println("\nEnter the territory you want to move units from"
+				+ " (has to have more than 1 unit, else we skip this phase)");
+		userInput = br.readLine();
+		while (!playerOwnsTerritory(userInput, player, continentArray)) {
+			System.out.println("Please enter a territory you own: ");
+			userInput = br.readLine();
+		}
+		
+		Territory donatingTerr = getTerritoryObject(userInput, continentArray);
+		
+		if(donatingTerr.getSoldierCount() < 2)
+		{
+			System.out.print("There's only 1 unit here, we are skipping this phase");
+			return;
+		}
+		
+		
+		System.out.println("\nChoose the territory you want to move units to");
+		String newInput = br.readLine();
+		while (!playerOwnsTerritory(newInput, player, continentArray) || ( Objects.equals(newInput, userInput) == true )) {
+			System.out.println("Please enter a territory you own: ");
+			newInput = br.readLine();
+		}
+		
+		Territory receivingTerr = getTerritoryObject(newInput, continentArray);
+		
+		migrateUnitsFromOldToNewTerritory(donatingTerr, receivingTerr);
+		
+		System.out.println("We have reached the end of the fortify phase");
 
-	//TODO: I DON'T THINK WE NEED THIS
-//	
-//	/**
-//	 * Method used to get the amount of soldiers that the player gets every turns based on
-//	 * the amount of territories and continents the player owns
-//	 * @param player
-//	 * @param continentArray
-//	 */
-//	public void getNewSoldiers(Player player, List<Continent> continentArray) {
-//		player.setSoldiersToPlace(player.getSoldiersToPlace() + (int) player.getTerritoriesOwned().size()/3);
-//		for (int i = 0; i < continentArray.size(); i++) {
-//			if (continentArray.get(i).playerOwnsContinent(player)) {
-//				player.setSoldiersToPlace(player.getSoldiersToPlace() + continentArray.get(i).getContinentValue());
-//			}
-//		}
-//	}
+	}
 	
 	
-	public int getExtraArmiesForContinentsOwned(Player player, List<Continent> continentArray)
+	
+	public void moveUnits(Territory donatingTerr, Territory receivingTerr)
+	{
+		
+		
+		
+		
+	}
+	
+	
+	
+	//if a player to the left side of array is eliminated, it affects out player
+	//turn count formula
+	public int numLeftSidePlayersEliminated(Game game, Player currentPlayersTurn)
+	{
+		ArrayList<Player> playersArray = game.getPlayersArray();
+		int leftSideEliminated = 0;
+		
+		for(int i = 0; i < playersArray.size(); i++)
+		{
+			Player thisPlayer = playersArray.get(i);
+			
+			if(thisPlayer.getTerritoriesOwned().size() == 0)
+			{
+				if(thisPlayer.rollValue < currentPlayersTurn.rollValue) //if hes to the left of winning player
+				{
+					leftSideEliminated++;
+				}
+				System.out.println(thisPlayer.getName() + " has no more territories and has thus been eliminated");
+				game.getPlayersArray().remove(i);
+				
+				//TODO: TRANSFER OVER THE CARDS TO THE WINNER PLAYER WHO ELIMINATED THEM
+			}
+		}
+		
+		
+		
+		return leftSideEliminated;
+	}
+	
+	public int getExtraArmiesForContinentsOwned(Player player, ArrayList<Continent> continentArray)
 	{
 		int additionalUnits = 0;
 		for(int i = 0; i < continentArray.size(); i++)
@@ -106,7 +191,7 @@ public class Turns {
 	 */
 	public void placeNewSoldiers(Game game, Player player, int numUnitsAvailable) {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-		List<Continent> continentArray = game.getContinentArray();
+		ArrayList<Continent> continentArray = game.getContinentArray();
 		
 		while (numUnitsAvailable > 0) {
 			try {
@@ -150,7 +235,7 @@ public class Turns {
 	 * @param game
 	 * @return
 	 */
-	public boolean playerOwnsTerritory(String userInput, Player player, List<Continent> continentArray) {
+	public boolean playerOwnsTerritory(String userInput, Player player, ArrayList<Continent> continentArray) {
 		for (int i = 0; i < continentArray.size(); i++) {
 			if (continentArray.get(i).getTerritory(userInput) != null) {
 				if (player.getName().equals(continentArray.get(i).getTerritory(userInput).getOwner())) {
@@ -170,9 +255,10 @@ public class Turns {
 	
 	
 	
-	public void attackingPhaseFor(Player player, List<Continent> continentArray) throws IOException
+	public boolean attackingPhaseFor(Player player, ArrayList<Continent> continentArray, Game game) throws IOException
 	{
-		getPlayerTerrsAndAdjacencies(player, continentArray);
+		boolean wonAtLeast1Battle = false;
+		displayPlayerTerrs(player, continentArray, "attack");
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		
 		System.out.println("Do you want to make an attack, yes or no?");
@@ -188,55 +274,195 @@ public class Turns {
 				System.out.println("Please enter a territory you own: ");
 				attackingTerr = br.readLine();
 				
-				
-				
 			}
 			
-
+			Territory attackingTerritory = getTerritoryObject(attackingTerr, continentArray);
+			
+			if(attackingTerritory.getSoldierCount() < 2)
+			{
+				System.out.println("You don't have enough soldiers to attack from here, sorry!");
+				System.out.println("Do you want to make another attack, yes or no?");
+				option = br.readLine().toLowerCase();
+				continue;
+			}
 			
 			
+			System.out.println("The territories you can attack from here are");
+			ArrayList<Territory> attackableAdjs = checkAttackableAdjacencies(player, attackingTerritory, continentArray);
+			if( attackableAdjs.size() == 0)
+			{
+				System.out.println("NONE, YOU OWN THEM ALL!");
+				System.out.println("Do you want to make another attack, yes or no?");
+				option = br.readLine().toLowerCase();
+				continue;
+			}
 			
-			System.out.println("Do you want to make another attack, yes or no?");
+			
+			System.out.println("\nType the name of the territory you want to attack. If you don't want to attack one, type anything else.");
+			String defendingTerr = br.readLine();
+			Territory defendingTerritory = getTerritoryObject(defendingTerr, continentArray);
+			
+			if(Objects.equals(defendingTerritory, null))
+			{
+				System.out.println("Okay, you chose not to attack");
+				System.out.println("Do you want to make another attack, yes or no?");
+				option = br.readLine().toLowerCase();
+			}
+			
+			
+			//reaching here means we have a valid defending & attacking terr
+			String winnerOfBattle = beginBattle(defendingTerritory, attackingTerritory);
+			
+			if(Objects.equals(player.getName(), winnerOfBattle)) //if attacker won
+			{
+				wonAtLeast1Battle = true;
+				String losingDefender = defendingTerritory.getOwner();
+			
+				defendingTerritory.setOwner(player.getName());	
+				player.addTerritoryOwned(defendingTerr);
+				
+				removeTerritoryFromDefender(losingDefender, defendingTerr, game);
+				migrateUnitsFromOldToNewTerritory(attackingTerritory, defendingTerritory);
+			}
+			
+			
+			System.out.println("\nDo you want to make another attack, yes or no?");
 			option = br.readLine().toLowerCase();
 		}
 
 		System.out.println("Okay, the attack phase is over");
+		return wonAtLeast1Battle;
 		
 	}
 	
+	
+	
+	public Territory getTerritoryObject(String territoryName, ArrayList<Continent> continentArray)
+	{
+		for(int i = 0; i < continentArray.size(); i++)
+		{
+			Territory currTerritory = continentArray.get(i).getTerritory(territoryName);
+			
+			if(currTerritory != null)
+			{
+				return currTerritory;
+			}
+		}
 		
+		return null;
+	}
 	
 	
-	public void getPlayerTerrsAndAdjacencies(Player player, List<Continent> continentArray)
+		
+	public ArrayList<Territory> checkAttackableAdjacencies(Player player, Territory attackingTerr, ArrayList<Continent> continentArray)
+	{
+		List<String> adjacensies = attackingTerr.getAdjacencies();
+		ArrayList<Territory> attackables = new ArrayList<Territory>();
+		
+		for(int i = 0; i < adjacensies.size(); i++)
+		{
+			Territory adjTerr = getTerritoryObject(adjacensies.get(i), continentArray);
+			
+			if(Objects.equals(adjTerr.getOwner(), player.getName()))  //if attacker owns it
+			{
+				continue;
+			}
+			
+			System.out.println(adjTerr.getTerritoryName() + " which has " + adjTerr.getSoldierCount() + " soldier(s) on it");
+			attackables.add(adjTerr);
+			
+		}
+		return attackables;
+	}
+	
+	
+	public void displayPlayerTerrs(Player player, ArrayList<Continent> continentArray, String phaseType)
 	{
 		System.out.println("THESE ARE THE TERRITORIES YOU OWN");
 		for(int i = 0; i < player.getTerritoriesOwned().size(); i++)
 		{
 			String terrName = player.getTerritoriesOwned().get(i);
 			System.out.print(i + ". " + terrName);
+			
 			for(int j = 0; j < continentArray.size(); j++)
 			{
 				Territory currTerritory = continentArray.get(j).getTerritory(terrName);
 				
 				if(currTerritory != null)
 				{
-					System.out.println(", the number of soldiers here are " + currTerritory.getSoldierCount());
-					System.out.println("These are the territories you can attack from here:");
-					System.out.println(currTerritory.getAdjacencies());
-					System.out.println();
+					System.out.println(", the number of soldiers you have here are " + currTerritory.getSoldierCount());
+					if(Objects.equals(phaseType, "attack"))
+					{
+						System.out.println("These are the territories you can attack from here:");
+						System.out.println(currTerritory.getAdjacencies());
+						System.out.println();
+						
+					}
+					
 					
 					break;
 				}
 			}
 		}
 		
-		
-		
 	}
 	
 	
 	
-	public void beginBattle(Territory defendingTerr, Territory attackingTerr)
+	public void migrateUnitsFromOldToNewTerritory(Territory donaterTerr, Territory receiverTerr)
+	{
+		int currNumSoldiers = donaterTerr.numSoldiersHere;
+
+		if(currNumSoldiers == 2)
+		{
+			System.out.println("You moved 1 soldier to your receiving territory");
+		}
+		
+		
+		System.out.println("You must reinforce your receiving territory with at least 1 soldier.");
+		System.out.println("You currently have " + currNumSoldiers + " in your donating territory.");
+		System.out.println("Input a valid number, else we will only be moving one to your receiving territory");
+		
+		int migratingSoldiers = 1;
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+
+		try {
+			migratingSoldiers = Integer.parseInt(br.readLine());
+		} catch (IOException e) {
+			System.out.println("Okay, 1 it is");
+			migratingSoldiers = 1;
+		}
+		
+		
+		int numSoldiersStayed = currNumSoldiers - migratingSoldiers;
+		
+		donaterTerr.numSoldiersHere = numSoldiersStayed;
+		receiverTerr.numSoldiersHere = migratingSoldiers;
+
+	}
+	
+
+	
+	public void removeTerritoryFromDefender(String defenderName, String territoryLost, Game game)
+	{
+		ArrayList<Player> playersArray = game.getPlayersArray();
+		
+		for(int i = 0; i < playersArray.size(); i++)
+		{
+			Player currPlayer = playersArray.get(i);
+			if(Objects.equals(currPlayer.getName(), defenderName))  //if we have the player object
+			{
+				currPlayer.removeTerritoryOwned(territoryLost);
+				break;
+				
+			}
+		}
+	}
+	
+	
+	
+	//TODO: RENAME TO LET USER KNOW DEFENDER IS ON THE LEFT?
+	public String beginBattle(Territory defendingTerr, Territory attackingTerr)
 	{
 		String attackerName = attackingTerr.getOwner();
 		String defenderName = defendingTerr.getOwner();
@@ -292,11 +518,13 @@ public class Turns {
 		if(attackingTerr.numSoldiersHere == 1)
 		{
 			System.out.println(defenderName);
+			return defenderName;
 		}
 		else
 		{
 			System.out.println(attackerName);
 			System.out.println(defendingTerr.territoryName + " is now yours");
+			return attackerName;
 		}
 		
 

@@ -72,14 +72,9 @@ public class Game {
 		
 		for(int i = 0; i < playersArray.size(); i++)
 		{
-			//TODO: WE CAN REMOVE THE ROLL VALUE ATTRIBUTE FROM THE PLAYER ARRAY
-			//playersArray.get(i).rollValue = i + 1; //sets the roll value if we need to set it
-			
+			playersArray.get(i).rollValue = i + 1; //sets the roll value if we need to set it			
 			System.out.println((i + 1) + ". " + playersArray.get(i).name);
-			
 		}
-		
-		
 	}
 	
 	

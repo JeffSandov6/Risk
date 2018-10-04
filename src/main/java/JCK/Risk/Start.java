@@ -34,7 +34,7 @@ public class Start {
 //		
 //		Collections.sort(cards1);
 		
-		Card tempCard = new Card();
+//		Card tempCard = new Card();
 
 		
 //		int newUnits = tempCard.checkCards(player);
@@ -43,20 +43,20 @@ public class Start {
 //		
 //		System.out.println(player.listOfCards);
 
-		
-		int temp = 1;
-		
-		while(temp < 10)
-		{
-			System.out.print("On set " + temp + " you gain ");
-			System.out.println(tempCard.getNextSetValue() + "units ");
-			tempCard.setsTurnedIn++;
-			
-			temp++;
-		}
-		
-		
-		
+//		
+//		int temp = 1;
+//		
+//		while(temp < 10)
+//		{
+//			System.out.print("On set " + temp + " you gain ");
+//			System.out.println(tempCard.getNextSetValue() + "units ");
+//			tempCard.setsTurnedIn++;
+//			
+//			temp++;
+//		}
+//		
+//		
+//		
 		
 		
 		
