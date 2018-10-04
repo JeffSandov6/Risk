@@ -299,9 +299,6 @@ public class Card {
 		cardList.remove(diffCardPosition[1]);
 		cardList.remove(diffCardPosition[0]);
 
-//		cardList.remove(diffCardPosition.get(1));
-//		cardList.remove(diffCardPosition.get(0));
-
 		
 		return cardList;
 	}
