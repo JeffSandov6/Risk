@@ -447,8 +447,12 @@ public class Turns {
 				System.out.println("Okay, you chose not to attack");
 				System.out.println("Do you want to make another attack, yes or no?");
 				option = br.readLine().toLowerCase();
+				continue;
 			}
 			
+			String defTerrOwner = defendingTerritory.getOwner();
+			
+			System.out.println(defTerrOwner + ", your territory " + defendingTerr + " is being attacked!");
 			
 			//reaching here means we have a valid defending & attacking terr
 			String winnerOfBattle = beginBattle(defendingTerritory, attackingTerritory);
