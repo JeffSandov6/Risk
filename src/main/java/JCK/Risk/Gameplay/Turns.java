@@ -31,18 +31,25 @@ public class Turns {
 			
 			System.out.println("It is " + player.getName() + "'s turn.");
 			
+			// purchasing phase
+			System.out.println("\n PURCHASE PHASE");
+			// first ask if the user wants to purchase credits
+			purchasePhase(player, game);
+			
+			
+			//begin card phase
 			System.out.println("CARD PHASE");
 			System.out.println("The next set turned in will grant " + cards.getNextSetValue() + "additional units");
 			int additionalUnits = cards.checkCards(player);
 			
-			
+			// place new soldiers phase
 			System.out.println("\nPLACE  NEW ARMIES PHASE");
 			additionalUnits+= getExtraArmiesForContinentsOwned(player, game.getContinentArray());
 			additionalUnits+= getExtraArmiesForTerrsOwned(player);
 			
 			placeNewSoldiers(game, player, additionalUnits);
 			
-
+			// start battle phase
 			System.out.println("\nBATTLE PHASE");
 			boolean playerWonABattle = attackingPhaseFor(player, game.getContinentArray(), game);
 
@@ -57,15 +64,18 @@ public class Turns {
 			}
 			
 			
-			
+			// fortify territories phase
 			System.out.println("\nFORTIFY PHASE");
 			fortifyTerritory(player, game.getContinentArray());
 			
 			// if the player chooses to undo their turn -- returns to the beginning of the loop without
 			// finishing loop
-			if (undoTurn(game, undo)) {
+			if (undoTurn(game, undo, player)) {
 				continue;
 			}
+			
+
+			
 			playerTurnCount++;
 			playerTurnCount %= game.getPlayersArray().size();
 
@@ -75,7 +85,112 @@ public class Turns {
 		}
 	}
 	
-	public boolean undoTurn(Game game, Undo undo) {
+	public void purchasePhase(Player player, Game game) {
+		System.out.println("Would you like to purchase credits?");
+		System.out.println("You currently have " + player.getCurrentCredit() + " credits.");
+		System.out.println("Please answer 'yes' or 'no'");
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		try {
+			String userInput = br.readLine();
+			if (userInput.toLowerCase().equals("yes")) {
+				// ask how many credits they want to buy
+				System.out.println("How many credits would you like to buy?");
+				userInput = br.readLine();
+				player.addCredit(Integer.parseInt(userInput));
+			} 
+			
+			// now ask if they want to purchase anything
+			System.out.println(player.name + ", would you like to purchase any of the following with your credits?");
+			System.out.println("You currently have " + player.getCurrentCredit() + " credits.");
+			System.out.println("Action\t\tCost");
+			System.out.println("Undo\t\t5");
+			System.out.println("Card\t\t3");
+			System.out.println("Transfer\t\t");
+			System.out.println("None\t\t0");
+			userInput = br.readLine();
+			if (userInput.toLowerCase().equals("undo") && player.getCurrentCredit() >= 5) {
+				player.purchaseUndoAction();
+				player.useCredit(5);
+			} else if (userInput.toLowerCase().equals("card") && player.getCurrentCredit() >= 3) {
+				//ask what kind of card they want to purchase
+				System.out.println("What type of card would you like out of the ones available?");
+				System.out.println("Infantry - " + cards.cardsArray.get(0));
+				System.out.println("Cavalry - " + cards.cardsArray.get(1));
+				System.out.println("Artillery - " + cards.cardsArray.get(2));
+				System.out.println("Wild - " + cards.cardsArray.get(3));
+				userInput = br.readLine();
+				int cardIndex = cards.getCardIndex(userInput.toLowerCase());
+				// if the card inputted is invalid then just return
+				if (cardIndex == 1) {
+					return;
+				}
+				//if it is a good index, then check if the num of cards at the index is > 0
+				int numberOfCardsAvailable = cards.cardsArray.get(cardIndex);
+				if (numberOfCardsAvailable > 0) {
+					player.purchaseCard("userInput");
+					player.useCredit(3);
+					System.out.println("You have purchased a " + userInput + "card. Your credit is now at " + player.getCurrentCredit());
+				} else {
+					System.out.println("There are no " + userInput + " cards available.");
+				}
+			} else if (userInput.toLowerCase().equals("transfer")) {
+				// checks the transfer case
+				System.out.println("Who would you like to transfer the credit to?");
+				List<Player> players = game.getPlayersArray();
+				// list out possible players to transfer credit to
+				for (Player otherPlayer : players) {
+					if (otherPlayer.getName().equals(player.getName())) {
+						continue;
+					} else {
+						System.out.println(otherPlayer.getName());
+					}
+				}
+				userInput = br.readLine();
+				for (Player otherPlayer : players) {
+					//check the input to the otherPlayer to see if it matches
+					// if it doesnt keep searching
+					if (otherPlayer.getName().equals(player.getName())) {
+						continue;
+					} else {
+						// if it does then ask how many credits to transfer
+						System.out.println("How many credits would you like to transfer to " + otherPlayer.getName() + "?");
+						userInput = br.readLine();
+						int transferredCredit = Integer.parseInt(userInput);
+						// check if the credits to be transferred are valid 
+						if (transferredCredit < 0 || transferredCredit > player.getCurrentCredit()) {
+							System.out.println("Invalid amount of credits entered.");
+						} else {
+							// if the transferredcredits are valid; i add the players credit onto the otherPlayers credit
+							player.useCredit(transferredCredit);
+							otherPlayer.addCredit(transferredCredit);
+						}
+						return;
+						
+					}
+				}
+			} else {
+				return;
+			}
+		} catch (IOException e) {
+			System.out.println("Invalid input.");
+		}
+	}
+	/**
+	 * prompts the player if they want to undo their action and returns true or false depending
+	 * on whether they choose to undo or not
+	 * @param game
+	 * @param undo
+	 * @param player
+	 * @return
+	 */
+	public boolean undoTurn(Game game, Undo undo, Player player) {
+		// checks whether or not the current player has an undo action available 
+		System.out.println("You currently have " + player.getUndoActionsAvailable() + " undo actions available.");
+		if (player.getUndoActionsAvailable() <= 0) {
+			System.out.println("You cannot use any undo actions because you do not have any.");
+			return false;
+		}
+		// keeps proceeding if the user has more than 0 undoActionsAvailable
 		System.out.println("\nWould you like to undo the last turn? Yes or no?");
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		try {
@@ -88,6 +203,7 @@ public class Turns {
 					//sets the continent array and players array to the previous state
 					game.continentArray = (ArrayList<Continent>) undo.getPastContinent();
 					game.playersArray = (ArrayList<Player>) undo.getPastPlayers();
+					player.useUndoAction();
 					
 					return true;
 				} else {
