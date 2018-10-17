@@ -178,10 +178,10 @@ public class Turns {
 	/**
 	 * prompts the player if they want to undo their action and returns true or false depending
 	 * on whether they choose to undo or not
-	 * @param game
-	 * @param undo
-	 * @param player
-	 * @return
+	 * @param game object
+	 * @param undo instance of the class Undo
+	 * @param player current player
+	 * @return true or false, in regards to whether the player wants to undo or not
 	 */
 	public boolean undoTurn(Game game, Undo undo, Player player) {
 		// checks whether or not the current player has an undo action available 
@@ -324,11 +324,11 @@ public class Turns {
 	}
 	
 	
-	/**
-	 * Places the soldiers that the player has onto territories that the player owns
-	 * @param game
-	 * @param player
-	 */
+//	/**
+//	 * Places the soldiers that the player has onto territories that the player owns
+//	 * @param game
+//	 * @param player
+//	 */
 	public void placeNewSoldiers(Game game, Player player, int numUnitsAvailable) {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		ArrayList<Continent> continentArray = game.getContinentArray();
@@ -368,13 +368,13 @@ public class Turns {
 	}
 	
 	
-	/**
-	 * Checks if the player owns all the territory
-	 * @param userInput
-	 * @param player
-	 * @param game
-	 * @return
-	 */
+//	/**
+//	 * Checks if the player owns all the territory
+//	 * @param userInput
+//	 * @param player
+//	 * @param game
+//	 * @return
+//	 */
 	public boolean playerOwnsTerritory(String userInput, Player player, ArrayList<Continent> continentArray) {
 		for (int i = 0; i < continentArray.size(); i++) {
 			if (continentArray.get(i).getTerritory(userInput) != null) {
