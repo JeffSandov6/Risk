@@ -366,16 +366,15 @@ public class Card {
 	 * @return
 	 */
 	public int getCardIndex(String cardType) {
-		switch(cardType) {
-		case "infantry":
+		if (cardType.equals("infantry")) {
 			return 0;
-		case "cavalry":
+		} else if (cardType.equals("cavalry")) {
 			return 1;
-		case "artillery":
+		} else if (cardType.equals("artillery")) {
 			return 2;
-		case "wild":
+		} else if (cardType.equals("wild")) {
 			return 3;
-		default:
+		} else {
 			return -1;
 		}
 	}
