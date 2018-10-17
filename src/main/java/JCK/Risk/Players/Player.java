@@ -9,10 +9,9 @@ public class Player {
 	
 	public String name;
 	public Integer turnValue;
-	
-	//TODO: I DONT THINK WE NEED THIS
 	public int rollValue;
-	//private int soldiersToPlace = 0;
+	private int undoActionsAvailable;
+	private int currentCredit;
 	
 	private List<String> listOfTerritoriesOwned;
 	private List<String> continentsOwned;    //TODO: NOT NEEDED
@@ -90,12 +89,59 @@ public class Player {
 	public void removeContinentOwned(String continent) {
 		continentsOwned.remove(continent);
 	}
-
+	
+	/*
+	 * returns the number of undo actions the player has
+	 */
+	public int getUndoActionsAvailable() {
+		return undoActionsAvailable;
+	}
+	
+	/*
+	 * uses an undo action from the player 
+	 */
+	public void useUndoAction() {
+		undoActionsAvailable--;
+	}
+	
+	/*
+	 * Adds to the credit of the current player
+	 */
+	public void addCredit(int credit) {
+		currentCredit += credit;
+	}
+	
+	/*
+	 * gets the players current credit amount
+	 */
+	public int getCurrentCredit() {
+		return currentCredit;
+	}
+	
+	/*
+	 * Has the current player buy one undo action
+	 */
+	public void purchaseUndoAction() {
+		undoActionsAvailable++;
+	}
+	
+	/*
+	 * Purchases a card and adds it to the listOfCards
+	 */
+	public void purchaseCard(String card) {
+		listOfCards.add(card);
+	}
+	
+	public void useCredit(int cost) {
+		currentCredit -= cost;
+	}
 	public void createPlayer(String playerName, Integer turnRollValue) {
 		this.name = playerName;
 		this.turnValue = turnRollValue;
 		listOfTerritoriesOwned = new ArrayList<String>();
 		continentsOwned = new ArrayList<String>();
+		undoActionsAvailable = 0;
+		currentCredit = 0;
 		
 	}
 }

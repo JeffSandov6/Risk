@@ -359,5 +359,23 @@ public class Card {
 				
 		}
 	}
-
+	
+	/**
+	 * Takes in the cardType and return what index the cardType is at; returns -1 if invalid cardType
+	 * @param cardType
+	 * @return
+	 */
+	public int getCardIndex(String cardType) {
+		if (cardType.equals("infantry")) {
+			return 0;
+		} else if (cardType.equals("cavalry")) {
+			return 1;
+		} else if (cardType.equals("artillery")) {
+			return 2;
+		} else if (cardType.equals("wild")) {
+			return 3;
+		} else {
+			return -1;
+		}
+	}
 }
