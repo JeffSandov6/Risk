@@ -362,8 +362,8 @@ public class Card {
 	
 	/**
 	 * Takes in the cardType and return what index the cardType is at; returns -1 if invalid cardType
-	 * @param cardType
-	 * @return
+	 * @param cardType, the name of the card 
+	 * @return integer representing the index
 	 */
 	public int getCardIndex(String cardType) {
 		if (cardType.equals("infantry")) {

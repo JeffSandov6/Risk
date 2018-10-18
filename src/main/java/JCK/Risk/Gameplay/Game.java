@@ -197,9 +197,8 @@ public class Game {
 
 
 
-	/**
-	* Initialize the territories adjacency list
-	*/
+	
+	//Initialize the territories adjacency list
 	public List<String> initializeAdjacencies(String territoryName) {
 		List<String> adjacentTerritories = new ArrayList<String>();
 		try {
@@ -236,18 +235,16 @@ public class Game {
 		return adjacentTerritories;
 	}
 
-	/**
-	* Display all territories as well as their continents
-	*/
+	
+	//Display all territories as well as their continents
 	public void displayWorld() {
 		for (int i = 0; i < continentArray.size(); i++) {
 			continentArray.get(i).displayContinent();
 		}
 	}
 
-	/**
-	* Given a territoryName checks if the territory is valid for unit placement at the start of the game
-	*/
+	
+	//Given a territoryName checks if the territory is valid for unit placement at the start of the game
 	public boolean isEmptyTerritory(String territoryName) {
 		for (int i = 0; i < continentArray.size(); i++) {
 			if (continentArray.get(i).getTerritory(territoryName) != null) {
@@ -260,9 +257,8 @@ public class Game {
 		}
 		return false;
 	}
-	/*
-	* Assigns territories the number of soldiers based on the player name :: should only be used for initialization
-	*/
+	
+	//Assigns territories the number of soldiers based on the player name :: should only be used for initialization
 	public void assignTerritory(Player player, String territoryName, int numSoldiers) {
 		for (int i = 0; i < continentArray.size(); i++) {
 			if (continentArray.get(i).getTerritory(territoryName) != null) {
@@ -277,9 +273,8 @@ public class Game {
 			}
 		}
 	}
-	/*
-	* Checks if all of the territories are taken by players.
-	*/
+	
+	//Checks if all of the territories are taken by players.
 	public boolean areTerritoriesFilled() {
 		for (int i = 0; i < continentArray.size(); i++) {
 			Continent continent = continentArray.get(i);

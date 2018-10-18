@@ -22,15 +22,53 @@
       <version>4.12</version>
       <scope>test</scope>
     </dependency>
-  </dependencies>
-  <build>
-    <plugins>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-surefire-plugin</artifactId>
-        <version>2.19.1</version>
-	  </plugin>
-	</plugins>
-  </build>
+    <!-- https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-javadoc-plugin -->
+		<dependency>
+			<groupId>org.apache.maven.plugins</groupId>
+			<artifactId>maven-javadoc-plugin</artifactId>
+			<version>3.0.1</version>
+		</dependency>
+
+	</dependencies>
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<version>2.19.1</version>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-site-plugin</artifactId>
+				<version>3.7.1</version>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-project-info-reports-plugin</artifactId>
+				<version>2.7</version>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-javadoc-plugin</artifactId>
+				<version>3.0.1</version>
+				<configuration>
+					<show>private</show>
+ 					<nohelp>true</nohelp>
+					
+<!-- 	GRAPHVIZ wont work without it being downloaded on local machine so for now, we will comment it out
+				<doclet>org.umlgraph.doclet.UmlGraphDoc</doclet>
+					<docletPath>/path/to/UmlGraph.jar</docletPath>
+					<docletArtifact>
+						<groupId>org.umlgraph</groupId>
+						<artifactId>umlgraph</artifactId>
+						<version>5.6.6</version>
+					</docletArtifact>
+					<additionalparam>-views -all</additionalparam>
+					<useStandardDocletOptions>true</useStandardDocletOptions> -->
+					
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
 
 </project>
