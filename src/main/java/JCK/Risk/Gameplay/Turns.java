@@ -326,17 +326,14 @@ public class Turns {
 			String defendingTerr = br.readLine();
 			Territory defendingTerritory = getTerritoryObject(defendingTerr, continentArray);
 			
+			
 			if(Objects.equals(defendingTerritory, null))
 			{
 				System.out.println("Okay, you chose not to attack");
 				System.out.println("Do you want to make another attack, yes or no?");
 				option = br.readLine().toLowerCase();
-				continue;
 			}
 			
-			String defTerrOwner = defendingTerritory.getOwner();
-			
-			System.out.println(defTerrOwner + ", your territory " + defendingTerr + " is being attacked!");
 			
 			//reaching here means we have a valid defending & attacking terr
 			String winnerOfBattle = beginBattle(defendingTerritory, attackingTerritory);
@@ -565,7 +562,7 @@ public class Turns {
 		
 		for(int i = 0; i < rollsArray.length; i++)
 		{
-			rollsArray[i] = Dice.roll();
+			rollsArray[i] = new Integer(Dice.roll());
 			System.out.println(rollsArray[i]);
 			
 		}
