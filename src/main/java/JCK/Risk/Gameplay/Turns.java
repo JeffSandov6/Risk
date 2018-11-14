@@ -19,6 +19,7 @@ public class Turns {
 	
 	Card cards = new Card();
 	
+	
 	public Turns(Game game) throws IOException {
 		int playerTurnCount = 0;
 		System.out.println("initialized the turns");
