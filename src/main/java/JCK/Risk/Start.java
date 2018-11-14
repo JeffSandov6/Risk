@@ -7,6 +7,10 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Stack;
 
+import org.telegram.telegrambots.ApiContextInitializer;
+import org.telegram.telegrambots.meta.TelegramBotsApi;
+import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
+
 import JCK.Risk.Gameplay.Card;
 import JCK.Risk.Gameplay.Game;
 import JCK.Risk.Gameplay.Turns;
@@ -16,50 +20,36 @@ import JCK.Risk.Players.Player;
 
 public class Start {
 
-	public static void main(String[] args) throws IOException {
+	public static void main(String[] args) throws IOException, InterruptedException {
 		
 		
-//		Player player = new Player();
-//		player.name = "Jeff";
-//		
-//		ArrayList<String> cards1 = new ArrayList<String>();
-//		
-//		cards1.add("a");
-//		cards1.add("b");
-//		cards1.add("c");
-//		cards1.add("a");
-//
-//
-//		
-//		player.listOfCards = cards1;
-//		
-//		Collections.sort(cards1);
-		
-//		Card tempCard = new Card();
 
-		
-//		int newUnits = tempCard.checkCards(player);
+//		ApiContextInitializer.init();
 //		
-//		System.out.println(cards1);
+//		//instantiate telegram bots API
+//		TelegramBotsApi botsApi = new TelegramBotsApi();
 //		
-//		System.out.println(player.listOfCards);
-
-//		
-//		int temp = 1;
-//		
-//		while(temp < 10)
-//		{
-//			System.out.print("On set " + temp + " you gain ");
-//			System.out.println(tempCard.getNextSetValue() + "units ");
-//			tempCard.setsTurnedIn++;
+//		//register our bot
+//		try {
+//			botsApi.registerBot(new TelegramBotTest());
 //			
-//			temp++;
+//		} 
+//		catch (TelegramApiException e)
+//		{
+//			System.out.println("Bot was not able to be registered");
+//			e.printStackTrace();
 //		}
 //		
 //		
+//		TelegramBotTest test = new TelegramBotTest();
+//		test.sendMessageToChat("Hello and welcome to Risk");
+//		test.sendMessageToChat("How many players will be playing today?");
 //		
-		
-		
+//		
+//		Thread.sleep(30000);
+//		
+//		String response = test.getResponse();
+//				
 		
 		System.out.println("Hello, and welcome to Risk!");
 		System.out.println("How many players will be playing today?");
@@ -84,17 +74,7 @@ public class Start {
 		
 		// initializes the territories at the start by assigning them to each player based on choice
 		startGame.chooseInitialTerritories();
-		
-		/*
-		Territory Siberia = continentArray.get(4).getTerritory("Siberia");
-		Territory India = continentArray.get(4).getTerritory("India");
-		
-		Siberia.numSoldiersHere = 12;
-		India.numSoldiersHere = 15;
-		
-		Siberia.setOwner("john");
-		India.setOwner("Jeff");
-		*/
+
 		Turns turns = new Turns(startGame);
 		
 		//turns.beginBattle(Siberia, India);
