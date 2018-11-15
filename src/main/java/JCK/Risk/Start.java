@@ -24,32 +24,34 @@ public class Start {
 		
 		
 
-//		ApiContextInitializer.init();
+		ApiContextInitializer.init();
+		
+		//instantiate telegram bots API
+		TelegramBotsApi botsApi = new TelegramBotsApi();
+		
+		//register our bot
+		try {
+			botsApi.registerBot(new TelegramBotTest());
+			
+		} 
+		catch (TelegramApiException e)
+		{
+			System.out.println("Bot was not able to be registered");
+			e.printStackTrace();
+		}
+		
+		
+		TelegramBotTest test = new TelegramBotTest();
+		test.sendMessageToChat("Hello and welcome to Risk");
+		test.sendMessageToChat("How many players will be playing today?");
 //		
-//		//instantiate telegram bots API
-//		TelegramBotsApi botsApi = new TelegramBotsApi();
 //		
-//		//register our bot
-//		try {
-//			botsApi.registerBot(new TelegramBotTest());
-//			
-//		} 
-//		catch (TelegramApiException e)
-//		{
-//			System.out.println("Bot was not able to be registered");
-//			e.printStackTrace();
-//		}
+		Thread.sleep(30000);
 //		
-//		
-//		TelegramBotTest test = new TelegramBotTest();
-//		test.sendMessageToChat("Hello and welcome to Risk");
-//		test.sendMessageToChat("How many players will be playing today?");
-//		
-//		
-//		Thread.sleep(30000);
-//		
-//		String response = test.getResponse();
-//				
+		String response = test.getResponse();
+		
+		System.out.println(response);
+				
 		
 		System.out.println("Hello, and welcome to Risk!");
 		System.out.println("How many players will be playing today?");
