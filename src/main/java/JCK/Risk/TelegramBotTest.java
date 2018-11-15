@@ -33,6 +33,7 @@ public class TelegramBotTest extends TelegramLongPollingBot {
     		long chatID = update.getMessage().getChatId();
     		
     		this.setResponse(messageText);
+    		System.out.println("The chat id is " + chatID);
     		    		
     		//create a message object
     		SendMessage message = new SendMessage()
@@ -53,7 +54,7 @@ public class TelegramBotTest extends TelegramLongPollingBot {
     public void sendMessageToChat(String nextOutput) {
     	
     	SendMessage message = new SendMessage()
-				.setChatId("790406173")
+				.setChatId("-198887148")
 				.setText(nextOutput);
 		try {
 			execute(message); //bot tried to send this message to the user
