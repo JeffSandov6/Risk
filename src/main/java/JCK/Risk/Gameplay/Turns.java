@@ -23,7 +23,7 @@ public class Turns {
 	public Turns() {
 		
 	}
-	
+	@CoverageIgnore
 	public Turns(Game game) throws IOException {
 		int playerTurnCount = 0;
 		System.out.println("initialized the turns");

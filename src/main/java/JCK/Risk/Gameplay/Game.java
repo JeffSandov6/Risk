@@ -16,6 +16,7 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
 import java.util.Random;
 
+import JCK.Risk.CoverageIgnore;
 import JCK.Risk.TelegramGameBot;
 import JCK.Risk.Locations.Continent;
 import JCK.Risk.Locations.Territory;
@@ -45,7 +46,7 @@ public class Game {
 			this.continentArray.add(new Continent(gameToCopy.continentArray.get(i)));
 		}
 	}
-	
+	@CoverageIgnore
 	public void initializeGame(int numPlayers, TelegramGameBot bot) throws IOException, InterruptedException, TelegramApiException 
 	{
 		
@@ -110,6 +111,7 @@ public class Game {
 	/**
 	* Initializes the continents by reading a .txt file and scanning through it
 	*/
+	@CoverageIgnore
 	public void initializeContinents()
 	{
 		try {
@@ -150,6 +152,7 @@ public class Game {
 	/*
 	* Initializes all the territories by giving each player in the player array a territory and assigning 1 soldier to each territory.
 	*/
+	@CoverageIgnore
 	public void chooseInitialTerritories() throws IOException {
 		/**
 		 * I want to initialize all territories by giving each player in player array a turn to add pieces onto
@@ -187,6 +190,7 @@ public class Game {
 
 	
 	//Initialize the territories adjacency list
+	@CoverageIgnore
 	public List<String> initializeAdjacencies(String territoryName) {
 		List<String> adjacentTerritories = new ArrayList<String>();
 		try {
