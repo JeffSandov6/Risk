@@ -105,4 +105,23 @@ public class TurnsTest {
 		actualRes = turns.checkAttackableAdjacencies(player1, territory1, game.continentArray);
 		Assert.assertEquals(expectedRes, actualRes);
 	}
+	
+	@Test
+	public void getExtraArmiesForContinentsOwnedTest() {
+		Player testPlayer = new Player();
+		testPlayer.createPlayer("TestPlayer1", 2);
+		Assert.assertEquals(0, turns.getExtraArmiesForContinentsOwned(testPlayer, game.continentArray));
+		
+		game.continentArray.get(0).getListOfTerritories().get("TestTerritory2").setOwner(testPlayer.getName());
+		Assert.assertEquals(7,turns.getExtraArmiesForContinentsOwned(testPlayer, game.continentArray));
+	}
+	
+	@Test
+	public void playerOwnsTerritoryTest() {
+		Player testPlayer = new Player();
+		testPlayer.createPlayer("TestPlayer1", 2);
+		Assert.assertTrue(turns.playerOwnsTerritory("TestTerritory", testPlayer, game.continentArray));
+		Assert.assertTrue(!turns.playerOwnsTerritory("TestTerritory2", testPlayer, game.continentArray));
+	}
+	
 }
