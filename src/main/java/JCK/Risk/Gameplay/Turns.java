@@ -10,6 +10,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
 
+import JCK.Risk.CoverageIgnore;
 import JCK.Risk.Locations.Continent;
 import JCK.Risk.Locations.Territory;
 import JCK.Risk.Players.Player;
@@ -18,6 +19,7 @@ public class Turns {
 	
 	Card cards = new Card();
 	
+	@CoverageIgnore
 	public Turns() {
 		
 	}
@@ -86,7 +88,7 @@ public class Turns {
 			System.out.println("END OF TURN\n\n");
 		}
 	}
-	
+	@CoverageIgnore
 	private void purchasePhase(Player player, Game game) {
 		System.out.println("Would you like to purchase credits?");
 		System.out.println("You currently have " + player.getCurrentCredit() + " credits.");
@@ -181,6 +183,7 @@ public class Turns {
 	 * @param player current player
 	 * @return true or false, in regards to whether the player wants to undo or not
 	 */
+	@CoverageIgnore
 	private boolean undoTurn(Game game, Undo undo, Player player) {
 		// checks whether or not the current player has an undo action available 
 		System.out.println("You currently have " + player.getUndoActionsAvailable() + " undo actions available.");
@@ -216,7 +219,7 @@ public class Turns {
 		return false;
 
 	}
-	
+	@CoverageIgnore
 	private void fortifyTerritory(Player player, ArrayList<Continent> continentArray) throws IOException
 	{
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -267,6 +270,7 @@ public class Turns {
 	
 	//if a player to the left side of array is eliminated, it affects out player
 	//turn count formula
+	@CoverageIgnore
 	private int numLeftSidePlayersEliminated(Game game, Player currentPlayersTurn)
 	{
 		ArrayList<Player> playersArray = game.getPlayersArray();
@@ -293,6 +297,7 @@ public class Turns {
 		
 		return leftSideEliminated;
 	}
+	
 	
 	public int getExtraArmiesForContinentsOwned(Player player, ArrayList<Continent> continentArray)
 	{
@@ -327,6 +332,7 @@ public class Turns {
 //	 * @param game
 //	 * @param player
 //	 */
+	@CoverageIgnore
 	private void placeNewSoldiers(Game game, Player player, int numUnitsAvailable) {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		ArrayList<Continent> continentArray = game.getContinentArray();
@@ -384,7 +390,7 @@ public class Turns {
 		return false;
 	}
 
-	
+	@CoverageIgnore
 	private boolean attackingPhaseFor(Player player, ArrayList<Continent> continentArray, Game game) throws IOException
 	{
 		boolean wonAtLeast1Battle = false;
@@ -509,7 +515,7 @@ public class Turns {
 		return attackables;
 	}
 	
-	
+	@CoverageIgnore
 	private void displayPlayerTerrs(Player player, ArrayList<Continent> continentArray, String phaseType)
 	{
 		System.out.println("THESE ARE THE TERRITORIES YOU OWN");
@@ -542,7 +548,7 @@ public class Turns {
 	}
 	
 	
-	
+	@CoverageIgnore
 	private void migrateUnitsFromOldToNewTerritory(Territory donaterTerr, Territory receiverTerr)
 	{
 		int currNumSoldiers = donaterTerr.numSoldiersHere;
@@ -596,6 +602,7 @@ public class Turns {
 	
 	
 	//TODO: RENAME TO LET USER KNOW DEFENDER IS ON THE LEFT?
+	@CoverageIgnore
 	private String beginBattle(Territory defendingTerr, Territory attackingTerr)
 	{
 		String attackerName = attackingTerr.getOwner();
