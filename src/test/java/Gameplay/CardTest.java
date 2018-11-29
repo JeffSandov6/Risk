@@ -111,4 +111,5 @@ public class CardTest {
 		expected.add("cavalry");
 		Assert.assertEquals(expected, card.turnInDiffCards(cardList));
 	}
+
 }

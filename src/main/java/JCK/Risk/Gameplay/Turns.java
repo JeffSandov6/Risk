@@ -87,7 +87,7 @@ public class Turns {
 		}
 	}
 	
-	public void purchasePhase(Player player, Game game) {
+	private void purchasePhase(Player player, Game game) {
 		System.out.println("Would you like to purchase credits?");
 		System.out.println("You currently have " + player.getCurrentCredit() + " credits.");
 		System.out.println("Please answer 'yes' or 'no'");
@@ -181,7 +181,7 @@ public class Turns {
 	 * @param player current player
 	 * @return true or false, in regards to whether the player wants to undo or not
 	 */
-	public boolean undoTurn(Game game, Undo undo, Player player) {
+	private boolean undoTurn(Game game, Undo undo, Player player) {
 		// checks whether or not the current player has an undo action available 
 		System.out.println("You currently have " + player.getUndoActionsAvailable() + " undo actions available.");
 		if (player.getUndoActionsAvailable() <= 0) {
@@ -217,7 +217,7 @@ public class Turns {
 
 	}
 	
-	public void fortifyTerritory(Player player, ArrayList<Continent> continentArray) throws IOException
+	private void fortifyTerritory(Player player, ArrayList<Continent> continentArray) throws IOException
 	{
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		System.out.println("You may choose to move units from 1 owned territory to another, type yes if you want to");
@@ -267,7 +267,7 @@ public class Turns {
 	
 	//if a player to the left side of array is eliminated, it affects out player
 	//turn count formula
-	public int numLeftSidePlayersEliminated(Game game, Player currentPlayersTurn)
+	private int numLeftSidePlayersEliminated(Game game, Player currentPlayersTurn)
 	{
 		ArrayList<Player> playersArray = game.getPlayersArray();
 		int leftSideEliminated = 0;
@@ -327,7 +327,7 @@ public class Turns {
 //	 * @param game
 //	 * @param player
 //	 */
-	public void placeNewSoldiers(Game game, Player player, int numUnitsAvailable) {
+	private void placeNewSoldiers(Game game, Player player, int numUnitsAvailable) {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		ArrayList<Continent> continentArray = game.getContinentArray();
 		
@@ -385,7 +385,7 @@ public class Turns {
 	}
 
 	
-	public boolean attackingPhaseFor(Player player, ArrayList<Continent> continentArray, Game game) throws IOException
+	private boolean attackingPhaseFor(Player player, ArrayList<Continent> continentArray, Game game) throws IOException
 	{
 		boolean wonAtLeast1Battle = false;
 		displayPlayerTerrs(player, continentArray, "attack");
@@ -510,7 +510,7 @@ public class Turns {
 	}
 	
 	
-	public void displayPlayerTerrs(Player player, ArrayList<Continent> continentArray, String phaseType)
+	private void displayPlayerTerrs(Player player, ArrayList<Continent> continentArray, String phaseType)
 	{
 		System.out.println("THESE ARE THE TERRITORIES YOU OWN");
 		for(int i = 0; i < player.getTerritoriesOwned().size(); i++)
@@ -543,7 +543,7 @@ public class Turns {
 	
 	
 	
-	public void migrateUnitsFromOldToNewTerritory(Territory donaterTerr, Territory receiverTerr)
+	private void migrateUnitsFromOldToNewTerritory(Territory donaterTerr, Territory receiverTerr)
 	{
 		int currNumSoldiers = donaterTerr.numSoldiersHere;
 
@@ -596,7 +596,7 @@ public class Turns {
 	
 	
 	//TODO: RENAME TO LET USER KNOW DEFENDER IS ON THE LEFT?
-	public String beginBattle(Territory defendingTerr, Territory attackingTerr)
+	private String beginBattle(Territory defendingTerr, Territory attackingTerr)
 	{
 		String attackerName = attackingTerr.getOwner();
 		String defenderName = defendingTerr.getOwner();
