@@ -10,6 +10,7 @@ import java.util.Stack;
 import org.telegram.telegrambots.ApiContextInitializer;
 import org.telegram.telegrambots.meta.TelegramBotsApi;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
+import org.telegram.telegrambots.meta.exceptions.TelegramApiRequestException;
 
 import JCK.Risk.Gameplay.Card;
 import JCK.Risk.Gameplay.Game;
@@ -20,50 +21,26 @@ import JCK.Risk.Players.Player;
 
 public class Start {
 
-	public static void main(String[] args) throws IOException, InterruptedException {
+	public static void main(String[] args) throws IOException, InterruptedException, TelegramApiException {
+		
 		
 		ApiContextInitializer.init();
-		
-		//instantiate telegram bots API
 		TelegramBotsApi botsApi = new TelegramBotsApi();
+		botsApi.registerBot(new TelegramGameBot());
+
+		TelegramGameBot bot = new TelegramGameBot();
 		
-		//register our bot
+		bot.sendMessageToChat("Hello and welcome to Risk");
+		String response = bot.sendMessageGetResponse("How many players will be playing today?");
 		
-		try {
-			botsApi.registerBot(new TelegramBotTest());
-			
-		} 
-		catch (TelegramApiException e)
-		{
-			System.out.println("Bot was not able to be registered");
-			e.printStackTrace();
-		}
-		
-		
-		TelegramBotTest test = new TelegramBotTest();
-		test.sendMessageToChat("Hello and welcome to Risk");
-		test.sendMessageToChat("How many players will be playing today?");
-//		
-//		
-		Thread.sleep(10000);
-//		
-		String response = test.getResponse();
-		
-		System.out.println(response);
+		//TODO, get the bot to only accept values from 1 to 6
+		int numPlayers = Integer.parseInt(response);
 				
-		
-		System.out.println("Hello, and welcome to Risk!");
-		System.out.println("How many players will be playing today?");
-		
-		//TODO, get the bufferedreader to only accept values from 1 to 6
-		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-		int numPlayers = Integer.parseInt(br.readLine());
-		
 		Game startGame = new Game();
 		Card cards = new Card();
-		
+		System.out.println("checkPoint");
 		// initialize the players as well as continents
-		startGame.initializeGame(numPlayers);
+		startGame.initializeGame(numPlayers, bot);
 		startGame.initializeContinents();
 		
 		ArrayList<Player> playersArray = startGame.getPlayersArray();
