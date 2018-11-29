@@ -29,6 +29,17 @@ public class PlayerTest {
 		Assert.assertEquals(randomPlayer, player.getName());
 		Assert.assertEquals(randomTurnRollValue, player.getTurnValue());
 	}
+	
+	@Test
+	public void copyPlayerTest() {
+		Player testPlayer = new Player();
+		testPlayer.createPlayer("TestPlayer1", 2);
+		testPlayer.addTerritoryOwned("TestTerr");
+		Player copyPlayer = new Player(testPlayer);
+		Assert.assertEquals("TestPlayer1", copyPlayer.getName());
+		Assert.assertTrue(2.0 == copyPlayer.getTurnValue());
+		Assert.assertEquals("TestTerr", copyPlayer.getTerritoriesOwned().get(0));
+	}
 
 	@Test
 	public void addTerritoryOwnedTest() {
@@ -124,4 +135,5 @@ public class PlayerTest {
 		player.purchaseCard("Infantry");
 		Assert.assertEquals("Infantry", player.getListOfCards().get(0));
 	}
+
 }

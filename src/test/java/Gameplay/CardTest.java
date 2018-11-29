@@ -111,5 +111,21 @@ public class CardTest {
 		expected.add("cavalry");
 		Assert.assertEquals(expected, card.turnInDiffCards(cardList));
 	}
-
+	
+	@Test
+	public void turnInCardsTest() {
+		Player testPlayer = new Player();
+		testPlayer.getListOfCards().add("infantry");
+		testPlayer.getListOfCards().add("infantry");
+		testPlayer.getListOfCards().add("infantry");
+		testPlayer.getListOfCards().add("cavalry");
+		Assert.assertEquals(4, card.turnInCards(testPlayer, 3, 2));
+		
+		testPlayer.getListOfCards().clear();
+		testPlayer.getListOfCards().add("infantry");
+		testPlayer.getListOfCards().add("cavalry");
+		testPlayer.getListOfCards().add("wild");
+		testPlayer.getListOfCards().add("artillery");
+		Assert.assertEquals(6, card.turnInCards(testPlayer, 1, 4));
+	}
 }
