@@ -22,14 +22,13 @@ public class Start {
 
 	public static void main(String[] args) throws IOException, InterruptedException {
 		
-		
-
 		ApiContextInitializer.init();
 		
 		//instantiate telegram bots API
 		TelegramBotsApi botsApi = new TelegramBotsApi();
 		
 		//register our bot
+		
 		try {
 			botsApi.registerBot(new TelegramBotTest());
 			
@@ -46,7 +45,7 @@ public class Start {
 		test.sendMessageToChat("How many players will be playing today?");
 //		
 //		
-		Thread.sleep(30000);
+		Thread.sleep(10000);
 //		
 		String response = test.getResponse();
 		
@@ -79,7 +78,6 @@ public class Start {
 
 		Turns turns = new Turns(startGame);
 		
-		//turns.beginBattle(Siberia, India);
 		
 	}
 

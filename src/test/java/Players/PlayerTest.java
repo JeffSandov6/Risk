@@ -17,15 +17,13 @@ public class PlayerTest {
 
 	@Before
 	public void setup() {
-		player = new Player();
+		player = new Player();		
 	}
 	@Test
 	public void createPlayerTest() {
-		
 		String randomPlayer = "TestPlayer";
 		Integer randomTurnRollValue = random.nextInt(6) + 1;
 		
-
 		player.createPlayer(randomPlayer, randomTurnRollValue);
 		
 		Assert.assertEquals(randomPlayer, player.getName());
@@ -75,5 +73,55 @@ public class PlayerTest {
 		Assert.assertTrue(player.getContinentsOwned().contains("NewTestContinent"));
 		player.removeContinentOwned("NewTestContinent");
 		Assert.assertTrue(!player.getContinentsOwned().contains("NewTestContinent"));
+	}
+	
+	@Test
+	public void setNameTest() {
+		Player testPlayer = new Player();
+		testPlayer.setName("TestPlayer");
+		Assert.assertTrue(testPlayer.getName().equals("TestPlayer"));
+	}
+	
+	@Test
+	public void getNameTest() {
+		Player testPlayer = new Player();
+		testPlayer.setName("TestPlayer");
+		Assert.assertTrue(testPlayer.getName().equals("TestPlayer"));
+	}
+	
+	@Test
+	public void purchaseUndoActionTest() {
+		player.purchaseUndoAction();
+		Assert.assertEquals(player.getUndoActionsAvailable(), 1);
+	}
+	
+	@Test
+	public void getUndoActionsAvailableTest() {
+		player.purchaseUndoAction();
+		Assert.assertEquals(1, player.getUndoActionsAvailable());
+	}
+	
+	@Test
+	public void addCreditTest() {
+		player.addCredit(30);
+		Assert.assertEquals(30, player.getCurrentCredit());
+	}
+	
+	@Test
+	public void getCurrentCreditTest() {
+		player.addCredit(20);
+		Assert.assertEquals(20, player.getCurrentCredit());
+	}
+	
+	@Test
+	public void useCreditTest() {
+		player.useCredit(14);
+		Assert.assertEquals(-14, player.getCurrentCredit());
+	}
+	
+	@Test
+	public void purchaseCardTest() {
+		player.purchaseCard("Infantry");
+		Assert.assertEquals("Infantry", player.getListOfCards().get(0));
 	}
 }

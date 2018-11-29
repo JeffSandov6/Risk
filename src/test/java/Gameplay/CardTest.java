@@ -1,4 +1,5 @@
 package Gameplay;
+import java.io.IOException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -58,6 +59,17 @@ public class CardTest {
 			Assert.assertEquals(12, card.getNextSetValue());
 		} else {
 			Assert.assertEquals(5*(randomNumber-2), card.getNextSetValue());
+		}
+	}
+
+	@Test
+	public void checkCardsTest() {
+		Player testPlayer = new Player();
+		testPlayer.addCardToList("Artillery");
+		try {
+			Assert.assertEquals(card.checkCards(testPlayer), 0);
+		} catch (IOException e) {
+			return;
 		}
 	}
 }
