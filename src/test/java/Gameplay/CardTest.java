@@ -40,29 +40,6 @@ public class CardTest {
 	}
 
 	@Test
-	public void getNextSetValueTest() {
-		Random random = new Random();
-		int randomNumber = random.nextInt(6);
-		card.setsTurnedIn = randomNumber;
-		if (card.setsTurnedIn == 0) {
-			Assert.assertEquals(4, card.getNextSetValue());
-		} else if (card.setsTurnedIn == 1) {
-			Assert.assertEquals(6, card.getNextSetValue());
-
-		} else if (card.setsTurnedIn == 2) {
-			Assert.assertEquals(8, card.getNextSetValue());
-
-		} else if (card.setsTurnedIn == 3) {
-			Assert.assertEquals(10, card.getNextSetValue());
-
-		} else if (card.setsTurnedIn == 4) {
-			Assert.assertEquals(12, card.getNextSetValue());
-		} else {
-			Assert.assertEquals(5*(randomNumber-2), card.getNextSetValue());
-		}
-	}
-
-	@Test
 	public void checkCardsTest() {
 		Player testPlayer = new Player();
 		testPlayer.addCardToList("Artillery");
@@ -72,4 +49,35 @@ public class CardTest {
 			return;
 		}
 	}
+	
+	@Test
+	public void getCardIndexTest() {
+		Assert.assertEquals(0, card.getCardIndex("infantry"));
+		Assert.assertEquals(1, card.getCardIndex("cavalry"));
+		Assert.assertEquals(2, card.getCardIndex("artillery"));
+		Assert.assertEquals(3, card.getCardIndex("wild"));
+
+	}
+	
+	@Test
+	public void getNextSetValueTest() {
+		card.setsTurnedIn = 0;
+		Assert.assertEquals(4, card.getNextSetValue());
+		
+		card.setsTurnedIn = 1;
+		Assert.assertEquals(6, card.getNextSetValue());
+		
+		card.setsTurnedIn = 2;
+		Assert.assertEquals(8, card.getNextSetValue());
+		
+		card.setsTurnedIn = 3;
+		Assert.assertEquals(10, card.getNextSetValue());
+		
+		card.setsTurnedIn = 4;
+		Assert.assertEquals(12, card.getNextSetValue());
+		
+		card.setsTurnedIn = 5;
+		Assert.assertEquals(5 * (5-2), card.getNextSetValue());
+	}
+
 }

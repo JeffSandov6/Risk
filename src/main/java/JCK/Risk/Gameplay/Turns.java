@@ -18,6 +18,9 @@ public class Turns {
 	
 	Card cards = new Card();
 	
+	public Turns() {
+		
+	}
 	
 	public Turns(Game game) throws IOException {
 		int playerTurnCount = 0;
