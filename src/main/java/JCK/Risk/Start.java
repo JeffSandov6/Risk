@@ -38,7 +38,6 @@ public class Start {
 				
 		Game startGame = new Game();
 		Card cards = new Card();
-		System.out.println("checkPoint");
 		// initialize the players as well as continents
 		startGame.initializeGame(numPlayers, bot);
 		startGame.initializeContinents();
