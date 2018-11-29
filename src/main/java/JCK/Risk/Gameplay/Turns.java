@@ -10,7 +10,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
 
+import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
+
 import JCK.Risk.CoverageIgnore;
+import JCK.Risk.TelegramGameBot;
 import JCK.Risk.Locations.Continent;
 import JCK.Risk.Locations.Territory;
 import JCK.Risk.Players.Player;
@@ -18,27 +21,34 @@ import JCK.Risk.Players.Player;
 public class Turns {
 	
 	Card cards = new Card();
+	TelegramGameBot bot;
+	boolean skip = false;
+
 	
 	@CoverageIgnore
 	public Turns() {
 		
 	}
 	@CoverageIgnore
-	public Turns(Game game) throws IOException {
+	public Turns(Game game, TelegramGameBot bot) throws IOException, InterruptedException, TelegramApiException {
+		this.bot = bot;
 		int playerTurnCount = 0;
-		System.out.println("initialized the turns");
-		
+		bot.sendMessageToChat("initialized the turns");
 		while (game.getPlayersArray().size() != 1) { //
+			skip = false;
+			
 			Undo undo = new Undo(game.playersArray, game.continentArray);
 
 			Player player = game.getPlayersArray().get(playerTurnCount);
 			
-			System.out.println("It is " + player.getName() + "'s turn.");
-			
+			bot.sendMessageToChat("It is " + player.getName() + "'s turn.");
 			// purchasing phase
-			System.out.println("\n PURCHASE PHASE");
+			bot.sendMessageToChat("\n PURCHASE PHASE");
 			// first ask if the user wants to purchase credits
 			purchasePhase(player, game);
+			if(skip == true) {
+				continue;
+			}
 			
 			
 			//begin card phase
@@ -88,40 +98,58 @@ public class Turns {
 			System.out.println("END OF TURN\n\n");
 		}
 	}
+	
+	
+	private boolean checkIfUserResponded(String userResponse) {
+		
+		if(Objects.equals(userResponse, "empty")) {
+			skip = true;
+			return false;
+		}
+		
+		return true;
+	}
+	
+	
+	
 	@CoverageIgnore
-	private void purchasePhase(Player player, Game game) {
-		System.out.println("Would you like to purchase credits?");
-		System.out.println("You currently have " + player.getCurrentCredit() + " credits.");
-		System.out.println("Please answer 'yes' or 'no'");
-		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-		String userInput = game.takeUserInput();
+	private void purchasePhase(Player player, Game game) throws InterruptedException, TelegramApiException {
+		bot.sendMessageToChat("Would you like to purchase credits?");
+		bot.sendMessageToChat("You currently have " + player.getCurrentCredit() + " credits.");
+		String userInput = bot.sendMessageGetResponse("Please answer 'yes' or 'no'");
+
+		if (!checkIfUserResponded(userInput)) {
+			return;
+		}
+		
 		if (userInput.toLowerCase().equals("yes")) {
 			// ask how many credits they want to buy
-			System.out.println("How many credits would you like to buy?");
-			userInput = game.takeUserInput();
+			userInput = bot.sendMessageGetResponse("How many credits would you like to buy?");
 			player.addCredit(Integer.parseInt(userInput));
 		} 
 		
 		// now ask if they want to purchase anything
-		System.out.println(player.name + ", would you like to purchase any of the following with your credits?");
-		System.out.println("You currently have " + player.getCurrentCredit() + " credits.");
-		System.out.println("Action\t\tCost");
-		System.out.println("Undo\t\t5");
-		System.out.println("Card\t\t3");
-		System.out.println("Transfer\t\t");
-		System.out.println("None\t\t0");
-		userInput = game.takeUserInput();
+		bot.sendMessageToChat(player.name + ", would you like to purchase any of the following with your credits?");
+		bot.sendMessageToChat("You currently have " + player.getCurrentCredit() + " credits.");
+		bot.sendMessageToChat("Action\t\tCost");
+		bot.sendMessageToChat("Undo\t\t5");
+		bot.sendMessageToChat("Card\t\t3");
+		bot.sendMessageToChat("Transfer\t\t");
+		userInput = bot.sendMessageGetResponse("None\t\t0");
+		
+		
+		
 		if (userInput.toLowerCase().equals("undo") && player.getCurrentCredit() >= 5) {
 			player.purchaseUndoAction();
 			player.useCredit(5);
 		} else if (userInput.toLowerCase().equals("card") && player.getCurrentCredit() >= 3) {
 			//ask what kind of card they want to purchase
-			System.out.println("What type of card would you like out of the ones available?");
-			System.out.println("Infantry - " + cards.cardsArray.get(0));
-			System.out.println("Cavalry - " + cards.cardsArray.get(1));
-			System.out.println("Artillery - " + cards.cardsArray.get(2));
-			System.out.println("Wild - " + cards.cardsArray.get(3));
-			userInput = game.takeUserInput();
+			bot.sendMessageToChat("What type of card would you like out of the ones available?");
+			bot.sendMessageToChat("Infantry - " + cards.cardsArray.get(0));
+			bot.sendMessageToChat("Cavalry - " + cards.cardsArray.get(1));
+			bot.sendMessageToChat("Artillery - " + cards.cardsArray.get(2));
+			userInput = bot.sendMessageGetResponse("Wild - " + cards.cardsArray.get(3));
+			
 			int cardIndex = cards.getCardIndex(userInput.toLowerCase());
 			// if the card inputted is invalid then just return
 			if (cardIndex == 1) {
@@ -132,23 +160,24 @@ public class Turns {
 			if (numberOfCardsAvailable > 0) {
 				player.purchaseCard("userInput");
 				player.useCredit(3);
-				System.out.println("You have purchased a " + userInput + "card. Your credit is now at " + player.getCurrentCredit());
+				bot.sendMessageToChat("You have purchased a " + userInput + "card. Your credit is now at " + player.getCurrentCredit());
 			} else {
-				System.out.println("There are no " + userInput + " cards available.");
+				bot.sendMessageToChat("There are no " + userInput + " cards available.");
 			}
 		} else if (userInput.toLowerCase().equals("transfer")) {
 			// checks the transfer case
-			System.out.println("Who would you like to transfer the credit to?");
+			bot.sendMessageToChat("Who would you like to transfer the credit to?");
 			List<Player> players = game.getPlayersArray();
 			// list out possible players to transfer credit to
 			for (Player otherPlayer : players) {
 				if (otherPlayer.getName().equals(player.getName())) {
 					continue;
 				} else {
-					System.out.println(otherPlayer.getName());
+					bot.sendMessageToChat(otherPlayer.getName());
 				}
 			}
-			userInput = game.takeUserInput();
+			//TODO: update to skip to next turn
+			userInput = bot.sendMessageGetResponse("Enter a username");
 			for (Player otherPlayer : players) {
 				//check the input to the otherPlayer to see if it matches
 				// if it doesnt keep searching

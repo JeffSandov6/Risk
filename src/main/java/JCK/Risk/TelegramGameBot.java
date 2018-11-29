@@ -84,9 +84,9 @@ public class TelegramGameBot extends TelegramLongPollingBot {
     	int sleepCount = 0;
     	boolean receivedResponse = false;
     	
-    	while(sleepCount < 5)
+    	while(sleepCount < 6)
     	{
-    		Thread.sleep(50000);
+    		Thread.sleep(5000);
     		
     		if(!Objects.equals(getResponse(), ""))
     		{
