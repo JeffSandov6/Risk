@@ -34,6 +34,8 @@ public class TelegramBotTest extends TelegramLongPollingBot {
     		
     		this.setResponse(messageText);
     		System.out.println("The chat id is " + chatID);
+    		
+    		System.out.println("We " + this.getResponse());
     		    		
     		//create a message object
     		SendMessage message = new SendMessage()

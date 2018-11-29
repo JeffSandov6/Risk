@@ -10,7 +10,6 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Stack;
 import java.util.Random;
 
 import JCK.Risk.Locations.Continent;
@@ -53,9 +52,8 @@ public class Game {
 		{
 			
 			System.out.println("What's the name of player #" + i + "?");
-			BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
-			String playerName = br.readLine();
+			String playerName = takeUserInput();
 			
 			
 			int turnValue = randNumber.nextInt(1000); //random number from 0 to 999
@@ -173,11 +171,10 @@ public class Game {
 		while (!areTerritoriesFilled()) {
 			displayWorld();
 			String userInput;
-			BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 			System.out.println(playersArray.get(playerTurnCount).getName() + ", enter a territory you'd like to control: ");
 
 			// keeps checking if the userinput is valid; if it is valid then ends the loop; otherwise keeps asking for a valid territory
-			while (!isEmptyTerritory(userInput = br.readLine())) {
+			while (!isEmptyTerritory(userInput = takeUserInput())) {
 				System.out.println(playersArray.get(playerTurnCount).getName() + ", enter a valid territory: ");
 			}
 			// assigns the territories if it passes the condition that it is a valid territory
@@ -246,6 +243,9 @@ public class Game {
 	
 	//Given a territoryName checks if the territory is valid for unit placement at the start of the game
 	public boolean isEmptyTerritory(String territoryName) {
+		if (territoryName == null) {
+			return false;
+		}
 		for (int i = 0; i < continentArray.size(); i++) {
 			if (continentArray.get(i).getTerritory(territoryName) != null) {
 				if (continentArray.get(i).getTerritory(territoryName).getOwner() == "nobody") {
@@ -286,5 +286,16 @@ public class Game {
 			}
 		}
 		return true;
+	}
+
+	public String takeUserInput() {
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		try {
+			String userInput = br.readLine();
+			return userInput;
+		} catch (IOException e) {
+			System.out.println("Invalid input.");
+			return null;
+		}
 	}
 }
