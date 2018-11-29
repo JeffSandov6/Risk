@@ -25,7 +25,7 @@ import JCK.Risk.Players.Player;
 public class Game {
 	
 	int numberOfPlayers;
-
+	TelegramGameBot bot;
 	
 	//this is the array list that will be used for the turns
 	//TODO: this should be in the class of turns
@@ -49,7 +49,7 @@ public class Game {
 	@CoverageIgnore
 	public void initializeGame(int numPlayers, TelegramGameBot bot) throws IOException, InterruptedException, TelegramApiException 
 	{
-		
+		this.bot = bot;
 		this.numberOfPlayers = numPlayers;
 
 		Random randNumber = new Random();
@@ -153,7 +153,7 @@ public class Game {
 	* Initializes all the territories by giving each player in the player array a territory and assigning 1 soldier to each territory.
 	*/
 	@CoverageIgnore
-	public void chooseInitialTerritories() throws IOException {
+	public void chooseInitialTerritories() throws IOException, InterruptedException, TelegramApiException {
 		/**
 		 * I want to initialize all territories by giving each player in player array a turn to add pieces onto
 		 * a territory that is unowned
@@ -165,11 +165,21 @@ public class Game {
 			displayWorld();
 			String userInput;
 			BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+			
 			System.out.println(playersArray.get(playerTurnCount).getName() + ", enter a territory you'd like to control: ");
-
+			bot.sendMessageToChat(playersArray.get(playerTurnCount).getName() + " enter a territory you'd like to control:");
+			
+			
 			// keeps checking if the userinput is valid; if it is valid then ends the loop; otherwise keeps asking for a valid territory
-			while (!isEmptyTerritory(userInput = br.readLine())) {
-				System.out.println(playersArray.get(playerTurnCount).getName() + ", enter a valid territory: ");
+//			while (!isEmptyTerritory(userInput = br.readLine())) {
+//				System.out.println(playersArray.get(playerTurnCount).getName() + ", enter a valid territory: ");
+//				
+//			}
+			while (!isEmptyTerritory(userInput = bot.sendMessageGetResponse(""))) {
+				//System.out.println(playersArray.get(playerTurnCount).getName() + ", enter a valid territory: ");
+				bot.sendMessageToChat(playersArray.get(playerTurnCount).getName() + ", enter a valid territory: ");
+
+				
 			}
 			// assigns the territories if it passes the condition that it is a valid territory
 			assignTerritory(playersArray.get(playerTurnCount), userInput, 1);
@@ -231,7 +241,7 @@ public class Game {
 	//Display all territories as well as their continents
 	public void displayWorld() {
 		for (int i = 0; i < continentArray.size(); i++) {
-			continentArray.get(i).displayContinent();
+			continentArray.get(i).displayContinent(bot);
 		}
 	}
 
@@ -260,7 +270,7 @@ public class Game {
 					territory.addSoldiers(numSoldiers);
 					continentArray.get(i).getListOfTerritories().put(territoryName, territory);
 				} else {
-					System.out.println("Territory name: " + territoryName + " is invalid.");
+					bot.sendMessageToChat("Territory name: " + territoryName + " is invalid.");
 				}
 			}
 		}
