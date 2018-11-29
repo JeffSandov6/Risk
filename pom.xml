@@ -65,6 +65,11 @@
 					<maxmem>256m</maxmem>
 					<!-- aggregated reports for multi-module projects -->
 					<aggregate>true</aggregate>
+					<instrumentation>
+                    <ignoreMethodAnnotations>
+                        <ignoreMethodAnnotation>JCK.Risk.CoverageIgnore</ignoreMethodAnnotation>
+                    </ignoreMethodAnnotations>
+                </instrumentation>
 				</configuration>
 			</plugin>
 			<plugin>

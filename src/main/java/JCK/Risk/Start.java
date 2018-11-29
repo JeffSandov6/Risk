@@ -20,7 +20,7 @@ import JCK.Risk.Locations.Territory;
 import JCK.Risk.Players.Player;
 
 public class Start {
-
+	@CoverageIgnore
 	public static void main(String[] args) throws IOException, InterruptedException, TelegramApiException {
 		
 		
