@@ -11,8 +11,12 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Stack;
+
+import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
+
 import java.util.Random;
 
+import JCK.Risk.TelegramGameBot;
 import JCK.Risk.Locations.Continent;
 import JCK.Risk.Locations.Territory;
 import JCK.Risk.Players.Player;
@@ -20,6 +24,7 @@ import JCK.Risk.Players.Player;
 public class Game {
 	
 	int numberOfPlayers;
+
 	
 	//this is the array list that will be used for the turns
 	//TODO: this should be in the class of turns
@@ -41,7 +46,7 @@ public class Game {
 		}
 	}
 	
-	public void initializeGame(int numPlayers) throws IOException 
+	public void initializeGame(int numPlayers, TelegramGameBot bot) throws IOException, InterruptedException, TelegramApiException 
 	{
 		
 		this.numberOfPlayers = numPlayers;
@@ -52,43 +57,26 @@ public class Game {
 		for(int i = 1; i <= numPlayers; i++)
 		{
 			
-			System.out.println("What's the name of player #" + i + "?");
-			BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-
-			String playerName = br.readLine();
-			
+			String playerName = bot.sendMessageGetResponse("What's the name of player #" + i + "?");
 			
 			int turnValue = randNumber.nextInt(1000); //random number from 0 to 999
-
-
-			
-			
 			Player newPlayer = new Player();
-			
 			newPlayer.createPlayer(playerName, turnValue);
 			
-			
 			playersArray.add(newPlayer);
-			
 			//add this new player to the array
 			//then we're going to sort the array based on that value
-			
-			
-			
 		}
 		
 		//sort the array here by the turnValue
 		Collections.sort(playersArray, Game.COMPARE_BY_VALUE);
-		
-		
-		
-		
-		System.out.println("The following is the turn order:");
+		bot.sendMessageToChat("The following is the turn order:");
 		
 		for(int i = 0; i < playersArray.size(); i++)
 		{
-			playersArray.get(i).rollValue = i + 1; //sets the roll value if we need to set it			
-			System.out.println((i + 1) + ". " + playersArray.get(i).name);
+			playersArray.get(i).rollValue = i + 1; //sets the roll value if we need to set it	
+			bot.sendMessageToChat((i + 1) + "." + playersArray.get(i).name);
+//			System.out.println((i + 1) + ". " + playersArray.get(i).name);
 		}
 	}
 	
