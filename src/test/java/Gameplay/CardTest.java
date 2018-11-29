@@ -56,6 +56,7 @@ public class CardTest {
 		Assert.assertEquals(1, card.getCardIndex("cavalry"));
 		Assert.assertEquals(2, card.getCardIndex("artillery"));
 		Assert.assertEquals(3, card.getCardIndex("wild"));
+		Assert.assertEquals(-1, card.getCardIndex("test"));
 
 	}
 	
@@ -80,4 +81,34 @@ public class CardTest {
 		Assert.assertEquals(5 * (5-2), card.getNextSetValue());
 	}
 
+	@Test
+	public void getCardTest() {
+		card.cardsArray.set(0, 0);
+		card.cardsArray.set(1, 0);
+		card.cardsArray.set(3, 0);
+		Assert.assertEquals(card.getCard(), "Artillery");
+	}
+	@Test
+	public void turnInSameCardsTest() {
+		ArrayList<String> cardList = new ArrayList<String>();
+		cardList.add("infantry");
+		cardList.add("infantry");
+		cardList.add("infantry");
+		cardList.add("cavalry");
+		ArrayList<String> expected = new ArrayList<String>();
+		expected.add("cavalry");
+		Assert.assertEquals(expected, card.turnInSameCards(cardList));
+	}
+	
+	@Test
+	public void turnInDiffCardsTest() {
+		ArrayList<String> cardList = new ArrayList<String>();
+		cardList.add("infantry");
+		cardList.add("cavalry");
+		cardList.add("artillery");
+		cardList.add("cavalry");
+		ArrayList<String> expected = new ArrayList<String>();
+		expected.add("cavalry");
+		Assert.assertEquals(expected, card.turnInDiffCards(cardList));
+	}
 }
