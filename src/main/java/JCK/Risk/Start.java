@@ -46,7 +46,7 @@ public class Start {
 		ArrayList<Continent> continentArray = startGame.getContinentArray();
 		
 		
-		cards.initializeCards();
+		cards.initializeCards(bot);
 		
 		// initializes the territories at the start by assigning them to each player based on choice
 		startGame.chooseInitialTerritories();

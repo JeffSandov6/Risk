@@ -3,25 +3,37 @@ import java.io.IOException;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.Random;
 
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.telegram.telegrambots.ApiContextInitializer;
+import org.telegram.telegrambots.meta.TelegramBotsApi;
+import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
+import org.telegram.telegrambots.meta.exceptions.TelegramApiRequestException;
 
+import JCK.Risk.TelegramGameBot;
 import JCK.Risk.Gameplay.Card;
 import JCK.Risk.Players.Player;
 
 public class CardTest {
 	Card card;
+	
 
 	@Before
-	public void setup() {
+	public void setup() throws TelegramApiRequestException {
 		card = new Card();
+		ApiContextInitializer.init();
+		TelegramBotsApi botsApi = new TelegramBotsApi();
+		botsApi.registerBot(new TelegramGameBot());
+
+		TelegramGameBot bot = new TelegramGameBot();
+		card.initializeCards(bot);
 	}
 	@Test
-	public void createTest() {		
-		card.initializeCards();
+	public void createTest() {	
 		List<Integer> cards = card.cardsArray;
 
 		Assert.assertEquals(14,(int) cards.get(0));
@@ -40,7 +52,7 @@ public class CardTest {
 	}
 
 	@Test
-	public void checkCardsTest() {
+	public void checkCardsTest() throws InterruptedException, TelegramApiException {
 		Player testPlayer = new Player();
 		testPlayer.addCardToList("Artillery");
 		try {

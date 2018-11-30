@@ -18,6 +18,14 @@ import JCK.Risk.Locations.Continent;
 import JCK.Risk.Locations.Territory;
 import JCK.Risk.Players.Player;
 
+//TODO: Refactor the turns class to have a sort of "turn manager" w an enum
+//Observer class
+//Twitter
+//Amazon
+//finish bot
+//80% test coverage
+//build badge
+
 public class Turns {
 	
 	Card cards = new Card();
@@ -26,15 +34,19 @@ public class Turns {
 
 	
 	@CoverageIgnore
-	public Turns() {
-		
+	public Turns(TelegramGameBot bot) {
+		this.bot = bot;
 	}
 	@CoverageIgnore
 	public Turns(Game game, TelegramGameBot bot) throws IOException, InterruptedException, TelegramApiException {
 		this.bot = bot;
 		int playerTurnCount = 0;
 		bot.sendMessageToChat("initialized the turns");
+		int additionalUnits = 0;
+		
 		while (game.getPlayersArray().size() != 1) { //
+			additionalUnits = 0;
+
 			skip = false;
 			
 			Undo undo = new Undo(game.playersArray, game.continentArray);
@@ -42,29 +54,34 @@ public class Turns {
 			Player player = game.getPlayersArray().get(playerTurnCount);
 			
 			bot.sendMessageToChat("It is " + player.getName() + "'s turn.");
-			// purchasing phase
-			bot.sendMessageToChat("\n PURCHASE PHASE");
+			bot.sendMessageToChat("PURCHASE PHASE");
 			// first ask if the user wants to purchase credits
 			purchasePhase(player, game);
 			if(skip == true) {
+				bot.sendMessageToChat("user timeout, we will skip to the next player's turn");
 				continue;
 			}
 			
 			
 			//begin card phase
-			System.out.println("CARD PHASE");
-			System.out.println("The next set turned in will grant " + cards.getNextSetValue() + "additional units");
-			int additionalUnits = cards.checkCards(player);
+			bot.sendMessageToChat("CARD PHASE");
+			bot.sendMessageToChat("The next set turned in will grant " + cards.getNextSetValue() + "additional units");
+			additionalUnits = cards.checkCards(player);
 			
 			// place new soldiers phase
-			System.out.println("\nPLACE  NEW ARMIES PHASE");
+			bot.sendMessageToChat("PLACE  NEW ARMIES PHASE");
 			additionalUnits+= getExtraArmiesForContinentsOwned(player, game.getContinentArray());
 			additionalUnits+= getExtraArmiesForTerrsOwned(player);
 			
 			placeNewSoldiers(game, player, additionalUnits);
+			if(skip == true) {
+				bot.sendMessageToChat("user timeout, we will skip to the next player's turn");
+				continue;
+			}
+			
 			
 			// start battle phase
-			System.out.println("\nBATTLE PHASE");
+			bot.sendMessageToChat("BATTLE PHASE");
 			boolean playerWonABattle = attackingPhaseFor(player, game.getContinentArray(), game);
 
 			playerTurnCount = playerTurnCount + numLeftSidePlayersEliminated(game, player);
@@ -72,15 +89,25 @@ public class Turns {
 			if(playerWonABattle == true)
 			{
 				String cardWon = cards.getCard();
-				System.out.println("For winning at least 1 battle, you win card of type " + cardWon);
+				bot.sendMessageToChat("For winning at least 1 battle, you win card of type " + cardWon);
 				player.addCardToList(cardWon);
-				
+			}
+			
+			if(skip == true) {
+				bot.sendMessageToChat("user timeout, we will skip to the next player's turn");
+				continue;
 			}
 			
 			
 			// fortify territories phase
-			System.out.println("\nFORTIFY PHASE");
+			bot.sendMessageToChat("FORTIFY PHASE");
 			fortifyTerritory(player, game.getContinentArray());
+			
+			if(skip == true) {
+				bot.sendMessageToChat("user timeout, we will skip to the next player's turn");
+				continue;
+			}
+			
 			
 			// if the player chooses to undo their turn -- returns to the beginning of the loop without
 			// finishing loop
@@ -88,15 +115,14 @@ public class Turns {
 				continue;
 			}
 			
-
-			
 			playerTurnCount++;
 			playerTurnCount %= game.getPlayersArray().size();
-
-
-			additionalUnits = 0;
-			System.out.println("END OF TURN\n\n");
+			
+			bot.sendMessageToChat("END OF TURN");
 		}
+		
+		bot.sendMessageToChat("THE WINNER OF THE GAME IS " + game.getPlayersArray().get(0).getName());
+		bot.sendMessageToChat("THANKS FOR PLAYING RISK, GOODBYE!");
 	}
 	
 	
@@ -137,7 +163,9 @@ public class Turns {
 		bot.sendMessageToChat("Transfer\t\t");
 		userInput = bot.sendMessageGetResponse("None\t\t0");
 		
-		
+		if (!checkIfUserResponded(userInput)) {
+			return;
+		}
 		
 		if (userInput.toLowerCase().equals("undo") && player.getCurrentCredit() >= 5) {
 			player.purchaseUndoAction();
@@ -150,9 +178,14 @@ public class Turns {
 			bot.sendMessageToChat("Artillery - " + cards.cardsArray.get(2));
 			userInput = bot.sendMessageGetResponse("Wild - " + cards.cardsArray.get(3));
 			
+			if (!checkIfUserResponded(userInput)) {
+				return;
+			}
+			
 			int cardIndex = cards.getCardIndex(userInput.toLowerCase());
+			
 			// if the card inputted is invalid then just return
-			if (cardIndex == 1) {
+			if (cardIndex == -1) {
 				return;
 			}
 			//if it is a good index, then check if the num of cards at the index is > 0
@@ -176,8 +209,12 @@ public class Turns {
 					bot.sendMessageToChat(otherPlayer.getName());
 				}
 			}
-			//TODO: update to skip to next turn
 			userInput = bot.sendMessageGetResponse("Enter a username");
+			
+			if (!checkIfUserResponded(userInput)) {
+				return;
+			}
+			
 			for (Player otherPlayer : players) {
 				//check the input to the otherPlayer to see if it matches
 				// if it doesnt keep searching
@@ -185,12 +222,16 @@ public class Turns {
 					continue;
 				} else {
 					// if it does then ask how many credits to transfer
-					System.out.println("How many credits would you like to transfer to " + otherPlayer.getName() + "?");
-					userInput = game.takeUserInput();
+					userInput = bot.sendMessageGetResponse("How many credits would you like to transfer to " + otherPlayer.getName() + "?");
+					
+					if (!checkIfUserResponded(userInput)) {
+						return;
+					}
+					
 					int transferredCredit = Integer.parseInt(userInput);
 					// check if the credits to be transferred are valid 
 					if (transferredCredit < 0 || transferredCredit > player.getCurrentCredit()) {
-						System.out.println("Invalid amount of credits entered.");
+						bot.sendMessageToChat("Invalid amount of credits entered.");
 					} else {
 						// if the transferredcredits are valid; i add the players credit onto the otherPlayers credit
 						player.useCredit(transferredCredit);
@@ -211,88 +252,103 @@ public class Turns {
 	 * @param undo instance of the class Undo
 	 * @param player current player
 	 * @return true or false, in regards to whether the player wants to undo or not
+	 * @throws TelegramApiException 
+	 * @throws InterruptedException 
 	 */
 	@CoverageIgnore
-	private boolean undoTurn(Game game, Undo undo, Player player) {
+	private boolean undoTurn(Game game, Undo undo, Player player) throws InterruptedException, TelegramApiException {
 		// checks whether or not the current player has an undo action available 
-		System.out.println("You currently have " + player.getUndoActionsAvailable() + " undo actions available.");
+		bot.sendMessageToChat("You currently have " + player.getUndoActionsAvailable() + " undo actions available.");
+		
 		if (player.getUndoActionsAvailable() <= 0) {
-			System.out.println("You cannot use any undo actions because you do not have any.");
+			bot.sendMessageToChat("You cannot use any undo actions because you do not have any.");
 			return false;
 		}
+		
 		// keeps proceeding if the user has more than 0 undoActionsAvailable
-		System.out.println("\nWould you like to undo the last turn? Yes or no?");
-		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-		try {
-			String userInput = br.readLine();
-			userInput = userInput.toLowerCase();
-			if (userInput.equals("yes")) {
-				if (undo != null) {
-					System.out.println("Undoing to the beginning of your turn.");
-					
-					//sets the continent array and players array to the previous state
-					game.continentArray = (ArrayList<Continent>) undo.getPastContinent();
-					game.playersArray = (ArrayList<Player>) undo.getPastPlayers();
-					player.useUndoAction();
-					
-					return true;
-				} else {
-					System.out.println("Cannot undo any turns because no turns have occurred.");
-					return false;
-				}
-			}
-		} catch (IOException e) {
-			System.out.println("Invalid input");
+		String userInput = bot.sendMessageGetResponse("Would you like to undo the last turn? Yes or no?").toLowerCase();
+		if (!checkIfUserResponded(userInput)) {
+			return false;
 		}
 		
+		if (userInput.equals("yes")) {
+			if (undo != null) {
+				bot.sendMessageToChat("Undoing to the beginning of your turn.");
+				
+				//sets the continent array and players array to the previous state
+				game.continentArray = (ArrayList<Continent>) undo.getPastContinent();
+				game.playersArray = (ArrayList<Player>) undo.getPastPlayers();
+				player.useUndoAction();
+				
+				return true;
+			} else {
+				bot.sendMessageToChat("Cannot undo any turns because no turns have occurred.");
+				return false;
+			}
+		}
 		return false;
-
 	}
+	
+	
 	@CoverageIgnore
-	private void fortifyTerritory(Player player, ArrayList<Continent> continentArray) throws IOException
+	private void fortifyTerritory(Player player, ArrayList<Continent> continentArray) throws IOException, TelegramApiException, InterruptedException
 	{
-		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-		System.out.println("You may choose to move units from 1 owned territory to another, type yes if you want to");
-		String userInput = br.readLine().toLowerCase();
+		String userInput = bot.
+				sendMessageGetResponse("You may choose to move units from 1 owned territory to another, type yes if you want to").
+				toLowerCase();
 		
-		if(Objects.equals(userInput, "yes") == false)
+		if (!checkIfUserResponded(userInput)) {
+			return;
+		}
+		
+		if(!Objects.equals(userInput, "yes"))
 		{
-			System.out.println("Okay, we have reached the end of the fortify phase");
+			bot.sendMessageToChat("Okay, we have reached the end of the fortify phase");
 			return;
 		}
 		
 		displayPlayerTerrs(player, continentArray, "fortify");
 		
 		
-		System.out.println("\nEnter the territory you want to move units from"
+		userInput = bot.sendMessageGetResponse("Enter the territory you want to move units from"
 				+ " (has to have more than 1 unit, else we skip this phase)");
-		userInput = br.readLine();
+		if (!checkIfUserResponded(userInput)) {
+			return;
+		}
+
 		while (!playerOwnsTerritory(userInput, player, continentArray)) {
-			System.out.println("Please enter a territory you own: ");
-			userInput = br.readLine();
+			userInput = bot.sendMessageGetResponse("Please enter a territory you own: ");
+			if (!checkIfUserResponded(userInput)) {
+				return;
+			}
 		}
 		
 		Territory donatingTerr = getTerritoryObject(userInput, continentArray);
 		
 		if(donatingTerr.getSoldierCount() < 2)
 		{
-			System.out.print("There's only 1 unit here, we are skipping this phase");
+			bot.sendMessageToChat("There's only 1 unit here, we are skipping this phase");
 			return;
 		}
 		
 		
-		System.out.println("\nChoose the territory you want to move units to");
-		String newInput = br.readLine();
+		String newInput = bot.sendMessageGetResponse("Choose the territory you want to move units to");
+		if (!checkIfUserResponded(newInput)) {
+			return;
+		}
+		
 		while (!playerOwnsTerritory(newInput, player, continentArray) || ( Objects.equals(newInput, userInput) == true )) {
-			System.out.println("Please enter a territory you own: ");
-			newInput = br.readLine();
+			
+			newInput = bot.sendMessageGetResponse("Please enter a territory you own: ");
+			if (!checkIfUserResponded(userInput)) {
+				return;
+			}			
 		}
 		
 		Territory receivingTerr = getTerritoryObject(newInput, continentArray);
-		
 		migrateUnitsFromOldToNewTerritory(donatingTerr, receivingTerr);
 		
-		System.out.println("We have reached the end of the fortify phase");
+		bot.sendMessageToChat("We have reached the end of the fortify phase");
 
 	}
 	
@@ -315,15 +371,12 @@ public class Turns {
 				{
 					leftSideEliminated++;
 				}
-				System.out.println(thisPlayer.getName() + " has no more territories and has thus been eliminated");
+				bot.sendMessageToChat(thisPlayer.getName() + " has no more territories and has thus been eliminated");
 				game.getPlayersArray().remove(i);
 				
 				//TODO: TRANSFER OVER THE CARDS TO THE WINNER PLAYER WHO ELIMINATED THEM
 			}
 		}
-		
-		
-		
 		return leftSideEliminated;
 	}
 	
@@ -362,41 +415,54 @@ public class Turns {
 //	 * @param player
 //	 */
 	@CoverageIgnore
-	private void placeNewSoldiers(Game game, Player player, int numUnitsAvailable) {
-		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+	private void placeNewSoldiers(Game game, Player player, int numUnitsAvailable) throws InterruptedException, TelegramApiException {
 		ArrayList<Continent> continentArray = game.getContinentArray();
 		
 		while (numUnitsAvailable > 0) {
-			try {
-				// asks the user which territory to place soldier onto
-				game.displayWorld();
-				System.out.println(player.getName() + ", you have " + numUnitsAvailable + " soldiers to place. Choose a territory you own to place: ");
-				String userInput = br.readLine();
-				while (!playerOwnsTerritory(userInput, player, continentArray)) {
-					System.out.println("Please enter a territory you own: ");
-					userInput = br.readLine();
-				}
-				
-				// asks the user how many soldier to place on the territory defined in the variable userInput
-				System.out.println("How many soldier do you want to place on " + userInput + "?");
-				int soldiersToPlace = Integer.parseInt(br.readLine());
-				while (soldiersToPlace > numUnitsAvailable || soldiersToPlace < 0) {
-					System.out.println("Enter an amount less than or equal to the amount you have to place.");
-					soldiersToPlace = Integer.parseInt(br.readLine());
-				}
-				
-				// places the amount of soldiers onto the territory the user defines
-				for (int i = 0; i < continentArray.size(); i++) {
-					if (continentArray.get(i).getTerritory(userInput) != null) {
-						HashMap<String, Territory> listOfTerritories = continentArray.get(i).getListOfTerritories();
-						listOfTerritories.put(userInput, listOfTerritories.get(userInput).addSoldiers(soldiersToPlace));
-					}
-				}
-				// subtracts the number of soldiers the player can place by the number of soldiers just placed
-				numUnitsAvailable = numUnitsAvailable - soldiersToPlace;
-			} catch (IOException e) {
-				System.out.println("You have entered an invalid input. Please try again.");
+			// asks the user which territory to place soldier onto
+			game.displayWorld();
+			String userInput = bot.sendMessageGetResponse(player.getName() + ", you have " + numUnitsAvailable + " soldiers to place. Choose a territory you own to place: ");
+			
+			if (!checkIfUserResponded(userInput)) {
+				return;
 			}
+			
+			while (!playerOwnsTerritory(userInput, player, continentArray)) {
+				userInput = bot.sendMessageGetResponse("Please enter a territory you own: ");
+				
+				if (!checkIfUserResponded(userInput)) {
+					return;
+				}
+			}
+			
+			// asks the user how many soldier to place on the territory defined in the variable userInput
+			
+			String numSoldierResponse = bot.sendMessageGetResponse("How many soldier do you want to place on " + userInput + "?");
+			if (!checkIfUserResponded(numSoldierResponse)) {
+				return;
+			}
+			
+			int soldiersToPlace = Integer.parseInt(numSoldierResponse);
+			
+			while (soldiersToPlace > numUnitsAvailable || soldiersToPlace < 0) {
+				
+				numSoldierResponse = bot.sendMessageGetResponse("Enter an amount less than or equal to the amount you have to place.");
+				if (!checkIfUserResponded(numSoldierResponse)) {
+					return;
+				}
+				
+				soldiersToPlace = Integer.parseInt(numSoldierResponse);
+			}
+			
+			// places the amount of soldiers onto the territory the user defines
+			for (int i = 0; i < continentArray.size(); i++) {
+				if (continentArray.get(i).getTerritory(userInput) != null) {
+					HashMap<String, Territory> listOfTerritories = continentArray.get(i).getListOfTerritories();
+					listOfTerritories.put(userInput, listOfTerritories.get(userInput).addSoldiers(soldiersToPlace));
+				}
+			}
+			// subtracts the number of soldiers the player can place by the number of soldiers just placed
+			numUnitsAvailable = numUnitsAvailable - soldiersToPlace;
 		}
 	}
 	
@@ -420,64 +486,73 @@ public class Turns {
 	}
 
 	@CoverageIgnore
-	private boolean attackingPhaseFor(Player player, ArrayList<Continent> continentArray, Game game) throws IOException
+	private boolean attackingPhaseFor(Player player, ArrayList<Continent> continentArray, Game game) throws IOException, InterruptedException, TelegramApiException
 	{
 		boolean wonAtLeast1Battle = false;
-		displayPlayerTerrs(player, continentArray, "attack");
-		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		displayPlayerTerrs(player, continentArray, "attack");		
+		String option = bot.sendMessageGetResponse("Do you want to make an attack, yes or no?").toLowerCase();
 		
-		System.out.println("Do you want to make an attack, yes or no?");
-		String option = br.readLine().toLowerCase();
-		
+		if (!checkIfUserResponded(option)) {
+			return wonAtLeast1Battle;
+		}
+				
 		while(Objects.equals("yes", option))
 		{
-			System.out.println("Okay, type in the name of the territory you want to attack from");
-			String attackingTerr = br.readLine();
-
+			String attackingTerr = bot.sendMessageGetResponse("Okay, type in the name of the territory you want to attack from");
+			if (!checkIfUserResponded(attackingTerr)) {
+				return wonAtLeast1Battle;
+			}
 			
 			while (!playerOwnsTerritory(attackingTerr, player, continentArray)) {
-				System.out.println("Please enter a territory you own: ");
-				attackingTerr = br.readLine();
-				
+				attackingTerr = bot.sendMessageGetResponse("Please enter a territory you own:");
+				if (!checkIfUserResponded(attackingTerr)) {
+					return wonAtLeast1Battle;
+				}
 			}
 			
 			Territory attackingTerritory = getTerritoryObject(attackingTerr, continentArray);
 			
 			if(attackingTerritory.getSoldierCount() < 2)
 			{
-				System.out.println("You don't have enough soldiers to attack from here, sorry!");
-				System.out.println("Do you want to make another attack, yes or no?");
-				option = br.readLine().toLowerCase();
+				bot.sendMessageToChat("You don't have enough soldiers to attack from here, sorry!");
+				option = bot.sendMessageGetResponse("Do you want to make another attack, yes or no?").toLowerCase();
+				if (!checkIfUserResponded(option)) {
+					return wonAtLeast1Battle;
+				}
 				continue;
 			}
 			
 			
-			System.out.println("The territories you can attack from here are");
+			bot.sendMessageToChat("The territories you can attack from here are");
 			ArrayList<Territory> attackableAdjs = checkAttackableAdjacencies(player, attackingTerritory, continentArray);
 			if( attackableAdjs.size() == 0)
 			{
-				System.out.println("NONE, YOU OWN THEM ALL!");
-				System.out.println("Do you want to make another attack, yes or no?");
-				option = br.readLine().toLowerCase();
+				bot.sendMessageToChat("NONE, YOU OWN THEM ALL!");
+				option = bot.sendMessageGetResponse("Do you want to make another attack, yes or no?").toLowerCase();
+				
+				if (!checkIfUserResponded(option)) {
+					return wonAtLeast1Battle;
+				}
 				continue;
 			}
 			
 			
-			System.out.println("\nType the name of the territory you want to attack. If you don't want to attack one, type anything else.");
-			String defendingTerr = br.readLine();
+			String defendingTerr = bot.sendMessageGetResponse("Type the name of the territory you want to attack. If you don't want to attack one, type anything else.");
 			Territory defendingTerritory = getTerritoryObject(defendingTerr, continentArray);
 			
 			if(Objects.equals(defendingTerritory, null))
 			{
-				System.out.println("Okay, you chose not to attack");
-				System.out.println("Do you want to make another attack, yes or no?");
-				option = br.readLine().toLowerCase();
+				bot.sendMessageToChat("Okay, you chose not to attack");
+				option = bot.sendMessageGetResponse("Do you want to make another attack, yes or no?").toLowerCase();
+				
+				if (!checkIfUserResponded(option)) {
+					return wonAtLeast1Battle;
+				}
 				continue;
 			}
 			
 			String defTerrOwner = defendingTerritory.getOwner();
-			
-			System.out.println(defTerrOwner + ", your territory " + defendingTerr + " is being attacked!");
+			bot.sendMessageToChat(defTerrOwner + ", your territory " + defendingTerr + " is being attacked!");
 			
 			//reaching here means we have a valid defending & attacking terr
 			String winnerOfBattle = beginBattle(defendingTerritory, attackingTerritory);
@@ -495,13 +570,14 @@ public class Turns {
 			}
 			
 			
-			System.out.println("\nDo you want to make another attack, yes or no?");
-			option = br.readLine().toLowerCase();
+			option = bot.sendMessageGetResponse("\nDo you want to make another attack, yes or no?").toLowerCase();
+			if (!checkIfUserResponded(option)) {
+				return wonAtLeast1Battle;
+			}
 		}
 
-		System.out.println("Okay, the attack phase is over");
+		bot.sendMessageToChat("Okay, the attack phase is over");
 		return wonAtLeast1Battle;
-		
 	}
 	
 	
@@ -537,7 +613,7 @@ public class Turns {
 				continue;
 			}
 			
-			System.out.println(adjTerr.getTerritoryName() + " which has " + adjTerr.getSoldierCount() + " soldier(s) on it");
+			bot.sendMessageToChat(adjTerr.getTerritoryName() + " which has " + adjTerr.getSoldierCount() + " soldier(s) on it");
 			attackables.add(adjTerr);
 			
 		}
@@ -547,11 +623,11 @@ public class Turns {
 	@CoverageIgnore
 	private void displayPlayerTerrs(Player player, ArrayList<Continent> continentArray, String phaseType)
 	{
-		System.out.println("THESE ARE THE TERRITORIES YOU OWN");
+		bot.sendMessageToChat("THESE ARE THE TERRITORIES YOU OWN");
 		for(int i = 0; i < player.getTerritoriesOwned().size(); i++)
 		{
 			String terrName = player.getTerritoriesOwned().get(i);
-			System.out.print(i + ". " + terrName);
+			bot.sendMessageToChat(i + ". " + terrName);
 			
 			for(int j = 0; j < continentArray.size(); j++)
 			{
@@ -559,16 +635,12 @@ public class Turns {
 				
 				if(currTerritory != null)
 				{
-					System.out.println(", the number of soldiers you have here are " + currTerritory.getSoldierCount());
+					bot.sendMessageToChat("the number of soldiers you have here are " + currTerritory.getSoldierCount());
 					if(Objects.equals(phaseType, "attack"))
 					{
-						System.out.println("These are the territories you can attack from here:");
-						System.out.println(currTerritory.getAdjacencies());
-						System.out.println();
-						
+						bot.sendMessageToChat("These are the territories you can attack from here:");
+						bot.sendMessageToChat(currTerritory.getAdjacencies().toString());
 					}
-					
-					
 					break;
 				}
 			}
@@ -578,36 +650,33 @@ public class Turns {
 	
 	
 	@CoverageIgnore
-	private void migrateUnitsFromOldToNewTerritory(Territory donaterTerr, Territory receiverTerr)
+	private void migrateUnitsFromOldToNewTerritory(Territory donaterTerr, Territory receiverTerr) throws TelegramApiException, InterruptedException
 	{
 		int currNumSoldiers = donaterTerr.numSoldiersHere;
 
 		if(currNumSoldiers == 2)
 		{
-			System.out.println("You moved 1 soldier to your receiving territory");
+			bot.sendMessageToChat("You moved 1 soldier to your receiving territory");
 		}
 		
 		
-		System.out.println("You must reinforce your receiving territory with at least 1 soldier.");
-		System.out.println("You currently have " + currNumSoldiers + " in your donating territory.");
-		System.out.println("Input a valid number, else we will only be moving one to your receiving territory");
+		bot.sendMessageToChat("You must reinforce your receiving territory with at least 1 soldier.");
+		bot.sendMessageToChat("You currently have " + currNumSoldiers + " in your donating territory.");
 		
 		int migratingSoldiers = 1;
-		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-
+		String userResponse = bot.sendMessageGetResponse("Input a valid number, else we will only be moving one to your receiving territory");
+		
 		try {
-			migratingSoldiers = Integer.parseInt(br.readLine());
-		} catch (IOException e) {
-			System.out.println("Okay, 1 it is");
+			migratingSoldiers = Integer.parseInt(userResponse);
+		} catch (NumberFormatException ex) {
+			bot.sendMessageToChat("Okay, 1 it is");
 			migratingSoldiers = 1;
 		}
-		
-		
+				
 		int numSoldiersStayed = currNumSoldiers - migratingSoldiers;
 		
 		donaterTerr.numSoldiersHere = numSoldiersStayed;
 		receiverTerr.numSoldiersHere = migratingSoldiers;
-
 	}
 	
 
@@ -632,50 +701,44 @@ public class Turns {
 	
 	//TODO: RENAME TO LET USER KNOW DEFENDER IS ON THE LEFT?
 	@CoverageIgnore
-	private String beginBattle(Territory defendingTerr, Territory attackingTerr)
+	private String beginBattle(Territory defendingTerr, Territory attackingTerr) throws InterruptedException, TelegramApiException
 	{
 		String attackerName = attackingTerr.getOwner();
 		String defenderName = defendingTerr.getOwner();
-		
-		//int maxAttackingSoldiers = attackingTerr.numSoldiersHere - 1;
-		//int maxDefendingSoldiers = defendingTerr.numSoldiersHere - 1;
 		
 		while(attackingTerr.numSoldiersHere != 1 || defendingTerr.numSoldiersHere != 0)
 		{
 			int attackingSoldiers = this.numAttackers(attackingTerr);
 			int defendingSoldiers = this.numDefenders(defendingTerr);
 			
-			System.out.println(attackerName + " your rolls are "); 
+			bot.sendMessageToChat(attackerName + " your rolls are "); 
 			Integer[] attackerRolls = this.getRollsSorted(attackingSoldiers);
 			
-			System.out.println(defenderName + " your rolls are "); 
+			bot.sendMessageToChat(defenderName + " your rolls are "); 
 			Integer[] defenderRolls = this.getRollsSorted(defendingSoldiers);
 						
 			int i = 0;
-			
-			System.out.println("The results are:");
+			bot.sendMessageGetResponse("The results are:");
 			while(i < defenderRolls.length && i < attackerRolls.length)
 			{
-				System.out.print("The winner for the roll " + (i+1)  + " is ");
+				bot.sendMessageToChat("The winner for the roll " + (i+1)  + " is ");
 				
 				if(attackerRolls[i] > defenderRolls[i])
 				{
-					System.out.println(attackerName);
+					bot.sendMessageToChat(attackerName);
 					defendingTerr.numSoldiersHere -= 1;
 				}
 				else
 				{
-					System.out.println(defenderName);
+					bot.sendMessageToChat(defenderName);
 					attackingTerr.numSoldiersHere -= 1;
-
 				}
 				
 				i++;
-				
 			}
 			
-			System.out.println(attackerName + " remaining soldiers are " + attackingTerr.numSoldiersHere);
-			System.out.println(defenderName + " remaining soldiers are " + defendingTerr.numSoldiersHere);
+			bot.sendMessageToChat(attackerName + " remaining soldiers are " + attackingTerr.numSoldiersHere);
+			bot.sendMessageToChat(defenderName + " remaining soldiers are " + defendingTerr.numSoldiersHere);
 			
 			if(attackingTerr.numSoldiersHere == 1 || defendingTerr.numSoldiersHere == 0)
 			{
@@ -684,16 +747,16 @@ public class Turns {
 		}
 		
 		
-		System.out.print("The winner of this battle is: ");
+		bot.sendMessageToChat("The winner of this battle is: ");
 		if(attackingTerr.numSoldiersHere == 1)
 		{
-			System.out.println(defenderName);
+			bot.sendMessageToChat(defenderName);
 			return defenderName;
 		}
 		else
 		{
-			System.out.println(attackerName);
-			System.out.println(defendingTerr.territoryName + " is now yours");
+			bot.sendMessageToChat(attackerName);
+			bot.sendMessageToChat(defendingTerr.territoryName + " is now yours");
 			return attackerName;
 		}
 		
@@ -704,17 +767,12 @@ public class Turns {
 	public Integer[] getRollsSorted(int numberOfRolls)
 	{
 		Integer[] rollsArray = new Integer[numberOfRolls];
-		
 		for(int i = 0; i < rollsArray.length; i++)
 		{
 			rollsArray[i] = Dice.roll();
-			System.out.println(rollsArray[i]);
-			
+			bot.sendMessageToChat(rollsArray[i].toString());
 		}
-		
-		
 		Arrays.sort(rollsArray, Collections.reverseOrder());
-		
 		return rollsArray;
 	}
 	

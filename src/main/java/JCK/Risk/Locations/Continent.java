@@ -41,7 +41,6 @@ public class Continent {
 		for (String key : listOfTerritories.keySet()) {
 			bot.sendMessageToChat(key + "\t" + listOfTerritories.get(key).getOwner() + "\t" + listOfTerritories.get(key).getAdjacencies() + "\t" + listOfTerritories.get(key).getSoldierCount());
 		}
-		System.out.println();
 	}
 	
 	public Territory getTerritory(String territoryName)
