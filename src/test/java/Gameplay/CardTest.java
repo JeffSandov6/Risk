@@ -3,6 +3,7 @@ import java.io.IOException;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.Random;
 
 import org.junit.Assert;
@@ -10,11 +11,13 @@ import org.junit.Before;
 import org.junit.Test;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
+import JCK.Risk.TelegramGameBot;
 import JCK.Risk.Gameplay.Card;
 import JCK.Risk.Players.Player;
 
 public class CardTest {
 	Card card;
+	//TelegramGameBot bot;
 
 	@Before
 	public void setup() {
@@ -22,7 +25,7 @@ public class CardTest {
 	}
 	@Test
 	public void createTest() {		
-		card.initializeCards(null);
+		card.initializeCards(new TelegramGameBot());
 		List<Integer> cards = card.cardsArray;
 
 		Assert.assertEquals(14,(int) cards.get(0));
