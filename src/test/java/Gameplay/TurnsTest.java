@@ -2,10 +2,13 @@ package Gameplay;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.telegram.telegrambots.ApiContextInitializer;
+import org.telegram.telegrambots.meta.TelegramBotsApi;
 
 import JCK.Risk.Locations.Continent;
 import JCK.Risk.Locations.Territory;
 import JCK.Risk.Gameplay.Turns;
+import JCK.Risk.TelegramGameBot;
 import JCK.Risk.Gameplay.Game;
 import JCK.Risk.Players.Player;
 
@@ -21,6 +24,12 @@ public class TurnsTest {
 	@Before
 	public void setup() {
 		game = new Game();
+		
+		ApiContextInitializer.init();
+		TelegramBotsApi botsApi = new TelegramBotsApi();
+		botsApi.registerBot(new TelegramGameBot());
+		TelegramGameBot bot = new TelegramGameBot();
+		
 		Player testPlayer1 = new Player();
 		Player testPlayer2 = new Player();
 		testPlayer1.createPlayer("TestPlayer1",0);
@@ -43,7 +52,7 @@ public class TurnsTest {
 		testContinent.getListOfTerritories().get("TestTerritory2").setOwner(testPlayer2.getName());
 		game.continentArray.add(testContinent);
 
-		turns = new Turns();
+		turns = new Turns(bot);
 	}
 	@Test
 	public void createTest() {

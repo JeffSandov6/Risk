@@ -34,8 +34,8 @@ public class Turns {
 
 	
 	@CoverageIgnore
-	public Turns() {
-		
+	public Turns(TelegramGameBot bot) {
+		this.bot = bot;
 	}
 	@CoverageIgnore
 	public Turns(Game game, TelegramGameBot bot) throws IOException, InterruptedException, TelegramApiException {
