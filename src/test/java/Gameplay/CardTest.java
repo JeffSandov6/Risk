@@ -8,6 +8,7 @@ import java.util.Random;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
 import JCK.Risk.Gameplay.Card;
 import JCK.Risk.Players.Player;
@@ -21,7 +22,7 @@ public class CardTest {
 	}
 	@Test
 	public void createTest() {		
-		card.initializeCards();
+		card.initializeCards(null);
 		List<Integer> cards = card.cardsArray;
 
 		Assert.assertEquals(14,(int) cards.get(0));
@@ -40,7 +41,7 @@ public class CardTest {
 	}
 
 	@Test
-	public void checkCardsTest() {
+	public void checkCardsTest() throws InterruptedException, TelegramApiException {
 		Player testPlayer = new Player();
 		testPlayer.addCardToList("Artillery");
 		try {
