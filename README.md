@@ -1,5 +1,5 @@
 <a href='https://coveralls.io/github/JeffSandov6/Risk'><img src='https://coveralls.io/repos/github/JeffSandov6/Risk/badge.svg' alt='Coverage Status' /></a>
-
+[![Build Status](https://travis-ci.com/JeffSandov6/Risk.svg?branch=master)](https://travis-ci.com/JeffSandov6/Risk)
 
 
 Chuong Vu, Kwaku Dabanka, Jeffry Sandoval
