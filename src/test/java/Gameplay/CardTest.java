@@ -1,10 +1,7 @@
 package Gameplay;
-import java.io.IOException;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
-import java.util.Random;
 
 import org.junit.Assert;
 import org.junit.Before;
@@ -55,11 +52,8 @@ public class CardTest {
 	public void checkCardsTest() throws InterruptedException, TelegramApiException {
 		Player testPlayer = new Player();
 		testPlayer.addCardToList("Artillery");
-		try {
-			Assert.assertEquals(card.checkCards(testPlayer), 0);
-		} catch (IOException e) {
-			return;
-		}
+		Assert.assertEquals(card.checkCards(testPlayer), 0);
+		
 	}
 	
 	@Test

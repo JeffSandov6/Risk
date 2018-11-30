@@ -47,7 +47,7 @@ public class Game {
 		}
 	}
 	@CoverageIgnore
-	public void initializeGame(int numPlayers, TelegramGameBot bot) throws IOException, InterruptedException, TelegramApiException 
+	public void initializeGame(int numPlayers, TelegramGameBot bot) throws InterruptedException, TelegramApiException 
 	{
 		this.bot = bot;
 		this.numberOfPlayers = numPlayers;

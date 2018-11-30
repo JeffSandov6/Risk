@@ -1,8 +1,5 @@
 package JCK.Risk.Gameplay;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Objects;
 import java.util.Random;
@@ -80,7 +77,7 @@ public class Card {
 	
 	
 	//TODO: Timeouts needed here as well. Perhaps this should inherit from an interface, along w turns?
-	public int checkCards(Player player) throws IOException, InterruptedException, TelegramApiException
+	public int checkCards(Player player) throws InterruptedException, TelegramApiException
 	{
 		ArrayList<String> cardsOwned = player.getListOfCards();
 		
@@ -121,7 +118,7 @@ public class Card {
 	
 	
 	
-	public int checkCardPossibilities(Player player) throws IOException, InterruptedException, TelegramApiException
+	public int checkCardPossibilities(Player player) throws InterruptedException, TelegramApiException
 	{
 		ArrayList<String> cardsOwned = player.getListOfCards();
 		int currCountOfSameCards = 1;
@@ -210,7 +207,7 @@ public class Card {
 	
 	
 		
-	public int maxCardAmountReached(Player player, int numSameCards, int numDiffCards) throws IOException, InterruptedException, TelegramApiException
+	public int maxCardAmountReached(Player player, int numSameCards, int numDiffCards) throws InterruptedException, TelegramApiException
 	{
 		ArrayList<String> cardsOwned = player.getListOfCards();
 		int additionalUnits = 0;
