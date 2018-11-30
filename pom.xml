@@ -108,29 +108,6 @@
 					<target>1.8</target>
 				</configuration>
 			</plugin>
-
-
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-javadoc-plugin</artifactId>
-				<version>3.0.1</version>
-				<configuration>
-					<show>private</show>
-					<nohelp>true</nohelp>
-					<!-- GRAPHVIZ wont work without it being downloaded on local machine 
-						so for now, we will comment it out -->
-					<doclet>org.umlgraph.doclet.UmlGraphDoc</doclet>
-					<docletPath>/path/to/UmlGraph.jar</docletPath>
-					<docletArtifact>
-						<groupId>org.umlgraph</groupId>
-						<artifactId>umlgraph</artifactId>
-						<version>5.6.6</version>
-					</docletArtifact>
-					<additionalparam>-views -all</additionalparam>
-					<useStandardDocletOptions>true</useStandardDocletOptions>
-
-				</configuration>
-			</plugin>
 		</plugins>
 	</build>
 
