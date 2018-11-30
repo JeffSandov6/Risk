@@ -4,6 +4,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.telegram.telegrambots.ApiContextInitializer;
 import org.telegram.telegrambots.meta.TelegramBotsApi;
+import org.telegram.telegrambots.meta.exceptions.TelegramApiRequestException;
 
 import JCK.Risk.Locations.Continent;
 import JCK.Risk.Locations.Territory;
@@ -22,7 +23,7 @@ public class TurnsTest {
 	private Turns turns;
 	private Game game;
 	@Before
-	public void setup() {
+	public void setup() throws TelegramApiRequestException {
 		game = new Game();
 		
 		ApiContextInitializer.init();
