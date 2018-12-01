@@ -1,28 +1,28 @@
 package JCK.Risk.Gameplay;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Objects;
 import java.util.Random;
 
+import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
+
+import JCK.Risk.TelegramGameBot;
 import JCK.Risk.Players.Player;
 
 public class Card {
 
-	
+	TelegramGameBot bot;
 	
 	Random randNumber = new Random();
 
 	
 	public static ArrayList<Integer> cardsArray = new ArrayList<Integer>();
-	public int setsTurnedIn = 0;  //TODO: UPDATE THIS MANUALLY AFTER SET TURN IN
+	public int setsTurnedIn = 0;  
 	
 
 	
-	public void initializeCards() {
-		
+	public void initializeCards(TelegramGameBot bot) {
+		this.bot = bot;
 		cardsArray.add(14);   //value 0 will represent infantry cards 
 		cardsArray.add(14);   //value 1 will represent cavalry cards  
 		cardsArray.add(14);   //value 2 will represent artillery cards 
@@ -75,23 +75,25 @@ public class Card {
 			
 	}
 	
-	public int checkCards(Player player) throws IOException
+	
+	//TODO: Timeouts needed here as well. Perhaps this should inherit from an interface, along w turns?
+	public int checkCards(Player player) throws InterruptedException, TelegramApiException
 	{
 		ArrayList<String> cardsOwned = player.getListOfCards();
 		
 		if(cardsOwned.size() == 0)
 		{
-			System.out.println("You currently have no cards");
+			bot.sendMessageToChat("You currently have no cards");
 			return 0;
 		}
 		
-		System.out.println("These are the cards that you currently own:");
-		System.out.println(cardsOwned);
+		bot.sendMessageToChat("These are the cards that you currently own:");
+		bot.sendMessageToChat(cardsOwned.toString());
 		
 		
 		if(cardsOwned.size() < 3)
 		{
-			System.out.println("You can't turn any in right now");
+			bot.sendMessageToChat("You can't turn any in right now");
 			return 0;
 		}
 		
@@ -100,12 +102,12 @@ public class Card {
 		
 		if(extraUnits == 0)
 		{
-			System.out.println("You can't turn any in right now");
+			bot.sendMessageToChat("You can't turn any in right now");
 			return 0;
 		}
 		else if(extraUnits == -1)
 		{
-			System.out.println("Okay, you're not turning any in");
+			bot.sendMessageToChat("Okay, you're not turning any in");
 			return 0;
 		}
 		
@@ -116,7 +118,7 @@ public class Card {
 	
 	
 	
-	public int checkCardPossibilities(Player player) throws IOException
+	public int checkCardPossibilities(Player player) throws InterruptedException, TelegramApiException
 	{
 		ArrayList<String> cardsOwned = player.getListOfCards();
 		int currCountOfSameCards = 1;
@@ -164,9 +166,7 @@ public class Card {
 		}
 		
 		
-		System.out.println("Do you want to turn in a set, yes or no?");
-		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-		String option = br.readLine();
+		String option = bot.sendMessageGetResponse("Do you want to turn in a set, yes or no?");
 		option = option.toLowerCase();
 		
 		if(Objects.equals("yes", option))  //if input is yes
@@ -187,14 +187,14 @@ public class Card {
 		
 		if(numSameCards >= 3)
 		{
-			System.out.println("We're turning in 3 of your cards of same type");
+			bot.sendMessageToChat("We're turning in 3 of your cards of same type");
 			cardsOwned = turnInSameCards(cardsOwned);
 			
 		}
 		else   //numDiffCards >= 3
 		{
 			cardsOwned = turnInDiffCards(cardsOwned);
-			System.out.println("We're turning in 3 different cards");
+			bot.sendMessageToChat("We're turning in 3 different cards");
 
 		}
 		
@@ -207,43 +207,40 @@ public class Card {
 	
 	
 		
-	public int maxCardAmountReached(Player player, int numSameCards, int numDiffCards) throws IOException
+	public int maxCardAmountReached(Player player, int numSameCards, int numDiffCards) throws InterruptedException, TelegramApiException
 	{
 		ArrayList<String> cardsOwned = player.getListOfCards();
 		int additionalUnits = 0;
 		
 		while(cardsOwned.size() > 4)
 		{
-			System.out.println("You have more than 4 cards so you must turn some in now");
+			bot.sendMessageToChat("You have more than 4 cards so you must turn some in now");
 
-			System.out.println(numSameCards + " h " + numDiffCards);
 			if(numSameCards >= 3 && numDiffCards >= 3)
 			{
-				System.out.println("Type '1' to turn in 3 of the same cards, or '2' to turn in 3 different cards, else we'll randomly choose for you");
-				BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-				String option = br.readLine();
+				String option = bot.sendMessageGetResponse("Type '1' to turn in 3 of the same cards, or '2' to turn in 3 different cards, else we'll randomly choose for you");
 				
 				if(Objects.equals("1", option))
 				{
-					System.out.println("Okay, we're turning in 3 of the same cards");
+					bot.sendMessageToChat("Okay, we're turning in 3 of the same cards");
 					cardsOwned = turnInSameCards(cardsOwned);
 					
 				}
 				else
 				{
-					System.out.println("Okay, we're turning in 3 different cards");
+					bot.sendMessageToChat("Okay, we're turning in 3 different cards");
 					cardsOwned = turnInDiffCards(cardsOwned);
 				}
 			}
 			else if(numSameCards >= 3)
 			{
-				System.out.println("We're turning in 3 of your cards of same type");
+				bot.sendMessageToChat("We're turning in 3 of your cards of same type");
 				cardsOwned = turnInSameCards(cardsOwned);
 				
 			}
 			else //num diff cards > 3
 			{
-				System.out.println("We're turning in 3 different cards");
+				bot.sendMessageToChat("We're turning in 3 different cards");
 
 				cardsOwned = turnInDiffCards(cardsOwned);
 			}

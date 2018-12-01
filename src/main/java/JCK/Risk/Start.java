@@ -1,27 +1,18 @@
 package JCK.Risk;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Stack;
 
 import org.telegram.telegrambots.ApiContextInitializer;
 import org.telegram.telegrambots.meta.TelegramBotsApi;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
-import org.telegram.telegrambots.meta.exceptions.TelegramApiRequestException;
 
 import JCK.Risk.Gameplay.Card;
 import JCK.Risk.Gameplay.Game;
 import JCK.Risk.Gameplay.Turns;
-import JCK.Risk.Locations.Continent;
-import JCK.Risk.Locations.Territory;
-import JCK.Risk.Players.Player;
 
 public class Start {
 	@CoverageIgnore
-	public static void main(String[] args) throws IOException, InterruptedException, TelegramApiException {
+	public static void main(String[] args) throws InterruptedException, TelegramApiException, IOException {
 		
 		
 		ApiContextInitializer.init();
@@ -42,17 +33,12 @@ public class Start {
 		startGame.initializeGame(numPlayers, bot);
 		startGame.initializeContinents();
 		
-		ArrayList<Player> playersArray = startGame.getPlayersArray();
-		ArrayList<Continent> continentArray = startGame.getContinentArray();
-		
-		System.out.println();
-		
-		cards.initializeCards();
+		cards.initializeCards(bot);
 		
 		// initializes the territories at the start by assigning them to each player based on choice
 		startGame.chooseInitialTerritories();
 
-		Turns turns = new Turns(startGame);
+		Turns turns = new Turns(startGame, bot);
 		
 		
 	}
