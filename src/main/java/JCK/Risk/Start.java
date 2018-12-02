@@ -15,6 +15,7 @@ import JCK.Risk.Gameplay.Game;
 import JCK.Risk.Gameplay.Turns;
 
 public class Start {
+	
 	@CoverageIgnore
 	public static void main(String[] args) throws InterruptedException, TelegramApiException, IOException {		
 		
