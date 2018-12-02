@@ -5,4 +5,3 @@ before_install:
   -in secrets_JCK.prop.enc -out secrets_JCK.prop -d
 after_success:
 - mvn cobertura:cobertura coveralls:report
-
