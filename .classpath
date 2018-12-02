@@ -2,9 +2,9 @@
 <classpath>
 	<classpathentry kind="src" output="target/test-classes" path="src/test/java">
 		<attributes>
+			<attribute name="test" value="true"/>
 			<attribute name="optional" value="true"/>
 			<attribute name="maven.pomderived" value="true"/>
-			<attribute name="test" value="true"/>
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="src" output="target/classes" path="src/main/java">
@@ -26,5 +26,21 @@
 			<attribute name="maven.pomderived" value="true"/>
 		</attributes>
 	</classpathentry>
+	<classpathentry kind="lib" path="C:/Users/Kwaku/Downloads/aws-toolkit-for-eclipse-v201805311643/plugins/com.amazonaws.eclipse.cloudformation_1.0.0.v201805311643.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Kwaku/Downloads/aws-toolkit-for-eclipse-v201805311643/plugins/com.amazonaws.eclipse.codecommit_1.0.0.v201805311643.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Kwaku/Downloads/aws-toolkit-for-eclipse-v201805311643/plugins/com.amazonaws.eclipse.codedeploy_1.0.0.v201805311643.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Kwaku/Downloads/aws-toolkit-for-eclipse-v201805311643/plugins/com.amazonaws.eclipse.codestar_1.0.0.v201805311643.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Kwaku/Downloads/aws-toolkit-for-eclipse-v201805311643/plugins/com.amazonaws.eclipse.core_2.3.1.v201805311643.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Kwaku/Downloads/aws-toolkit-for-eclipse-v201805311643/plugins/com.amazonaws.eclipse.dynamodb_1.0.0.v201805311643.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Kwaku/Downloads/aws-toolkit-for-eclipse-v201805311643/plugins/com.amazonaws.eclipse.ec2_1.1.0.v201805311643.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Kwaku/Downloads/aws-toolkit-for-eclipse-v201805311643/plugins/com.amazonaws.eclipse.elasticbeanstalk_1.0.0.v201805311643.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Kwaku/Downloads/aws-toolkit-for-eclipse-v201805311643/plugins/com.amazonaws.eclipse.identitymanagement_1.0.0.v201805311643.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Kwaku/Downloads/aws-toolkit-for-eclipse-v201805311643/plugins/com.amazonaws.eclipse.javasdk_1.11.248.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Kwaku/Downloads/aws-toolkit-for-eclipse-v201805311643/plugins/com.amazonaws.eclipse.lambda_1.0.0.v201805311643.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Kwaku/Downloads/aws-toolkit-for-eclipse-v201805311643/plugins/com.amazonaws.eclipse.opsworks_1.0.0.v201805311643.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Kwaku/Downloads/aws-toolkit-for-eclipse-v201805311643/plugins/com.amazonaws.eclipse.rds_1.0.0.v201805311643.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Kwaku/Downloads/aws-toolkit-for-eclipse-v201805311643/plugins/com.amazonaws.eclipse.sdk.ui_2.1.0.v201805311643.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Kwaku/Downloads/aws-toolkit-for-eclipse-v201805311643/plugins/com.amazonaws.eclipse.simpledb_1.0.0.v201805311643.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Kwaku/Downloads/twitter4j-4.0.7 (4)/lib/twitter4j-core-4.0.7.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>
