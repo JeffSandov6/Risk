@@ -11,7 +11,7 @@ import org.telegram.telegrambots.meta.TelegramBotsApi;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiRequestException;
 
-import JCK.Risk.TelegramGameBot;
+import JCK.Risk.Extras.TelegramGameBot;
 import JCK.Risk.Gameplay.Card;
 import JCK.Risk.Players.Player;
 

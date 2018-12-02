@@ -1,6 +1,6 @@
 package JCK.Risk.Locations;
 import JCK.Risk.CoverageIgnore;
-import JCK.Risk.TelegramGameBot;
+import JCK.Risk.Extras.TelegramGameBot;
 import JCK.Risk.Locations.Territory;
 import JCK.Risk.Players.Player;
 
