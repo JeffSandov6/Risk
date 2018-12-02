@@ -2,6 +2,6 @@ language: java
 install: mvn install
 before_install:
 - openssl aes-256-cbc -K $encrypted_8e5281a5f37f_key -iv $encrypted_8e5281a5f37f_iv
-  -in secrets_JCK.prop.enc -out secrets_JCK.prop -d
+  -in secrets_JCK_.prop.enc -out secrets_JCK_.prop -d
 after_success:
 - mvn cobertura:cobertura coveralls:report
