@@ -7,17 +7,18 @@ import java.util.Collections;
 
 public class Player {
 	
-	public String name;
-	public Integer turnValue;
-	public int rollValue;
+	private String name;
+	private Integer turnValue;
+	private int rollValue;
 	private int undoActionsAvailable;
 	private int currentCredit;
 	
 	private List<String> listOfTerritoriesOwned;
 	private List<String> continentsOwned;    //TODO: NOT NEEDED
-	public ArrayList<String> listOfCards = new ArrayList<String>();
+	private ArrayList<String> listOfCards;
+	
 	public Player() {
-		
+		listOfCards = new ArrayList<String>();
 	}
 	
 	public Player(Player playerToCopy) {
@@ -39,6 +40,13 @@ public class Player {
 		}
 	}
 	
+	public void setRollValue(int rollValue) {
+		this.rollValue = rollValue;
+	}
+	
+	public int getRollValue() {
+		return this.rollValue;
+	}
 	public void addCardToList(String cardType)
 	{
 		listOfCards.add(cardType);

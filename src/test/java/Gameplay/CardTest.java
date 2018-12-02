@@ -16,7 +16,7 @@ import JCK.Risk.Gameplay.Card;
 import JCK.Risk.Players.Player;
 
 public class CardTest {
-	Card card;
+	private Card card;
 	
 
 	@Before

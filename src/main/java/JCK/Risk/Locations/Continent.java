@@ -8,8 +8,8 @@ import java.util.List;
 
 public class Continent {
 
-	String continentName;
-	HashMap<String, Territory> listOfTerritories;
+	private String continentName;
+	private HashMap<String, Territory> listOfTerritories;
 	private int continentValue;
 	
 	public Continent(String continentName, int continentValue)
