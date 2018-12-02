@@ -51,11 +51,24 @@ public class CardTest {
 	@Test
 	public void checkCardsTest() throws InterruptedException, TelegramApiException {
 		Player testPlayer = new Player();
+		Assert.assertEquals(card.checkCards(testPlayer), 0);
 		testPlayer.addCardToList("Artillery");
 		Assert.assertEquals(card.checkCards(testPlayer), 0);
-		
+		testPlayer.addCardToList("Cavalry");
+		testPlayer.addCardToList("Wild");
+		Assert.assertEquals(card.checkCards(testPlayer), 0);
 	}
 	
+	@Test
+	public void checkCardPossibilitiesTest() throws InterruptedException, TelegramApiException {
+		Player testPlayer = new Player();
+		testPlayer.addCardToList("Artillery");
+		Assert.assertEquals(card.checkCardPossibilities(testPlayer), 0);
+		testPlayer.addCardToList("Cavalry");
+		testPlayer.addCardToList("Wild");
+		Assert.assertEquals(card.checkCardPossibilities(testPlayer), -1);
+		
+	}
 	@Test
 	public void getCardIndexTest() {
 		Assert.assertEquals(0, card.getCardIndex("infantry"));
