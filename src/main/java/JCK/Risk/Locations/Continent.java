@@ -1,4 +1,5 @@
 package JCK.Risk.Locations;
+import JCK.Risk.CoverageIgnore;
 import JCK.Risk.TelegramGameBot;
 import JCK.Risk.Locations.Territory;
 import JCK.Risk.Players.Player;
@@ -36,6 +37,7 @@ public class Continent {
 		this.listOfTerritories.put(territoryName, new Territory(territoryName, adjacencies));
 	}
 	//TODO format the continents to display them all in a table format
+	@CoverageIgnore
 	public void displayContinent(TelegramGameBot bot) {
 		System.out.println(continentName + ": ");
 		for (String key : listOfTerritories.keySet()) {

@@ -49,7 +49,7 @@ public class Turns {
 
 			skip = false;
 			
-			Undo undo = new Undo(game.playersArray, game.continentArray);
+			Undo undo = new Undo(game.getPlayersArray(), game.getContinentArray());
 
 			Player player = game.getPlayersArray().get(playerTurnCount);
 			
@@ -128,7 +128,7 @@ public class Turns {
 	}
 	
 	
-	private boolean checkIfUserResponded(String userResponse) {
+	public boolean checkIfUserResponded(String userResponse) {
 		
 		if(Objects.equals(userResponse, "empty")) {
 			skip = true;
@@ -278,8 +278,8 @@ public class Turns {
 				bot.sendMessageToChat("Undoing to the beginning of your turn.");
 				
 				//sets the continent array and players array to the previous state
-				game.continentArray = (ArrayList<Continent>) undo.getPastContinent();
-				game.playersArray = (ArrayList<Player>) undo.getPastPlayers();
+				game.setContinentArray((ArrayList<Continent>) undo.getPastContinent());
+				game.setPlayersArray((ArrayList<Player>) undo.getPastPlayers());
 				player.useUndoAction();
 				
 				return true;

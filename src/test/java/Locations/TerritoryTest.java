@@ -35,6 +35,22 @@ public class TerritoryTest {
 		Assert.assertEquals(testAdjacencies, territory.getAdjacencies());
 	}
 
+	@Test 
+	public void deepCopyTest() {
+		Territory testTerritory = new Territory("TestTerritory", new ArrayList<String>());
+		testTerritory.setOwner("TestPlayer1");
+		testTerritory.setSoldiers(3);
+		testTerritory.getAdjacencies().add("TestAdjacency1");
+		testTerritory.getAdjacencies().add("TestAdjacency2");
+
+		Territory copyTerritory = new Territory(testTerritory);
+		Assert.assertEquals("TestPlayer1", copyTerritory.getOwner());
+		Assert.assertEquals(3, copyTerritory.getSoldierCount());
+		Assert.assertEquals("TestTerritory", copyTerritory.getTerritoryName());
+		Assert.assertEquals(testTerritory.getAdjacencies(), copyTerritory.getAdjacencies());
+		
+	}
+	
 	@Test
 	public void addSoldiers() {
 		Random random = new Random();

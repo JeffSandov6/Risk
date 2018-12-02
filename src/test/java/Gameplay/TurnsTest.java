@@ -36,8 +36,8 @@ public class TurnsTest {
 		testPlayer1.createPlayer("TestPlayer1",0);
 		testPlayer2.createPlayer("TestPlayer2",0);
 
-		game.playersArray.add(testPlayer1);
-		game.playersArray.add(testPlayer2);
+		game.getPlayersArray().add(testPlayer1);
+		game.getPlayersArray().add(testPlayer2);
 		Continent testContinent = new Continent("Asia", 7);
 
 		List<String> testAdjacencies = new ArrayList<String>();
@@ -51,7 +51,7 @@ public class TurnsTest {
 
 		testContinent.getListOfTerritories().get("TestTerritory").setOwner(testPlayer1.getName());
 		testContinent.getListOfTerritories().get("TestTerritory2").setOwner(testPlayer2.getName());
-		game.continentArray.add(testContinent);
+		game.getContinentArray().add(testContinent);
 
 		turns = new Turns(bot);
 	}
@@ -88,31 +88,31 @@ public class TurnsTest {
 	
 	@Test
 	public void getTerritoryObjectTest() {
-		Territory territory1 = game.continentArray.get(0).getListOfTerritories().get("TestTerritory");
-		Territory territory2 = game.continentArray.get(0).getListOfTerritories().get("TestTerritory2");
-		Assert.assertEquals(territory1, turns.getTerritoryObject("TestTerritory", game.continentArray));
-		Assert.assertEquals(territory2, turns.getTerritoryObject("TestTerritory2", game.continentArray));
+		Territory territory1 = game.getContinentArray().get(0).getListOfTerritories().get("TestTerritory");
+		Territory territory2 = game.getContinentArray().get(0).getListOfTerritories().get("TestTerritory2");
+		Assert.assertEquals(territory1, turns.getTerritoryObject("TestTerritory", game.getContinentArray()));
+		Assert.assertEquals(territory2, turns.getTerritoryObject("TestTerritory2", game.getContinentArray()));
 
 	}
 	
 	@Test
 	public void checkAttackableAdjacenciesTest() {
-		Player player1 = game.playersArray.get(0);
-		Player player2 = game.playersArray.get(1);
+		Player player1 = game.getPlayersArray().get(0);
+		Player player2 = game.getPlayersArray().get(1);
 		List<Territory> expectedRes = new ArrayList<Territory>();
 		
-		Territory territory1 = game.continentArray.get(0).getListOfTerritories().get("TestTerritory");
-		Territory territory2 = game.continentArray.get(0).getListOfTerritories().get("TestTerritory2");
+		Territory territory1 = game.getContinentArray().get(0).getListOfTerritories().get("TestTerritory");
+		Territory territory2 = game.getContinentArray().get(0).getListOfTerritories().get("TestTerritory2");
 		
 		expectedRes.add(territory1);
-		List<Territory> actualRes = turns.checkAttackableAdjacencies(player2, territory2, game.continentArray);
+		List<Territory> actualRes = turns.checkAttackableAdjacencies(player2, territory2, game.getContinentArray());
 		Assert.assertEquals(expectedRes, actualRes);
 		
 		expectedRes.clear();
 		actualRes.clear();
 		
 		expectedRes.add(territory2);
-		actualRes = turns.checkAttackableAdjacencies(player1, territory1, game.continentArray);
+		actualRes = turns.checkAttackableAdjacencies(player1, territory1, game.getContinentArray());
 		Assert.assertEquals(expectedRes, actualRes);
 	}
 	
@@ -120,18 +120,34 @@ public class TurnsTest {
 	public void getExtraArmiesForContinentsOwnedTest() {
 		Player testPlayer = new Player();
 		testPlayer.createPlayer("TestPlayer1", 2);
-		Assert.assertEquals(0, turns.getExtraArmiesForContinentsOwned(testPlayer, game.continentArray));
+		Assert.assertEquals(0, turns.getExtraArmiesForContinentsOwned(testPlayer, game.getContinentArray()));
 		
-		game.continentArray.get(0).getListOfTerritories().get("TestTerritory2").setOwner(testPlayer.getName());
-		Assert.assertEquals(7,turns.getExtraArmiesForContinentsOwned(testPlayer, game.continentArray));
+		game.getContinentArray().get(0).getListOfTerritories().get("TestTerritory2").setOwner(testPlayer.getName());
+		Assert.assertEquals(7,turns.getExtraArmiesForContinentsOwned(testPlayer, game.getContinentArray()));
 	}
 	
 	@Test
 	public void playerOwnsTerritoryTest() {
 		Player testPlayer = new Player();
 		testPlayer.createPlayer("TestPlayer1", 2);
-		Assert.assertTrue(turns.playerOwnsTerritory("TestTerritory", testPlayer, game.continentArray));
-		Assert.assertTrue(!turns.playerOwnsTerritory("TestTerritory2", testPlayer, game.continentArray));
+		Assert.assertTrue(turns.playerOwnsTerritory("TestTerritory", testPlayer, game.getContinentArray()));
+		Assert.assertTrue(!turns.playerOwnsTerritory("TestTerritory2", testPlayer, game.getContinentArray()));
 	}
 	
+	public void checkIfUserRespondedTest() {
+		Assert.assertEquals(false, turns.checkIfUserResponded("empty"));
+		Assert.assertEquals(true, turns.checkIfUserResponded("test"));
+		
+	}
+	
+	public void getExtraArmiesForTerrsOwnedTest() {
+		Player testPlayer = new Player();
+		testPlayer.createPlayer("TestPlayer", 0);
+		Assert.assertEquals(3, turns.getExtraArmiesForTerrsOwned(testPlayer));
+	}
+	
+	public void removeTerritoryFromDefenderTest() {
+		turns.removeTerritoryFromDefender("TestPlayer1", "TestTerritory", game);
+		Assert.assertTrue(!game.getPlayersArray().get(0).getTerritoriesOwned().contains("TestTerritory"));
+	}
 }

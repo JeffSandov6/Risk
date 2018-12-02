@@ -29,23 +29,16 @@ public class Game {
 	
 	//this is the array list that will be used for the turns
 	//TODO: this should be in the class of turns
-	public ArrayList<Player> playersArray = new ArrayList<Player>();
-	public ArrayList<Continent> continentArray = new ArrayList<Continent>();
+	private ArrayList<Player> playersArray;
+	private ArrayList<Continent> continentArray;
 	
 	public Game() {
+		playersArray = new ArrayList<Player>();
+		continentArray = new ArrayList<Continent>();
 		numberOfPlayers = 0;
 	}
 	
-	public Game(Game gameToCopy) {
-		//this.playersArray = gameToCopy.playersArray;
-		for (int i = 0; i < gameToCopy.playersArray.size(); i++) {
-			this.playersArray.add(new Player(gameToCopy.playersArray.get(i)));
-		}
-		//this.continentArray = gameToCopy.continentArray;
-		for (int i = 0; i < gameToCopy.continentArray.size(); i++) {
-			this.continentArray.add(new Continent(gameToCopy.continentArray.get(i)));
-		}
-	}
+
 	@CoverageIgnore
 	public void initializeGame(int numPlayers, TelegramGameBot bot) throws InterruptedException, TelegramApiException 
 	{
@@ -288,18 +281,5 @@ public class Game {
 			}
 		}
 		return true;
-	}
-
-
-
-	public String takeUserInput() {
-		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-		try {
-			String userInput = br.readLine();
-			return userInput;
-		} catch (IOException e) {
-			System.out.println("Invalid input.");
-			return null;
-		}
 	}
 }
