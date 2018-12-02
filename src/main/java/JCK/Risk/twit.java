@@ -20,11 +20,11 @@ public class twit {
 
 				twitter.setOAuthAccessToken(accessToken);
 
-				twitter.updateStatus("Arsenal to win Derby");
+				twitter.updateStatus("twitter4jAPI");
 
 				System.out.println("Successfully updated the status in Twitter.");
-			} catch (TwitterException te) {
-				te.printStackTrace();
+			} catch (TwitterException tw) {
+				tw.printStackTrace();
 			}
 		}
 	}
