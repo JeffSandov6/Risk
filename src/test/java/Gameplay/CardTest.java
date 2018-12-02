@@ -31,7 +31,7 @@ public class CardTest {
 	}
 	@Test
 	public void createTest() {	
-		List<Integer> cards = card.cardsArray;
+		List<Integer> cards = card.getCardsArray();
 
 		Assert.assertEquals(14,(int) cards.get(0));
 		Assert.assertEquals(14, (int)cards.get(1));
@@ -68,30 +68,30 @@ public class CardTest {
 	
 	@Test
 	public void getNextSetValueTest() {
-		card.setsTurnedIn = 0;
+		card.setSetsTurnedIn(0);
 		Assert.assertEquals(4, card.getNextSetValue());
 		
-		card.setsTurnedIn = 1;
+		card.setSetsTurnedIn(1);
 		Assert.assertEquals(6, card.getNextSetValue());
 		
-		card.setsTurnedIn = 2;
+		card.setSetsTurnedIn(2);
 		Assert.assertEquals(8, card.getNextSetValue());
 		
-		card.setsTurnedIn = 3;
+		card.setSetsTurnedIn(3);
 		Assert.assertEquals(10, card.getNextSetValue());
 		
-		card.setsTurnedIn = 4;
+		card.setSetsTurnedIn(4);
 		Assert.assertEquals(12, card.getNextSetValue());
 		
-		card.setsTurnedIn = 5;
+		card.setSetsTurnedIn(5);
 		Assert.assertEquals(5 * (5-2), card.getNextSetValue());
 	}
 
 	@Test
 	public void getCardTest() {
-		card.cardsArray.set(0, 0);
-		card.cardsArray.set(1, 0);
-		card.cardsArray.set(3, 0);
+		card.getCardsArray().set(0, 0);
+		card.getCardsArray().set(1, 0);
+		card.getCardsArray().set(3, 0);
 		Assert.assertEquals(card.getCard(), "Artillery");
 	}
 	@Test

@@ -28,6 +28,13 @@ public class Card {
 		return this.cardsArray;
 	}
 	
+	public int getSetsTurnedIn() {
+		return this.setsTurnedIn;
+	}
+	
+	public void setSetsTurnedIn(int setsTurnedIn) {
+		this.setsTurnedIn = setsTurnedIn;
+	}
 	public void initializeCards(TelegramGameBot bot) {
 		this.bot = bot;
 		cardsArray.add(14);   //value 0 will represent infantry cards 

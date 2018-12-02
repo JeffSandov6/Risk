@@ -63,20 +63,20 @@ public class TurnsTest {
 	@Test
 	public void numDefendersTest() {
 		Territory testTerritory = new Territory("TestTerritory", null);
-		testTerritory.numSoldiersHere = 2;
+		testTerritory.setSoldiers(2);
 		Assert.assertEquals(2, turns.numDefenders(testTerritory));
-		testTerritory.numSoldiersHere = 1;
+		testTerritory.setSoldiers(1);
 		Assert.assertEquals(1, turns.numDefenders(testTerritory));
 	}
 	
 	@Test
 	public void numAttackersTest() {
 		Territory testTerritory = new Territory("TestTerritory", null);
-		testTerritory.numSoldiersHere = 4;
+		testTerritory.setSoldiers(4);
 		Assert.assertEquals(3, turns.numAttackers(testTerritory));
-		testTerritory.numSoldiersHere = 3;
+		testTerritory.setSoldiers(3);
 		Assert.assertEquals(2, turns.numAttackers(testTerritory));
-		testTerritory.numSoldiersHere = 2;
+		testTerritory.setSoldiers(2);
 		Assert.assertEquals(1, turns.numAttackers(testTerritory));
 	}
 	
