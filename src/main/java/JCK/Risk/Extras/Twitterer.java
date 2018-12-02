@@ -83,7 +83,7 @@ public class Twitterer {
     	Properties sysProp = new Properties();
     	FileInputStream in;
 		try {
-			in = new FileInputStream("secrets_JCK_.prop");
+			in = new FileInputStream("secret_JCK_.prop");
 			sysProp.load(in);
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
