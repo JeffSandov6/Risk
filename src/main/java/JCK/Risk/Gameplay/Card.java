@@ -11,16 +11,30 @@ import JCK.Risk.Players.Player;
 
 public class Card {
 
-	TelegramGameBot bot;
+	private TelegramGameBot bot;
 	
-	Random randNumber = new Random();
+	private Random randNumber;
 
+	private static ArrayList<Integer> cardsArray;
+	private int setsTurnedIn; 
 	
-	public static ArrayList<Integer> cardsArray = new ArrayList<Integer>();
-	public int setsTurnedIn = 0;  
-	
+	public Card() {
+		setsTurnedIn = 0;
+		cardsArray = new ArrayList<Integer>();
+		randNumber = new Random();
+	}
 
+	public ArrayList<Integer> getCardsArray() {
+		return this.cardsArray;
+	}
 	
+	public int getSetsTurnedIn() {
+		return this.setsTurnedIn;
+	}
+	
+	public void setSetsTurnedIn(int setsTurnedIn) {
+		this.setsTurnedIn = setsTurnedIn;
+	}
 	public void initializeCards(TelegramGameBot bot) {
 		this.bot = bot;
 		cardsArray.add(14);   //value 0 will represent infantry cards 
@@ -29,8 +43,6 @@ public class Card {
 		cardsArray.add(2);    //value 3 will represent wild cards 
 
 	}
-	
-	
 	
 	public String getCard() {
 		

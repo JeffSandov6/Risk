@@ -5,9 +5,9 @@ import java.util.List;
 
 public class Territory {
 
-	public String territoryName;
+	private String territoryName;
 	private String ownedBy = "nobody";
-	public int numSoldiersHere = 0;
+	private int numSoldiersHere = 0;
 	private List<String> adjacencies;
 
 	/**
@@ -67,5 +67,12 @@ public class Territory {
 	public Territory addSoldiers(int numSoldiers) {
 		numSoldiersHere += numSoldiers;
 		return this;
+	}
+	
+	/**
+	 * Sets the number of soldiers at this territory to be equal to numSoldiers
+	 */
+	public void setSoldiers(int numSoldiers) {
+		this.numSoldiersHere = numSoldiers;
 	}
 }

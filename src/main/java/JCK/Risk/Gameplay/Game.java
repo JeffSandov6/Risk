@@ -24,8 +24,8 @@ import JCK.Risk.Players.Player;
 
 public class Game {
 	
-	int numberOfPlayers;
-	TelegramGameBot bot;
+	private int numberOfPlayers;
+	private TelegramGameBot bot;
 	
 	//this is the array list that will be used for the turns
 	//TODO: this should be in the class of turns
@@ -75,8 +75,8 @@ public class Game {
 		
 		for(int i = 0; i < playersArray.size(); i++)
 		{
-			playersArray.get(i).rollValue = i + 1; //sets the roll value if we need to set it	
-			bot.sendMessageToChat((i + 1) + "." + playersArray.get(i).name);
+			playersArray.get(i).setRollValue(i+1); //sets the roll value if we need to set it
+			bot.sendMessageToChat((i + 1) + "." + playersArray.get(i).getName());
 //			System.out.println((i + 1) + ". " + playersArray.get(i).name);
 		}
 	}
@@ -103,7 +103,7 @@ public class Game {
 	public static Comparator<Player> COMPARE_BY_VALUE = new Comparator<Player>() {
 		public int compare(Player one, Player other) {
 
-			return one.turnValue.compareTo(other.turnValue);
+			return one.getTurnValue().compareTo(other.getTurnValue());
 		}
 		
 	};
