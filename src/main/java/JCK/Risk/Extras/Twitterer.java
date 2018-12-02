@@ -31,6 +31,7 @@ public class Twitterer {
 
 	public void postFinalTweet() {
 		String finalStats = "The final stats are:\n";
+		
 		for (Map.Entry<String, Integer> item : playerMap.entrySet()) {
 			String name = item.getKey();
 			int value = item.getValue();
@@ -44,6 +45,7 @@ public class Twitterer {
 
 		playerMap = new HashMap<>();
 		for (Player player : playersArray) {
+			
 			String currPlayer = player.getName();
 			playerMap.put(currPlayer, 0);
 
@@ -53,6 +55,7 @@ public class Twitterer {
 	private void tweetOut(String message) {
 		try {
 			twitterInstance.updateStatus(message);
+			
 		} catch (TwitterException e) {
 			e.printStackTrace();
 		}
@@ -64,6 +67,7 @@ public class Twitterer {
 		AccessToken accessToken = new AccessToken(keys.getProperty("twitAccess"), keys.getProperty("twitAccessSecret"));
 
 		twitterInstance = TwitterFactory.getSingleton();
+		
 		twitterInstance.setOAuthConsumer(keys.getProperty("twitConsumer"), keys.getProperty("twitConsumerSecret"));
 
 		twitterInstance.setOAuthAccessToken(accessToken);
