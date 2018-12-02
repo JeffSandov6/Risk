@@ -122,7 +122,9 @@ public class Turns {
 		}
 		
 		bot.sendMessageToChat("THE WINNER OF THE GAME IS " + game.getPlayersArray().get(0).getName());
-		bot.sendMessageToChat("THANKS FOR PLAYING RISK, GOODBYE!");
+		bot.gameFinished();
+		
+		
 	}
 	
 	
