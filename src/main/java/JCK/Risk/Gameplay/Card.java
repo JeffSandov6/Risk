@@ -6,7 +6,7 @@ import java.util.Random;
 
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
-import JCK.Risk.TelegramGameBot;
+import JCK.Risk.Extras.TelegramGameBot;
 import JCK.Risk.Players.Player;
 
 public class Card {

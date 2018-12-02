@@ -9,7 +9,7 @@ import org.telegram.telegrambots.ApiContextInitializer;
 import org.telegram.telegrambots.meta.TelegramBotsApi;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
-import JCK.Risk.Extras.AmazonS3Replay;
+import JCK.Risk.Extras.TelegramGameBot;
 import JCK.Risk.Gameplay.Card;
 import JCK.Risk.Gameplay.Game;
 import JCK.Risk.Gameplay.Turns;

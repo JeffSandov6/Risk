@@ -13,24 +13,23 @@ import java.util.Objects;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
 import JCK.Risk.CoverageIgnore;
-import JCK.Risk.TelegramGameBot;
+import JCK.Risk.Extras.TelegramGameBot;
+import JCK.Risk.Extras.Twitterer;
 import JCK.Risk.Locations.Continent;
 import JCK.Risk.Locations.Territory;
 import JCK.Risk.Players.Player;
 
-//TODO: Refactor the turns class to have a sort of "turn manager" w an enum
+//TODO:
 //Observer class
-//Twitter
-//Amazon
-//finish bot
 //80% test coverage
-//build badge
 
 public class Turns {
 	
 	private Card cards = new Card();
 	private TelegramGameBot bot;
 	private boolean skip = false;
+	private Twitterer twitterInstance;
+	private int battlesWon;
 
 	
 	@CoverageIgnore
@@ -44,7 +43,10 @@ public class Turns {
 		bot.sendMessageToChat("initialized the turns");
 		int additionalUnits = 0;
 		
-		while (game.getPlayersArray().size() != 1) { //
+		twitterInstance.grabPlayerInfo(game.getPlayersArray());
+		
+		while (game.getPlayersArray().size() != 1) {
+			battlesWon = 0;
 			additionalUnits = 0;
 
 			skip = false;
@@ -98,6 +100,8 @@ public class Turns {
 				continue;
 			}
 			
+			twitterInstance.postNumberTerrsConquered(player.getName(), battlesWon);
+			
 			
 			// fortify territories phase
 			bot.sendMessageToChat("FORTIFY PHASE");
@@ -121,6 +125,7 @@ public class Turns {
 			bot.sendMessageToChat("END OF TURN");
 		}
 		
+		twitterInstance.postFinalTweet();
 		bot.sendMessageToChat("THE WINNER OF THE GAME IS " + game.getPlayersArray().get(0).getName());
 		bot.gameFinished();
 		
@@ -561,6 +566,7 @@ public class Turns {
 			
 			if(Objects.equals(player.getName(), winnerOfBattle)) //if attacker won
 			{
+				battlesWon++;
 				wonAtLeast1Battle = true;
 				String losingDefender = defendingTerritory.getOwner();
 			
@@ -804,13 +810,6 @@ public class Turns {
 		{
 			return 1;
 		}
-		
-	}
-	
-	public void attackTerritory(String territoryName, Continent currContinent)
-	{
-		Territory terrBeingAttacked = currContinent.getTerritory(territoryName);
-		
 		
 	}
 }

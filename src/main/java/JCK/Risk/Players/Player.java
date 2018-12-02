@@ -14,8 +14,10 @@ public class Player {
 	private int currentCredit;
 	
 	private List<String> listOfTerritoriesOwned;
-	private List<String> continentsOwned;    //TODO: NOT NEEDED
+	private List<String> continentsOwned;
 	private ArrayList<String> listOfCards;
+	
+	private int totalTerritoriesConquered;
 	
 	public Player() {
 		listOfCards = new ArrayList<String>();
