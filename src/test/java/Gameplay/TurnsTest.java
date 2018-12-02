@@ -9,7 +9,7 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiRequestException;
 import JCK.Risk.Locations.Continent;
 import JCK.Risk.Locations.Territory;
 import JCK.Risk.Gameplay.Turns;
-import JCK.Risk.TelegramGameBot;
+import JCK.Risk.Extras.TelegramGameBot;
 import JCK.Risk.Gameplay.Game;
 import JCK.Risk.Players.Player;
 

@@ -17,7 +17,7 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import java.util.Random;
 
 import JCK.Risk.CoverageIgnore;
-import JCK.Risk.TelegramGameBot;
+import JCK.Risk.Extras.TelegramGameBot;
 import JCK.Risk.Locations.Continent;
 import JCK.Risk.Locations.Territory;
 import JCK.Risk.Players.Player;
@@ -70,7 +70,6 @@ public class Game {
 		{
 			playersArray.get(i).setRollValue(i+1); //sets the roll value if we need to set it
 			bot.sendMessageToChat((i + 1) + "." + playersArray.get(i).getName());
-//			System.out.println((i + 1) + ". " + playersArray.get(i).name);
 		}
 	}
 	
@@ -132,6 +131,7 @@ public class Game {
 				String territoryName = line;
 				newContinent.addTerritory(territoryName, initializeAdjacencies(territoryName));
 				continentArray.add(newContinent);
+				br.close();
 			}
 		} catch (FileNotFoundException e) {
 			System.out.println(e.getMessage());
