@@ -25,7 +25,19 @@ public class GameTest {
 	
 	@Test
 	public void areTerritoriesFilledTest() {
+		ArrayList<Continent> continentsArray = new ArrayList<Continent>();
+		Territory t = new Territory("TestTerritory", null);
+		t.setOwner("Player");
+		for (int i = 0; i < 2; i++) {
+			continentsArray.add(new Continent("TestContinent" + i, i));
+			continentsArray.get(i).getListOfTerritories().put(t.getTerritoryName(), t);
+		}
+		game.setContinentArray(continentsArray);
 		Assert.assertEquals(true, game.areTerritoriesFilled());
+		Territory newT = new Territory("TestTerritory", null);
+		newT.setOwner("nobody");
+		continentsArray.get(0).getListOfTerritories().put(newT.getTerritoryName(), newT);
+		Assert.assertEquals(false, game.areTerritoriesFilled());
 	}
 	
 	@Test
@@ -54,13 +66,13 @@ public class GameTest {
 		testPlayer.setName("TestPlayer1");
 		territoryMap.put("TestTerritory1", new Territory("TestTerritory1",null));
 		territoryMap.put("TestTerritory2", new Territory("TestTerritory2",null));
-		territoryMap.get("TestTerritory1").setOwner("TestPlayer1");
+		territoryMap.get("TestTerritory1").setOwner("nobody");
 		
 		continent.setListOfTerritories(territoryMap);
 		continentList.add(continent);
 		game.setContinentArray(continentList);
 		
-		game.assignTerritory(testPlayer, "TestTerritory", 3);
+		game.assignTerritory(testPlayer, "TestTerritory1", 3);
 		Assert.assertTrue(game.getContinentArray().get(0).getListOfTerritories().get("TestTerritory1").getOwner().equals("TestPlayer1"));
 	}
 }
