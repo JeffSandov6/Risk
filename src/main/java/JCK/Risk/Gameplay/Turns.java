@@ -28,9 +28,9 @@ import JCK.Risk.Players.Player;
 
 public class Turns {
 	
-	Card cards = new Card();
-	TelegramGameBot bot;
-	boolean skip = false;
+	private Card cards = new Card();
+	private TelegramGameBot bot;
+	private boolean skip = false;
 
 	
 	@CoverageIgnore
@@ -122,7 +122,9 @@ public class Turns {
 		}
 		
 		bot.sendMessageToChat("THE WINNER OF THE GAME IS " + game.getPlayersArray().get(0).getName());
-		bot.sendMessageToChat("THANKS FOR PLAYING RISK, GOODBYE!");
+		bot.gameFinished();
+		
+		
 	}
 	
 	
@@ -155,7 +157,7 @@ public class Turns {
 		} 
 		
 		// now ask if they want to purchase anything
-		bot.sendMessageToChat(player.name + ", would you like to purchase any of the following with your credits?");
+		bot.sendMessageToChat(player.getName() + ", would you like to purchase any of the following with your credits?");
 		bot.sendMessageToChat("You currently have " + player.getCurrentCredit() + " credits.");
 		bot.sendMessageToChat("Action\t\tCost");
 		bot.sendMessageToChat("Undo\t\t5");
@@ -173,10 +175,10 @@ public class Turns {
 		} else if (userInput.toLowerCase().equals("card") && player.getCurrentCredit() >= 3) {
 			//ask what kind of card they want to purchase
 			bot.sendMessageToChat("What type of card would you like out of the ones available?");
-			bot.sendMessageToChat("Infantry - " + cards.cardsArray.get(0));
-			bot.sendMessageToChat("Cavalry - " + cards.cardsArray.get(1));
-			bot.sendMessageToChat("Artillery - " + cards.cardsArray.get(2));
-			userInput = bot.sendMessageGetResponse("Wild - " + cards.cardsArray.get(3));
+			bot.sendMessageToChat("Infantry - " + cards.getCardsArray().get(0));
+			bot.sendMessageToChat("Cavalry - " + cards.getCardsArray().get(1));
+			bot.sendMessageToChat("Artillery - " + cards.getCardsArray().get(2));
+			userInput = bot.sendMessageGetResponse("Wild - " + cards.getCardsArray().get(3));
 			
 			if (!checkIfUserResponded(userInput)) {
 				return;
@@ -189,7 +191,7 @@ public class Turns {
 				return;
 			}
 			//if it is a good index, then check if the num of cards at the index is > 0
-			int numberOfCardsAvailable = cards.cardsArray.get(cardIndex);
+			int numberOfCardsAvailable = cards.getCardsArray().get(cardIndex);
 			if (numberOfCardsAvailable > 0) {
 				player.purchaseCard("userInput");
 				player.useCredit(3);
@@ -367,7 +369,7 @@ public class Turns {
 			
 			if(thisPlayer.getTerritoriesOwned().size() == 0)
 			{
-				if(thisPlayer.rollValue < currentPlayersTurn.rollValue) //if hes to the left of winning player
+				if(thisPlayer.getRollValue() < currentPlayersTurn.getRollValue()) //if hes to the left of winning player
 				{
 					leftSideEliminated++;
 				}
@@ -652,7 +654,7 @@ public class Turns {
 	@CoverageIgnore
 	private void migrateUnitsFromOldToNewTerritory(Territory donaterTerr, Territory receiverTerr) throws TelegramApiException, InterruptedException
 	{
-		int currNumSoldiers = donaterTerr.numSoldiersHere;
+		int currNumSoldiers = donaterTerr.getSoldierCount();
 
 		if(currNumSoldiers == 2)
 		{
@@ -675,11 +677,10 @@ public class Turns {
 				
 		int numSoldiersStayed = currNumSoldiers - migratingSoldiers;
 		
-		donaterTerr.numSoldiersHere = numSoldiersStayed;
-		receiverTerr.numSoldiersHere = migratingSoldiers;
+		donaterTerr.setSoldiers(numSoldiersStayed);
+		receiverTerr.setSoldiers(migratingSoldiers);
 	}
 	
-
 	
 	public void removeTerritoryFromDefender(String defenderName, String territoryLost, Game game)
 	{
@@ -706,7 +707,7 @@ public class Turns {
 		String attackerName = attackingTerr.getOwner();
 		String defenderName = defendingTerr.getOwner();
 		
-		while(attackingTerr.numSoldiersHere != 1 || defendingTerr.numSoldiersHere != 0)
+		while(attackingTerr.getSoldierCount() != 1 || defendingTerr.getSoldierCount() != 0)
 		{
 			int attackingSoldiers = this.numAttackers(attackingTerr);
 			int defendingSoldiers = this.numDefenders(defendingTerr);
@@ -726,21 +727,21 @@ public class Turns {
 				if(attackerRolls[i] > defenderRolls[i])
 				{
 					bot.sendMessageToChat(attackerName);
-					defendingTerr.numSoldiersHere -= 1;
+					defendingTerr.setSoldiers(defendingTerr.getSoldierCount() - 1);
 				}
 				else
 				{
 					bot.sendMessageToChat(defenderName);
-					attackingTerr.numSoldiersHere -= 1;
+					attackingTerr.setSoldiers(attackingTerr.getSoldierCount() - 1);
 				}
 				
 				i++;
 			}
 			
-			bot.sendMessageToChat(attackerName + " remaining soldiers are " + attackingTerr.numSoldiersHere);
-			bot.sendMessageToChat(defenderName + " remaining soldiers are " + defendingTerr.numSoldiersHere);
+			bot.sendMessageToChat(attackerName + " remaining soldiers are " + attackingTerr.getSoldierCount());
+			bot.sendMessageToChat(defenderName + " remaining soldiers are " + defendingTerr.getSoldierCount());
 			
-			if(attackingTerr.numSoldiersHere == 1 || defendingTerr.numSoldiersHere == 0)
+			if(attackingTerr.getSoldierCount() == 1 || defendingTerr.getSoldierCount() == 0)
 			{
 				break;
 			}
@@ -748,7 +749,7 @@ public class Turns {
 		
 		
 		bot.sendMessageToChat("The winner of this battle is: ");
-		if(attackingTerr.numSoldiersHere == 1)
+		if(attackingTerr.getSoldierCount() == 1)
 		{
 			bot.sendMessageToChat(defenderName);
 			return defenderName;
@@ -756,7 +757,7 @@ public class Turns {
 		else
 		{
 			bot.sendMessageToChat(attackerName);
-			bot.sendMessageToChat(defendingTerr.territoryName + " is now yours");
+			bot.sendMessageToChat(defendingTerr.getTerritoryName() + " is now yours");
 			return attackerName;
 		}
 		
@@ -778,11 +779,11 @@ public class Turns {
 	
 	public int numAttackers(Territory attackingTerr)
 	{
-		if(attackingTerr.numSoldiersHere > 3)
+		if(attackingTerr.getSoldierCount() > 3)
 		{
 			return 3;
 		}
-		else if(attackingTerr.numSoldiersHere == 3)
+		else if(attackingTerr.getSoldierCount() == 3)
 		{
 			return 2;
 		}
@@ -795,7 +796,7 @@ public class Turns {
 	
 	public int numDefenders(Territory defendingTerr)
 	{
-		if(defendingTerr.numSoldiersHere >= 2)
+		if(defendingTerr.getSoldierCount() >= 2)
 		{
 			return 2;
 		}
