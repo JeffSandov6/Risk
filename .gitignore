@@ -4,3 +4,4 @@ target/classes
 Risk/META-INF/
 /target/
 secrets_JCK_.prop
+secret_JCK_.prop
