@@ -1,11 +1,12 @@
 package JCK.Risk.Players;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.ArrayList;
 import java.util.Collections;
 
 
-public class Player {
+public class Player implements Observer {
 	
 	private String name;
 	private Integer turnValue;
@@ -41,6 +42,16 @@ public class Player {
 			this.listOfCards.add(playerToCopy.listOfCards.get(i));
 		}
 	}
+	
+	
+	@Override
+	public void update(String playerName) {
+		if(Objects.equals(playerName, getName()))
+		{
+			System.out.print(getName() + " , you are being attacked!");
+		}
+	}
+	
 	
 	public void setRollValue(int rollValue) {
 		this.rollValue = rollValue;
