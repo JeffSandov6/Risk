@@ -147,4 +147,32 @@ public class CardTest {
 		testPlayer.getListOfCards().add("artillery");
 		Assert.assertEquals(6, card.turnInCards(testPlayer, 1, 4));
 	}
+	
+	@Test
+	public void maxCardAmountReachedTest() throws InterruptedException, TelegramApiException {
+		Player testPlayer = new Player();
+		testPlayer.addCardToList("Infantry");
+		testPlayer.addCardToList("Cavalry");
+		testPlayer.addCardToList("Wild");
+		testPlayer.addCardToList("Infantry");
+		testPlayer.addCardToList("Infantry");
+		Assert.assertEquals(4, card.maxCardAmountReached(testPlayer,3, 3));
+		
+		testPlayer.getListOfCards().clear();
+		testPlayer.addCardToList("Infantry");
+		testPlayer.addCardToList("Cavalry");
+		testPlayer.addCardToList("Wild");
+		testPlayer.addCardToList("Wild");
+		testPlayer.addCardToList("Infantry");
+		Assert.assertEquals(6, card.maxCardAmountReached(testPlayer, 2, 3));
+		
+		testPlayer.getListOfCards().clear();
+		testPlayer.addCardToList("Infantry");
+		testPlayer.addCardToList("Infantry");
+		testPlayer.addCardToList("Wild");
+		testPlayer.addCardToList("Wild");
+		testPlayer.addCardToList("Infantry");
+		Assert.assertEquals(8, card.maxCardAmountReached(testPlayer, 3, 2));
+		
+	}
 }
