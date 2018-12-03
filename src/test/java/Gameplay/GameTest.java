@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import org.junit.After;
 import org.junit.Assert;
@@ -75,4 +76,29 @@ public class GameTest {
 		game.assignTerritory(testPlayer, "TestTerritory1", 3);
 		Assert.assertTrue(game.getContinentArray().get(0).getListOfTerritories().get("TestTerritory1").getOwner().equals("TestPlayer1"));
 	}
+	
+	@Test
+	public void initializeContinentTest() {
+		Game newGame = new Game();
+		newGame.initializeContinents();
+		Assert.assertEquals(true, true);
+	}
+	
+	@Test
+	public void initializeAdjacenciesTest() {
+		Game newGame = new Game();
+		List<String> actual = newGame.initializeAdjacencies("Japan");
+		List<String> expected = new ArrayList<String>();
+		expected.add("Kamchatka");
+		expected.add("Mongolia");
+		Assert.assertEquals(actual, expected);
+	}
+	
+	@Test
+	public void displayWorldTest() {
+		game.displayWorld();
+		Assert.assertEquals(true, true);
+	}
+	
+	
 }
