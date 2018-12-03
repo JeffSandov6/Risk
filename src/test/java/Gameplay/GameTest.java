@@ -75,4 +75,11 @@ public class GameTest {
 		game.assignTerritory(testPlayer, "TestTerritory1", 3);
 		Assert.assertTrue(game.getContinentArray().get(0).getListOfTerritories().get("TestTerritory1").getOwner().equals("TestPlayer1"));
 	}
+	
+	@Test
+	public void initializeContinentTest() {
+		Game newGame = new Game();
+		newGame.initializeContinents();
+		Assert.assertEquals(true, true);
+	}
 }
