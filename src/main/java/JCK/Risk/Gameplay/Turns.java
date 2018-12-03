@@ -13,6 +13,7 @@ import java.util.Objects;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
 import JCK.Risk.CoverageIgnore;
+import JCK.Risk.Extras.Subject;
 import JCK.Risk.Extras.TelegramGameBot;
 import JCK.Risk.Extras.Twitterer;
 import JCK.Risk.Locations.Continent;
@@ -23,7 +24,7 @@ import JCK.Risk.Players.Player;
 //Observer class
 //80% test coverage
 
-public class Turns {
+public class Turns implements Subject {
 	
 	private Card cards = new Card();
 	private TelegramGameBot bot;
@@ -36,6 +37,15 @@ public class Turns {
 	public Turns(TelegramGameBot bot) {
 		this.bot = bot;
 	}
+	
+	@Override
+	public void notifyObservers(String playerName, ArrayList<Player> players) {
+		
+		for(Player player : players) {
+			player.update(playerName);
+		}
+	}
+	
 	@CoverageIgnore
 	public Turns(Game game, TelegramGameBot bot) throws IOException, InterruptedException, TelegramApiException {
 		this.bot = bot;
@@ -560,6 +570,8 @@ public class Turns {
 			
 			String defTerrOwner = defendingTerritory.getOwner();
 			bot.sendMessageToChat(defTerrOwner + ", your territory " + defendingTerr + " is being attacked!");
+			this.notifyObservers(defTerrOwner, game.getPlayersArray());
+
 			
 			//reaching here means we have a valid defending & attacking terr
 			String winnerOfBattle = beginBattle(defendingTerritory, attackingTerritory);
