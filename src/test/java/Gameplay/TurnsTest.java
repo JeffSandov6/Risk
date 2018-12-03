@@ -134,18 +134,21 @@ public class TurnsTest {
 		Assert.assertTrue(!turns.playerOwnsTerritory("TestTerritory2", testPlayer, game.getContinentArray()));
 	}
 	
+	@Test
 	public void checkIfUserRespondedTest() {
 		Assert.assertEquals(false, turns.checkIfUserResponded("empty"));
 		Assert.assertEquals(true, turns.checkIfUserResponded("test"));
 		
 	}
 	
+	@Test
 	public void getExtraArmiesForTerrsOwnedTest() {
 		Player testPlayer = new Player();
 		testPlayer.createPlayer("TestPlayer", 0);
 		Assert.assertEquals(3, turns.getExtraArmiesForTerrsOwned(testPlayer));
 	}
 	
+	@Test
 	public void removeTerritoryFromDefenderTest() {
 		turns.removeTerritoryFromDefender("TestPlayer1", "TestTerritory", game);
 		Assert.assertTrue(!game.getPlayersArray().get(0).getTerritoriesOwned().contains("TestTerritory"));
