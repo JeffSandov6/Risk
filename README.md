@@ -1,4 +1,5 @@
-<a href='https://coveralls.io/github/JeffSandov6/Risk'><img src='https://coveralls.io/repos/github/JeffSandov6/Risk/badge.svg' alt='Coverage Status' /></a>
+<a href='https://coveralls.io/github/JeffSandov6/Risk?branch=master'><img src='https://coveralls.io/repos/github/JeffSandov6/Risk/badge.svg?branch=master' alt='Coverage Status' /></a>
+
 [![Build Status](https://travis-ci.com/JeffSandov6/Risk.svg?branch=master)](https://travis-ci.com/JeffSandov6/Risk)
 
 
