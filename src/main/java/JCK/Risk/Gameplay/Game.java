@@ -103,7 +103,6 @@ public class Game {
 	/**
 	* Initializes the continents by reading a .txt file and scanning through it
 	*/
-	@CoverageIgnore
 	public void initializeContinents()
 	{
 		try {

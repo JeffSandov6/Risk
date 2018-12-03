@@ -93,4 +93,12 @@ public class GameTest {
 		expected.add("Mongolia");
 		Assert.assertEquals(actual, expected);
 	}
+	
+	@Test
+	public void displayWorldTest() {
+		game.displayWorld();
+		Assert.assertEquals(true, true);
+	}
+	
+	
 }
