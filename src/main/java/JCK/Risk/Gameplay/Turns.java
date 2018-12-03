@@ -273,7 +273,7 @@ public class Turns implements Subject {
 	 * @throws InterruptedException 
 	 */
 	@CoverageIgnore
-	private boolean undoTurn(Game game, Undo undo, Player player) throws InterruptedException, TelegramApiException {
+	public boolean undoTurn(Game game, Undo undo, Player player) throws InterruptedException, TelegramApiException {
 		// checks whether or not the current player has an undo action available 
 		bot.sendMessageToChat("You currently have " + player.getUndoActionsAvailable() + " undo actions available.");
 		

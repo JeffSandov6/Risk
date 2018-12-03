@@ -4,11 +4,13 @@ import org.junit.Before;
 import org.junit.Test;
 import org.telegram.telegrambots.ApiContextInitializer;
 import org.telegram.telegrambots.meta.TelegramBotsApi;
+import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiRequestException;
 
 import JCK.Risk.Locations.Continent;
 import JCK.Risk.Locations.Territory;
 import JCK.Risk.Gameplay.Turns;
+import JCK.Risk.Gameplay.Undo;
 import JCK.Risk.Extras.TelegramGameBot;
 import JCK.Risk.Gameplay.Game;
 import JCK.Risk.Players.Player;
@@ -60,6 +62,13 @@ public class TurnsTest {
 
 	}
 	
+	@Test
+	public void undoTurnTest() throws InterruptedException, TelegramApiException {
+		Player testPlayer = new Player();
+		testPlayer.createPlayer("TestPlayer1", 0);
+		Undo undo = new Undo(game.getPlayersArray(), game.getContinentArray());
+		Assert.assertTrue(!turns.undoTurn(game, undo, testPlayer));
+	}
 	@Test
 	public void numDefendersTest() {
 		Territory testTerritory = new Territory("TestTerritory", null);

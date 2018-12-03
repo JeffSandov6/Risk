@@ -103,7 +103,6 @@ public class Game {
 	/**
 	* Initializes the continents by reading a .txt file and scanning through it
 	*/
-	@CoverageIgnore
 	public void initializeContinents()
 	{
 		try {
@@ -193,7 +192,6 @@ public class Game {
 
 	
 	//Initialize the territories adjacency list
-	@CoverageIgnore
 	public List<String> initializeAdjacencies(String territoryName) {
 		List<String> adjacentTerritories = new ArrayList<String>();
 		try {
